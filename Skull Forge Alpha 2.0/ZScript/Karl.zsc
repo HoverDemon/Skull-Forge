@@ -1,0 +1,18 @@
+Class SF_Player : DoomPlayer
+{
+	Default
+	{
+		Speed 18.50;
+		Player.ViewBob 0.75;
+		Player.TeleportFreezeTime 6;
+		Friction 0.85;
+		Player.DisplayName "Karl";
+		Player.StartItem "SF_Axe";
+		Player.Jumpz 9;
+		Player.WeaponSlot 1, "SF_Axe", "SF_RipSaw";
+		Player.WeaponSlot 2, "SF_NOVA";
+		Player.WeaponSlot 3, "SF_Slugger", "SF_Dominatus";
+		Player.WeaponSlot 4, "SF_Viper";
+		Player.WeaponSlot 6, "SF_InfernalHaze";
+	}
+}
