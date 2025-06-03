@@ -1,0 +1,51 @@
+ACTOR Berserker 30111
+{
+	Health 300
+	Radius 20
+	Height 56
+	Mass 100
+	Speed 18
+	Scale 0.90
+	PainChance 200
+	MeleeRange 128
+	Monster
+	+FLOORCLIP
+	+NOINFIGHTING
+	SeeSound "baron/sight"
+	PainSound "Lavamander/pain"
+	DeathSound "demon/death"
+	ActiveSound "imp/active"
+	Obituary "%o got pummeled by a Descian Berserker."
+	States
+	{
+		Spawn:
+			LIBR AB 10 A_Look
+			Loop
+		See:
+			LIBR AABBCCDD 3 A_Chase
+			Loop
+		Melee:
+			LIBR EF 6 A_FaceTarget
+			LIBR F 0 A_SkelWhoosh
+			LIBR G 8 A_CustomMeleeAttack(random(1, 10) * 6, "demon/melee")
+			LIBR G 0 A_JumpIfTargetInsideMeleeRange("SecondMelee")
+			Goto See
+		SecondMelee:
+			LIBR HI 6 A_FaceTarget
+			LIBR I 0 A_SkelWhoosh
+			LIBR J 8 A_CustomMeleeAttack(random(1, 10) * 6, "demon/melee")
+			Goto See
+		Pain:
+			LIBR K 2
+			LIBR K 2 A_Pain
+			Goto See
+		Death:
+			LIBR M 4
+			LIBR N 4 A_Scream
+			LIBR O 4 A_NoBlocking
+			LIBR P 4 A_QueueCorpse
+			LIBR QRST 4
+			LIBR U -1
+			Stop
+	}
+}

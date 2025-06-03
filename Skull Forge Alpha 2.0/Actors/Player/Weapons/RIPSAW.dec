@@ -1,0 +1,106 @@
+ACTOR SF_RipSaw : WF_WeaponBase replaces Chainsaw
+{
+	Weapon.SelectionOrder 2000
+	Obituary "\cb%o \umgot sawed in half by \cr%k."
+	Inventory.Pickupmessage "\cqWEAPON AQUIRED: \cbRipsaw \c*(SLOT 1)"
+	Tag "Rip Saw"
+	Inventory.PickupSound "weapons/ripsaw/up"
+	Weapon.KickBack 100
+	States
+	{
+		Deselect:
+			TNT1 A 0 A_PlaySound("weapons/ripsaw/down",CHAN_6)
+			SAWG C 1 Offset(0,32)
+			SAWG C 1 Offset(-8,48)
+			SAWG C 1 Offset(-16,52)
+			SAWG D 1 Offset(-24,72)
+			SAWG D 1 Offset(-32,64)
+			SAWG D 1 Offset(-48,72)
+			SAWG C 1 Offset(-52,86)
+			SAWG C 1 Offset(-64,96)
+			SAWG C 1 Offset(-72,112)
+		ReadlDeselect:
+			TNT1 A 0 A_Lower
+			Loop
+		Select:
+			TNT1 A 0 A_Raise
+			Loop
+			
+		Ready:
+			TNT1 A 0 A_PlaySound("weapons/ripsaw/up",CHAN_6)
+			TNT1 A 20 A_AlertMonsters
+			SAWG D 1 Offset(-72,112)
+			SAWG D 1 Offset(-64,96)
+			SAWG D 1 Offset(-52,86)
+			SAWG C 1 Offset(-48,72)
+			SAWG C 1 Offset(-32,64)
+			SAWG C 1 Offset(-24,72)
+			SAWG D 1 Offset(-16,52)
+			SAWG D 1 Offset(-8,48)
+			SAWG D 1 Offset(0,32)
+		RealReady:
+			TNT1 A 0 A_PlaySound("weapons/ripsaw/idle",CHAN_WEAPON,0.6)
+			TNT1 A 0 A_AlertMonsters
+			TNT1 A 0 A_SetPitch(pitch+0.05) TNT1 A 0 A_Quake(0.25,2,0,64,"SF_BulletPuff")
+			SAWG C 1 A_WeaponReady
+			TNT1 A 0 A_SetPitch(pitch+0.05) TNT1 A 0 A_Quake(0.25,2,0,64,"SF_BulletPuff")
+			SAWG C 1 A_WeaponReady
+			TNT1 A 0 A_SetPitch(pitch+0.05) TNT1 A 0 A_Quake(0.25,2,0,64,"SF_BulletPuff")
+			SAWG C 1 A_WeaponReady
+			TNT1 A 0 A_SetPitch(pitch-0.05) TNT1 A 0 A_Quake(0.25,2,0,64,"SF_BulletPuff")
+			SAWG D 1 A_WeaponReady
+			TNT1 A 0 A_SetPitch(pitch-0.05) TNT1 A 0 A_Quake(0.25,2,0,64,"SF_BulletPuff")
+			SAWG D 1 A_WeaponReady
+			TNT1 A 0 A_SetPitch(pitch-0.05) TNT1 A 0 A_Quake(0.25,2,0,64,"SF_BulletPuff")
+			SAWG D 1 A_WeaponReady
+			Loop
+			
+		Fire:
+			TNT1 A 0 A_JumpIfInventory("Power_SF_QuadDamage",0,"QUAD_Sound_Fire")
+			Goto QUAD_Nosound_Fire
+			
+		QUAD_Sound_Fire:
+			TNT1 A 0 A_PlaySound("powerups/quad/attack",CHAN_5)
+		QUAD_Nosound_Fire:
+			TNT1 A 0 A_SetPitch(pitch+0.1) TNT1 A 0 A_Quake(0.5,2,0,64,"")
+			SAWG A 1 Offset(0,32) A_Saw("weapons/ripsaw/hit/wall","weapons/ripsaw/hit/flesh",3,"Saw_Puff",0,96)
+			TNT1 A 0 A_SetPitch(pitch+0.1) TNT1 A 0 A_Quake(0.5,2,0,64,"")
+			SAWG A 1 Offset(-16,48) A_Saw("","",1,"Saw_Puff_PainLess",0,96)
+			TNT1 A 0 A_SetPitch(pitch+0.1) TNT1 A 0 A_Quake(0.5,2,0,64,"")
+			SAWG B 1 Offset(-32,52) A_Saw("","",1,"Saw_Puff",0,96)
+			TNT1 A 0 A_SetPitch(pitch+0.1) TNT1 A 0 A_Quake(0.5,2,0,64,"")
+			SAWG B 1 Offset(-48,64) A_Saw("","",1,"Saw_Puff_PainLess",0,96)
+			SAWG A 1 Offset(-44,60) A_Saw("weapons/ripsaw/hit/wall","weapons/ripsaw/hit/flesh",3,"Saw_Puff",0,96)
+			TNT1 A 0 A_SetPitch(pitch-0.1) TNT1 A 0 A_Quake(0.5,2,0,64,"")
+			SAWG A 1 Offset(-32,52) A_Saw("","",1,"Saw_Puff_PainLess",0,96)
+			TNT1 A 0 A_SetPitch(pitch-0.1) TNT1 A 0 A_Quake(0.5,2,0,64,"")
+			SAWG B 1 Offset(-16,38) A_Saw("","",1,"Saw_Puff",0,96)
+			TNT1 A 0 A_SetPitch(pitch-0.1) TNT1 A 0 A_Quake(0.5,2,0,64,"")
+			SAWG B 1 Offset(-8,50) A_Saw("","",1,"Saw_Puff_PainLess",0,96)
+			TNT1 A 0 A_Refire
+			Goto RealReady
+		Spawn:
+			CSAW A -1
+			Stop
+	}
+}
+
+Actor Saw_Puff
+{
+	VSpeed 0.5
+	-NOEXTREMEDEATH
+	+NOGRAVITY
+	RenderStyle Translucent
+	Alpha 0.25
+	States
+	{
+		Spawn:
+			PUFF ABCDE 4 Bright
+			Stop
+	}
+}
+
+Actor Saw_Puff_PainLess : Saw_Puff
+{
+	+PAINLESS
+}

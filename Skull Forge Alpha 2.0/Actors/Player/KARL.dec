@@ -1,0 +1,55 @@
+Actor WF_WeaponBase : Weapon
+{
+	+WEAPON.NOAUTOAIM
+	Weapon.KickBack 30
+	Weapon.BobStyle "InverseSmooth"
+	Weapon.BobRangeX 0.75
+	Weapon.BobRangeY 0.75
+	Weapon.BobSpeed 0.5
+	Decal "BulletChip"
+	States
+	{
+		Spawn:
+			TNT1 A -1
+			Loop
+		Select:
+			TNT1 A -1
+			Loop
+		Deselect:
+			TNT1 A -1
+			Loop
+		Ready:
+			TNT1 A -1
+			Loop
+		Fire:
+			TNT1 A -1
+			Loop
+	}
+}
+
+Actor SF_BulletPuffDeathEffect
+{
+	+BRIGHT
+	RenderStyle Add
+	Alpha 0.2
+	Scale 0.5
+	Gravity 0.1
+	States
+	{
+		Spawn:
+			BULT AA 1 A_SetScale(0.9,0.9)
+			BULT AA 1 A_SetScale(1.0,1.0)
+			BULT AA 1 A_SetScale(0.9,0.9)
+			BULT A 1 A_SetScale(1.0,1.0)
+			BULT A 1 A_SetScale(0.9,0.9)
+			BULT A 1 A_SetScale(0.8,0.8)
+			BULT A 1 A_SetScale(0.7,0.7)
+			BULT A 1 A_SetScale(0.6,0.6)
+			BULT A 1 A_SetScale(0.5,0.5)
+			BULT A 1 A_SetScale(0.4,0.4)
+			BULT A 1 A_SetScale(0.3,0.3)
+			BULT A 1 A_SetScale(0.2,0.2)
+			BULT A 1 A_SetScale(0.1,0.1)
+			Stop
+	}
+}

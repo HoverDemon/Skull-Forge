@@ -1,0 +1,5 @@
+addkeysection "Skull Forge Bind" SFkeys                    
+
+addmenukey "Jump" SkullForge_CustomJumpingScript
+alias SkullForge_CustomJumpingScript "pukename \"SkullForge_CustomJumpingScript\""
+defaultbind Space +SkullForge_CustomJumpingScript

@@ -1,0 +1,27 @@
+Weapons/HVP9     HVP9FI
+Weapons/CR56FIR CR56FIR
+Weapons/SGM19FI  SGM19FI
+Weapons/SGPMP SGPMP
+weapons/axecut SPLICE
+weapons/axebang CLANG
+weapons/axeswing SWISH
+weapons/HPSGFI  HPSGFI
+weapons/HPSGOP  HPSGOP
+weapons/HPSGLD HPSGLD
+weapons/HPSGSH  HPSGSH
+DoubleDamage/Activate	DSDUBLON
+DoubleDamage/Deactivate	DSDUBLOF
+DoubleDamage/Attack		DSDUBLAT
+
+
+DEMODEAT	DEMODEAT
+DEMOACTI	DEMOACTI
+Lavamander/sight LVMDSIT
+Lavamander/pain LVMDPAI
+Lavamander/death LVMDDTH
+Lavamander/active LVMDACT
+Lavamander/attack LVMDATK
+
+$random Lavamander/walk { LVMDWLK1 LVMDWLK2 }
+LVMDWLK1 LVMDWLK1
+LVMDWLK2 LVMDWLK2

@@ -1,0 +1,128 @@
+//AXE MELEE SOUNDS
+
+$Random weapons/axe/swing { axe/swing1 axe/swing2 axe/swing3 axe/swing4 }
+
+axe/swing1 AXESWIG1
+axe/swing2 AXESWIG2
+axe/swing3 AXESWIG3
+axe/swing4 AXESWIG4
+
+$Random weapons/axe/hit/wall { axe/wall1 axe/wall2 axe/wall3 }
+
+axe/wall1 AXEHITW1
+axe/wall2 AXEHITW2
+axe/wall3 AXEHITW3
+
+$Random weapons/axe/hit/flesh { axe/flesh1 axe/flesh2 axe/flesh3 }
+
+axe/flesh1 AXEHITF1
+axe/flesh2 AXEHITF2
+axe/flesh3 AXEHITF3
+
+$Random weapons/axe/up { axe/up1 axe/up2 }
+
+axe/up1 AXEUP1
+axe/up2 AXEUP2
+
+//RIP SAW SOUNDS
+
+weapons/ripsaw/up SAWUP
+
+weapons/ripsaw/idle SAWIDLE
+
+weapons/ripsaw/down SAWDOWN
+
+weapons/ripsaw/hit/wall SAWHITW
+weapons/ripsaw/hit/flesh SAWHITF
+
+//NOVA PISTOL SOUNDS
+
+$Random weapons/nova/fire { nova/fire1 nova/fire2 nova/fire3 nova/fire4 nova/fire5 nova/fire6 }
+
+nova/fire1 NOVAFIR1
+nova/fire2 NOVAFIR2
+nova/fire3 NOVAFIR3
+nova/fire4 NOVAFIR4
+nova/fire5 NOVAFIR5
+nova/fire6 NOVAFIR6
+
+$Random weapons/nova/up { nova/up1 nova/up2 nova/up3 nova/up4 nova/up5 }
+
+nova/up1 NOVAUP1
+nova/up2 NOVAUP2
+nova/up3 NOVAUP3
+nova/up4 NOVAUP4
+nova/up5 NOVAUP5
+
+$Random weapons/nova/down { nova/down1 nova/down2 nova/down3 nova/down4 }
+
+nova/down1 NOVADOW1
+nova/down2 NOVADOW2
+nova/down3 NOVADOW3
+nova/down4 NOVADOW4
+
+//SLUGGER SHOTGUN SOUNDS
+
+$Random weapons/slugger/fire { slugger/fire1 slugger/fire2 slugger/fire3 slugger/fire4 slugger/fire5 }
+
+slugger/fire1 SLUGFIR1
+slugger/fire2 SLUGFIR2
+slugger/fire3 SLUGFIR3
+slugger/fire4 SLUGFIR4
+slugger/fire5 SLUGFIR5
+
+$Random weapons/slugger/pump { slugger/pump1 slugger/pump2 slugger/pump3 }
+
+slugger/pump1 SLUGPMP1
+slugger/pump2 SLUGPMP2
+slugger/pump3 SLUGPMP3
+
+$Random weapons/slugger/up { slugger/up1 slugger/up2 slugger/up3 }
+
+slugger/up1 SLUGUP1
+slugger/up2 SLUGUP2
+slugger/up3 SLUGUP3
+
+$Random weapons/slugger/down { slugger/down1 slugger/down2 }
+
+slugger/down1 SLUGDOW1
+slugger/down2 SLUGDOW2
+
+//DOMINATUS SHOTGUN SOUNDS
+
+$Random weapons/dominatus/fire { dominatus/fire1 dominatus/fire2 dominatus/fire3 dominatus/fire4 }
+
+dominatus/fire1 DOMNFIR1
+dominatus/fire2 DOMNFIR2
+dominatus/fire3 DOMNFIR3
+dominatus/fire4 DOMNFIR4
+
+weapons/dominatus/unload DOMNUNLD
+
+weapons/dominatus/load DOMNLOAD
+
+$Random weapons/dominatus/up { dominatus/up1 dominatus/up2 }
+
+dominatus/up1 DOMNUP1
+dominatus/up2 DOMNUP2
+
+$Random weapons/dominatus/down { dominatus/down1 dominatus/down2 dominatus/down3 }
+
+dominatus/down1 DOMNDOW1
+dominatus/down2 DOMNDOW2
+dominatus/down3 DOMNDOW3
+
+//VIPER RIFLE SOUNDS
+
+$Random weapons/viper/fire { viper/fire1 viper/fire2 viper/fire3 }
+
+viper/fire1 HARDFIR1
+viper/fire2 HARDFIR2
+viper/fire3 HARDFIR3
+
+$Random weapons/viper/up { viper/up1 viper/up2 }
+
+viper/up1 HARDUP1
+viper/up2 HARDUP2
+
+weapons/viper/down HARDDOWN

@@ -1,0 +1,5 @@
+//##QUAD##
+
+powerups/quad/on QUADON
+powerups/quad/attack QUADATK
+powerups/quad/off QUADOFF

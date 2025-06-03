@@ -1,0 +1,125 @@
+ACTOR DraconianLord replaces BaronOfHell
+{
+	Health 1000
+	Radius 24
+	Height 64
+	Mass 1000
+	Speed 8
+	PainChance 50
+	Monster
+	DropItem "HPSG-6"
+	+FLOORCLIP
+	+BOSSDEATH
+	+NOINFIGHTING
+	+DONTHARMSPECIES
+	SeeSound "baron/sight"
+	PainSound "baron/pain"
+	DeathSound "baron/death"
+	ActiveSound "baron/active"
+	Obituary "$OB_BARON"
+	HitObituary "$OB_BARONHIT"
+	States
+	{
+		Spawn:
+			BOSS AB 10 A_Look
+			Loop
+		See:
+			BOSS AABBCCDD 3 A_Chase
+			Loop
+		Melee:
+		Missile:
+			BOSS EF 8 A_FaceTarget
+			TNT1 AAAAAAAAAAAA 0 A_CustomMissile("SF_EnemyPlasmaBullet", 32, 7, frandom(-5, 5),CMF_OFFSETPITCH, frandom(-5, 5))
+			TNT1 A 0 A_Playsound ("weapons/dominatus/fire")
+			BOSS GFE 8
+			TNT1 A 0 A_Jump(128, "Missile","Missile2")
+			Goto See
+		Missile2:
+			BOSS EF 6 A_FaceTarget
+			BOSS G 6 A_BruisAttack
+			Goto See
+		Pain:
+			BOSS H 2
+			BOSS H 2 A_Pain
+			Goto See
+		Death:
+			BOSS I 8
+			BOSS J 8 A_Scream
+			BOSS K 8
+			BOSS L 8 A_NoBlocking
+			BOSS MN 8
+			BOSS O -1 A_BossDeath
+			Stop
+		Raise:
+			BOSS O 8
+			BOSS NMLKJI 8
+			Goto See
+	}
+}
+
+Actor SF_EnemyPlasmaBullet : FastProjectile
+{
+	Speed 70
+	Radius 2
+	Height 3
+	Damage (7)
+	RenderStyle Normal
+	+BLOODSPLATTER
+	States
+	{
+		Spawn:
+			HORB A 1 Bright
+			TNT1 A 0 A_SpawnItem("SF_EnemyPlasmaBulletTracer",-8)
+			TNT1 A 0 A_SpawnItem("SF_EnemyPlasmaBulletTracer",-16)
+			Loop
+		Death:
+			TNT1 A 0 A_PlaySound("effect/richoshete",CHAN_BODY)
+			TNT1 AAAAAAAAAA 0 A_SpawnItemEX("SF_EnemyPlasmaBulletDeathEffect",fRandom(-0.5,0.5),fRandom(-0.5,0.5),fRandom(-0.5,0.5),fRandom(-1.2,1.2),fRandom(-1.2,1.2),fRandom(1.2,2.4))
+			HPUF ABCD 3
+			Stop
+		XDeath:
+			TNT1 A 0
+			TNT1 A 0 A_PlaySound("effect/splatter",CHAN_BODY)
+			Stop
+	}
+}
+
+Actor SF_EnemyPlasmaBulletTracer
+{
+	+NOGRAVITY
+	RenderStyle Add
+	Alpha 0.8
+	+NOINTERACTION
+	+BRIGHT
+	States
+	{
+		Spawn:
+			HORB B 1 A_SetScale(1.0,1.0)
+			HORB B 1 A_SetScale(0.8,0.8)
+			HORB B 1 A_SetScale(0.6,0.6)
+			HORB B 1 A_SetScale(0.4,0.4)
+			HORB B 1 A_SetScale(0.2,0.2)
+			Stop
+	}
+}
+
+Actor SF_EnemyPlasmaBulletDeathEffect
+{
+	+BRIGHT
+	RenderStyle Add
+	Alpha 0.8
+	Gravity 0.5
+	States
+	{
+		Spawn:
+			HORB BB 1 A_SetScale(1.0,1.0)
+			HORB BB 1 A_SetScale(0.9,0.9)
+			HORB BB 1 A_SetScale(1.0,1.0)
+			HORB BB 1 A_SetScale(0.9,0.9)
+			HORB B 1 A_SetScale(1.0,1.0)
+			HORB B 1 A_SetScale(0.7,0.7)
+			HORB B 1 A_SetScale(0.4,0.4)
+			HORB B 1 A_SetScale(0.1,0.1)
+			Stop
+	}
+}

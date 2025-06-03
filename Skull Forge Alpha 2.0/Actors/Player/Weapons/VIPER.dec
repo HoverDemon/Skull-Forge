@@ -1,0 +1,121 @@
+Actor SF_Viper : WF_WeaponBase replaces Chaingun
+{
+	Weapon.SelectionOrder 1000
+	Weapon.AmmoUse 1
+	Weapon.AmmoGive 40
+	Weapon.AmmoType "Clip"
+	Obituary "\cb%o \umwas worked over by \cr%k's \cmSAR-56."
+	Inventory.Pickupmessage "\cqWEAPON AQUIRED: \cbSAR-56 Viper \c*(SLOT 4)"
+	Tag "SAR-56 Viper"
+	Inventory.PickupSound "weapons/viper/up"
+	Weapon.KickBack 100
+	States
+	{
+		Deselect:
+			TNT1 A 0 A_PlaySound("weapons/viper/down",CHAN_6)
+			SARW A 1 Offset(0,32)
+			SARW A 1 Offset(-4,36)
+			SARW A 1 Offset(-8,48)
+			SARW A 1 Offset(-12,52)
+			SARW A 1 Offset(-16,64)
+			SARW A 1 Offset(-20,68)
+			SARW A 1 Offset(-24,72)
+			SARW A 1 Offset(-28,80)
+			SARW A 1 Offset(-32,86)
+			SARW A 1 Offset(-36,86)
+			SARW A 1 Offset(-48,96)
+			SARW A 1 Offset(-52,112)
+			SARW A 1 Offset(-64,128)
+		ReadlDeselect:
+			TNT1 A 0 A_Lower
+			Loop
+		Select:
+			TNT1 A 0 A_Raise
+			Loop
+			
+		Ready:
+			TNT1 A 0 A_PlaySound("weapons/viper/up",CHAN_6)
+			SARW A 1 Offset(-64,128)
+			SARW A 1 Offset(-52,112)
+			SARW A 1 Offset(-48,96)
+			SARW A 1 Offset(-36,86)
+			SARW A 1 Offset(-32,86)
+			SARW A 1 Offset(-28,80)
+			SARW A 1 Offset(-24,72)
+			SARW A 1 Offset(-20,68)
+			SARW A 1 Offset(-16,64)
+			SARW A 1 Offset(-12,52)
+			SARW A 1 Offset(-8,48)
+			SARW A 1 Offset(-4,36)
+			SARW A 1 Offset(0,32)
+		RealReady:
+			SARW A 1 A_WeaponReady
+			Loop
+			
+		Fire:
+			TNT1 A 0 A_JumpIfHealthLower(25,"Fire_Panic")
+		TNT1 A 0 A_JumpIfInventory("Power_SF_QuadDamage",0,"QUAD_Sound_Fire")
+			Goto QUAD_Nosound_Fire
+			
+		QUAD_Sound_Fire:
+			TNT1 A 0 A_PlaySound("powerups/quad/attack",CHAN_5)
+		QUAD_Nosound_Fire:
+			TNT1 A 0 A_FireBullets(3.6,3.6,1,5,"SF_BulletPuff")
+			TNT1 A 0 A_FireCustomMissile("SF_BulletTracer",fRandom(-1.8,1.8),FALSE,0,0,0,fRandom(-1.8,1.8))
+			TNT1 A 0 A_SetPitch(pitch-0.75)
+			TNT1 A 0 A_ZoomFactor(0.98)
+			TNT1 A 0 A_Quake(0.25,4,0,1)
+			TNT1 A 0 Offset(-1,32) A_PlaySound("weapons/viper/fire",CHAN_WEAPON)
+			TNT1 A 0 Offset(0,32) A_GunFlash
+			TNT1 A 0 A_Recoil(0.1) 
+			SARF A 1 Bright A_ZoomFactor(0.99)
+			TNT1 A 0 A_SetPitch(pitch+0.25)
+			SARF B 1 Bright Offset(0,42) A_SetPitch(pitch+0.25)
+			TNT1 A 0 A_SetPitch(pitch+0.25)
+			SARW B 1 Offset(0,44) A_ZoomFactor(1.0)
+			TNT1 A 0 A_Refire
+			Goto Fire_End
+			
+		Fire_Panic:
+			TNT1 A 0 A_JumpIfInventory("Power_SF_QuadDamage",0,"QUAD_Sound_Fire_Panic")
+			Goto QUAD_Nosound_Fire_Panic
+			
+		QUAD_Sound_Fire_Panic:
+			TNT1 A 0 A_PlaySound("powerups/quad/attack",CHAN_5)
+		QUAD_Nosound_Fire_Panic:
+			TNT1 A 0 A_FireBullets(4.7,4.7,1,6,"SF_BulletPuff")
+			TNT1 A 0 A_FireCustomMissile("SF_BulletTracer",fRandom(-2.9,2.9),FALSE,0,0,0,fRandom(-2.9,2.9))
+			TNT1 A 0 A_SetPitch(pitch-0.5)
+			TNT1 A 0 A_ZoomFactor(0.98)
+			TNT1 A 0 A_Quake(0.25,4,0,1)
+			TNT1 A 0 Offset(-1,32) A_PlaySound("weapons/viper/fire",CHAN_WEAPON)
+			TNT1 A 0 Offset(0,32) A_GunFlash
+			TNT1 A 0 A_Recoil(0.1) 
+			SARF A 1 Bright A_ZoomFactor(0.99)
+			TNT1 A 0 A_SetPitch(pitch+0.25)
+			SARF B 1 Bright Offset(0,42) A_ZoomFactor(1.0)
+			TNT1 A 0 A_SetPitch(pitch+0.25)
+			TNT1 A 0 A_Refire
+			Goto Fire_End
+		
+		Fire_End:
+			SARW B 1 Offset(0,46) A_Refire("Fire")
+			SARW BB 1 Offset(0,50) A_Refire("Fire")
+			SARW AAA 1 Offset(0,52) A_Refire("Fire")
+			SARW AA 1 Offset(0,50) A_Refire("Fire")
+			SARW A 1 Offset(0,48) A_Refire("Fire")
+			SARW A 1 Offset(0,44) A_Refire("Fire")
+			SARW A 1 Offset(0,36) A_Refire("Fire")
+			SARW A 1 Offset(0,34) A_Refire("Fire")
+			SARW A 1 Offset(0,32) A_Refire("Fire")
+			Goto RealReady
+		
+		Flash:
+			TNT1 A 2 A_Light1
+			TNT1 A 2 A_Light2
+			Goto LightDone
+		Spawn:
+			SARI A -1
+			Stop
+	}
+}

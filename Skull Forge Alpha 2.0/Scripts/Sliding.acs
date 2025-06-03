@@ -1,0 +1,49 @@
+#include "zcommon.acs"
+
+bool alreadySlided = FALSE;
+bool crouching = FALSE;
+int x, y, z, speed;
+
+Script "SkullForge_CustomSlidingScript" ENTER
+{
+	x = GetActorVelX(0);
+	y = GetActorVelY(0);
+	z = GetActorVelZ(0);
+	speed = FixedMul(x, x) + FixedMul(y, y) + FixedMul(z, z);
+	int buttons = GetPlayerInput(-1, INPUT_BUTTONS);
+	
+	if(buttons & BT_CROUCH)
+	{
+		crouching = TRUE;
+	}
+	else
+	{
+		crouching = FALSE;
+		alreadySlided = FALSE;
+	}
+	
+	if (crouching == TRUE && alreadySlided == FALSE && GetActorZ(0) == GetActorFloorZ(0))
+	{
+		if(speed > 9000000)
+		{
+			ThrustThing(GetActorAngle(0) >> 8,100,0,0);
+			alreadySlided = TRUE;
+			SetActorProperty(0,APROP_Friction,1.0);
+			ACS_Execute(123,0,0,0,0);
+		}
+	}
+	Delay(1);
+	Restart;
+}
+
+Script 123 (Void)
+{
+	Delay(1);
+	SetActorProperty(0,APROP_Friction,GetActorProperty(0,APROP_Friction) - 0.01);
+	
+	if(GetActorProperty(0,APROP_Friction) > 0.85)
+	{
+		Restart;
+	}
+	SetActorProperty(0,APROP_Friction,0.85);
+}

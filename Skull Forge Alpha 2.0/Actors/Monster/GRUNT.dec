@@ -1,0 +1,137 @@
+ACTOR Grunt replaces Zombieman
+{
+	Health 20
+	Radius 20
+	Height 56
+	Speed 12
+	PainChance 200
+	Monster
+	+FLOORCLIP
+	+NOINFIGHTING
+	SeeSound "grunt/sight"
+	AttackSound "Weapons/CR56FIR"
+	PainSound "grunt/pain"
+	DeathSound "grunt/death"
+	ActiveSound "grunt/active"
+	Obituary "%o was shot by a Grunt"
+	DropItem "clip"
+	DropItem "clip"
+	DropItem "CR-56", 10
+	States
+	{
+		Spawn:
+			POSS AB 10 A_Look
+			Loop
+		See:
+			POSS AABBCCDD 4 A_Chase
+			Loop
+		Missile:
+			TNT1 A 0 A_PlaySound("weapons/nova/up",CHAN_BODY)
+			POSS E 10 A_FaceTarget
+			POSS F 8 A_CustomMissile("SF_EnemyBullet",32,7)
+			POSS E 8 A_FaceTarget
+			POSS F 1 A_CustomMissile("SF_EnemyBullet",32,7)
+			POSS E 8 A_FaceTarget
+			POSS F 1 A_CustomMissile("SF_EnemyBullet",32,7)
+			POSS E 8
+			Goto See
+		Pain:
+			POSS G 3
+			POSS G 3 A_Pain
+			Goto See
+		Death:
+			POSS H 5
+			POSS I 5 A_Scream
+			POSS J 5 A_NoBlocking
+			POSS K 5
+			POSS L -1
+			Stop
+		XDeath:
+			POSS M 5
+			POSS N 5 A_XScream
+			POSS O 5 A_NoBlocking
+			POSS PQRST 5
+			POSS U -1
+			Stop
+		Raise:
+			POSS K 5
+			POSS JIH 5
+			Goto See
+	}
+}
+
+Actor SF_EnemyBullet : FastProjectile
+{
+	Speed 64
+	Radius 2
+	Height 3
+	Damage (5)
+	RenderStyle Normal
+	SeeSound "weapons/nova/fire"
+	+BLOODSPLATTER
+	States
+	{
+		Spawn:
+			BULL A 1 Bright
+			TNT1 A 0 A_SpawnItem("SF_EnemyBulletTracer",-8)
+			TNT1 A 0 A_SpawnItem("SF_EnemyBulletTracer",-16)
+			Loop
+		Death:
+			TNT1 A 0 A_PlaySound("effect/richoshete",CHAN_BODY)
+			TNT1 AAAAAAAAAA 0 A_SpawnItemEX("SF_EnemyBulletDeathEffect",fRandom(-0.5,0.5),fRandom(-0.5,0.5),fRandom(-0.5,0.5),fRandom(-1.2,1.2),fRandom(-1.2,1.2),fRandom(1.2,2.4))
+			HPUF ABCD 3
+			Stop
+		XDeath:
+			TNT1 A 0
+			TNT1 A 0 A_PlaySound("effect/splatter",CHAN_BODY)
+			Stop
+	}
+}
+
+Actor SF_EnemyBulletTracer
+{
+	+NOGRAVITY
+	RenderStyle Add
+	Alpha 0.8
+	+NOINTERACTION
+	+BRIGHT
+	States
+	{
+		Spawn:
+			BULT A 1 A_SetScale(1.0,1.0)
+			BULT A 1 A_SetScale(0.8,0.8)
+			BULT A 1 A_SetScale(0.6,0.6)
+			BULT A 1 A_SetScale(0.4,0.4)
+			BULT A 1 A_SetScale(0.2,0.2)
+			Stop
+	}
+}
+
+Actor SF_EnemyBulletDeathEffect
+{
+	+BRIGHT
+	RenderStyle Add
+	Alpha 0.8
+	Gravity 0.5
+	States
+	{
+		Spawn:
+			BULT AA 1 A_SetScale(1.0,1.0)
+			BULT AA 1 A_SetScale(0.9,0.9)
+			BULT AA 1 A_SetScale(1.0,1.0)
+			BULT AA 1 A_SetScale(0.9,0.9)
+			BULT AA 1 A_SetScale(1.0,1.0)
+			BULT AA 1 A_SetScale(0.9,0.9)
+			BULT A 1 A_SetScale(1.0,1.0)
+			BULT A 1 A_SetScale(0.9,0.9)
+			BULT A 1 A_SetScale(0.8,0.8)
+			BULT A 1 A_SetScale(0.7,0.7)
+			BULT A 1 A_SetScale(0.6,0.6)
+			BULT A 1 A_SetScale(0.5,0.5)
+			BULT A 1 A_SetScale(0.4,0.4)
+			BULT A 1 A_SetScale(0.3,0.3)
+			BULT A 1 A_SetScale(0.2,0.2)
+			BULT A 1 A_SetScale(0.1,0.1)
+			Stop
+	}
+}

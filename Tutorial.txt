@@ -1,0 +1,19 @@
+### HOW TO FETCH A NEW FILE ###
+
+On Github desktop, press the "Fetch Origin", top middle of the screen
+
+Wait and yeah you got the new update inside "./Documents/Github/Skull-Forge"
+
+### HOW TO PUSH AN UPDATE ###
+
+On Github desktop, press the "Push Origin", top middle of the screen, and then a small putton with the same name will apear in the middle of the screen
+
+please write a description
+
+### HOW TO EDIT A MAP ###
+
+Open the wad in UDB, and for the recorses, select "From Directory", and navigate to ./Documents/Github/Skull-Forge/Skull Forge Alpha 2.0", adn run
+
+### HOW DO I EDIT THE PK3 ###
+
+In slade3 slick the option "Open Directory" and navigate to the same path

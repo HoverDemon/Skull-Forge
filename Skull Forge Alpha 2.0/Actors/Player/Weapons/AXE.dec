@@ -1,0 +1,117 @@
+ACTOR SF_Axe : WF_WeaponBase replaces Fist
+{
+	Weapon.SelectionOrder 2000
+	Obituary "\cb%o \umgot axed by \cr%k."
+	Inventory.Pickupmessage "\cqWEAPON AQUIRED: \cbAXE \c*(SLOT 1)"
+	Tag "Axe"
+	Inventory.PickupSound "weapons/axe/up"
+	Weapon.KickBack 300
+	+WEAPON.NOALERT
+	States
+	{
+		Deselect:
+			AXEG A 1 Offset(0,32)
+			AXEG A 1 Offset(-8,48)
+			AXEG A 1 Offset(-24,72)
+			AXEG A 1 Offset(-48,96)
+			AXEG A 1 Offset(-64,128)
+		ReadlDeselect:
+			TNT1 A 0 A_Lower
+			Loop
+		Select:
+			TNT1 A 0 A_Raise
+			Loop
+			
+		Ready:
+			TNT1 A 0 A_PlaySound("weapons/axe/up",CHAN_6)
+			AXEG A 1 Offset(-64,128)
+			AXEG A 1 Offset(-48,96)
+			AXEG A 1 Offset(-24,72)
+			AXEG A 1 Offset(-8,48)
+			AXEG A 1 Offset(0,32)
+		RealReady:
+			AXEG A 1 A_WeaponReady
+			Loop
+			
+		Fire:
+			AXEG A 1 Offset(0,32)
+			AXEG A 1 Offset(-16,48)
+			AXEG A 1 Offset(-32,72)
+			AXEG A 1 Offset(-48,96)
+			AXEG A 1 Offset(-64,128)
+			TNT1 A 6
+		Fire_Loop:
+			AXEG B 1 Offset(264,152)
+			AXEG B 1 Offset(232,148)
+			AXEG B 1 Offset(212,132) A_PlaySound("weapons/axe/swing",CHAN_7)
+			AXEG B 1 Offset(196,128)
+			AXEG B 1 Offset(172,112)
+			AXEG B 1 Offset(148,96)
+			AXEG B 1 Offset(112,86)
+			AXEG B 1 Offset(86,72) A_Recoil(-4.0)
+			AXEG C 1 Offset(72,64)
+			TNT1 A 0 A_JumpIfInventory("Power_SF_QuadDamage",0,"QUAD_Sound_Fire")
+			Goto QUAD_Nosound_Fire
+			
+		QUAD_Sound_Fire:
+			TNT1 A 0 A_PlaySound("powerups/quad/attack",CHAN_5)
+		QUAD_Nosound_Fire:
+			AXEG C 1 Offset(48,52) A_CustomPunch(2,FALSE,0,"Axe_Puff",64)
+			AXEG C 1 Offset(16,48) A_CustomPunch(4,FALSE,0,"Axe_Puff_Silent",86)
+			AXEG D 1 Offset(0,32) A_CustomPunch(9,FALSE,0,"Axe_Puff_Silent",128)
+			AXEG D 1 Offset(-32,48) A_CustomPunch(4,FALSE,0,"Axe_Puff_Silent",86)
+			AXEG D 1 Offset(-64,52) A_CustomPunch(2,FALSE,0,"Axe_Puff_Silent",64)
+			AXEG D 1 Offset(-96,64)
+			AXEG E 1 Offset(-112,52)
+			AXEG E 1 Offset(-148,64)
+			TNT1 A 12
+			AXEG A 1 Offset(-64,128) A_Refire("Fire_Loop")
+			AXEG A 1 Offset(-48,96)
+			AXEG A 1 Offset(-24,72)
+			AXEG A 1 Offset(-8,48)
+			AXEG A 1 Offset(0,32) A_Refire
+			Goto RealReady
+		Spawn:
+			AXEI A -1
+			Stop
+	}
+}
+
+Actor Axe_Puff
+{
+	VSpeed 1
+	-NOEXTREMEDEATH
+	+NOGRAVITY
+	RenderStyle Translucent
+	Alpha 0.5
+	States
+	{
+		Spawn:
+			TNT1 A 0
+		Melee:
+			TNT1 A 0 A_PlaySound("weapons/axe/hit/flesh",CHAN_BODY)
+			Stop
+		Crash:
+			TNT1 A 0 A_PlaySound("weapons/axe/hit/wall",CHAN_BODY)
+		Anim:
+			TNT1 AAAAAA 1 Bright A_SpawnItemEx("SF_BulletPuffDeathEffect",fRandom(-0.8,0.8),fRandom(-0.8,0.8),fRandom(-1.8,1.8),fRandom(-1.8,1.8),fRandom(0,0.9))
+			Stop
+	}
+}
+
+Actor Axe_Puff_Silent : Axe_Puff
+{
+	States
+	{
+		Spawn:
+			TNT1 A 0
+		Melee:
+			TNT1 A 0 A_PlaySound("weapons/axe/hit/flesh",CHAN_BODY)
+			Stop
+		Crash:
+			TNT1 A 0
+		Anim:
+			TNT1 AAAAAA 1 Bright A_SpawnItemEx("SF_BulletPuffDeathEffect",fRandom(-0.8,0.8),fRandom(-0.8,0.8),fRandom(-1.8,1.8),fRandom(-1.8,1.8),fRandom(0,0.9))
+			Stop
+	}
+}

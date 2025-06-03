@@ -1,0 +1,15 @@
+DefaultListMenu
+{
+	Font "DBIGFONT", "Skull_Crimson"
+}
+
+ListMenu "MainMenu"
+{
+    StaticPatch 7, 0, "M_DOOM"
+	Position 97, 72
+	TextItem "Start Game", "n", "PlayerclassMenu"
+	TextItem "Load Game", "l", "LoadGameMenu"
+	TextItem "Save Game", "s", "SaveGameMenu"
+	TextItem "Options", "o", "OptionsMenu"
+    TextItem "Quit Game", "q", "QuitMenu"
+}

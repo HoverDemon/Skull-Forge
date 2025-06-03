@@ -1,0 +1,8 @@
+SFC1MAPS.wad is a wad file for mappers to edit their maps in for UDB
+
+While SkullForge.pk3 is a supporting wad meant to add assets, so it's for programers
+
+Artists, musician or whatever else, whoe don't want / dont know how to, use slade, leave your files in a new folder so someone else can import them. Would be nice to incluide a note with what this thing exactly is, but it's not needed
+
+
+!!PLEASE WRITE A DESCRIPTION IF YOU ARE PUSHING A NEW UPDATE!!

@@ -1,0 +1,93 @@
+GameInfo
+{
+	PlayerClasses = "SF_Player"
+	TitleMusic = "D_INTRO"
+}
+
+DefaultMap
+{
+	Sky1 = "SF_SKY1"
+	Sky2 = "OSKY04"
+	DefaultEnvironment = "Spacestation Medium Room"
+	AirControl = 0.25
+}
+
+Map E1M1 "Prison Labs"
+{
+	Music = "D_E1M1"
+	Sky1 = "SF_SKY1"
+	
+	Next = "E1M2"
+}
+
+Map E1M2 "MAP02 NAME"
+{
+	Music = "D_E1M2"
+	Sky1 = "SF_SKY1"
+	
+	Next = "E1M3"
+}
+
+Map E1M3 "MAP03 NAME"
+{
+	Music = "D_E1M3"
+	Sky1 = "SF_SKY1"
+	
+	Next = "E1M4"
+	SecretNext = "E1M9"
+}
+
+Map E1M4 "MAP04 NAME"
+{
+	Music = "D_E1M4"
+	Sky1 = "SF_SKY1"
+	
+	Next = "E1M5"
+}
+
+Map E1M5 "MAP05 NAME"
+{
+	Music = "D_E1M5"
+	Sky1 = "SF_SKY1"
+	
+	Next = "E1M6"
+}
+
+Map E1M6 "MAP06 NAME"
+{
+	Music = "D_E1M6"
+	Sky1 = "SF_SKY1"
+	
+	Next = "E1M7"
+}
+
+Map E1M7 "MAP07 NAME"
+{
+	Music = "D_E1M7"
+	Sky1 = "SF_SKY1"
+	
+	Next = "E1M8"
+}
+
+Map E1M8 "MAP08 NAME"
+{
+	Music = "D_E1M8"
+	Sky1 = "SF_SKY1"
+	DefaultEnvironment = "Mountains"
+	
+	BaronSpecial
+}
+
+Map E1M9 "MAP09 NAME"
+{
+	Music = "D_E1M9"
+	Next = "E1M4"
+	Sky1 = "SF_SKY1"
+}
+
+Map E2M1 "MAP10 Name"
+{
+	Music = "D_E2M2"
+	Next = "E2M2"
+	Sky1 = "SF_SKY2"
+}

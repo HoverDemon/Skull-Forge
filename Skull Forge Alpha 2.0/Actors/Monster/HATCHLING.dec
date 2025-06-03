@@ -1,0 +1,49 @@
+ACTOR Hatchling replaces Lostsoul
+{
+	Health 60
+	Radius 16
+	Height 56
+	Mass 50
+	Speed 6
+	Damage 4
+	PainChance 256
+	Monster
+	+FLOAT
+	+NOGRAVITY
+	+MISSILEMORE
+	+DONTFALL
+	+NOICEDEATH
+	+NOINFIGHTING
+	AttackSound "skull/melee"
+	PainSound "skull/pain"
+	DeathSound "skull/death"
+	ActiveSound "skull/active"
+	RenderStyle SoulTrans
+	Obituary "$OB_SKULL" // "%o was spooked by a lost soul."
+	States
+	{
+		Spawn:
+			SKUL AB 10 Bright A_Look
+			Loop
+		See:
+			SKUL AB 6 Bright A_Chase
+			Loop
+		Missile:
+			SKUL C 10 Bright A_FaceTarget
+			SKUL D 4 Bright A_SkullAttack
+			SKUL CD 4 Bright
+			Goto Missile+2
+		Pain:
+			SKUL E 3 Bright
+			SKUL E 3 Bright A_Pain
+			Goto See
+		Death:
+			SKUL F 6 Bright
+			SKUL G 6 Bright A_Scream
+			SKUL H 6 Bright
+			SKUL I 6 Bright A_NoBlocking
+			SKUL J 6
+			SKUL K 6
+			Stop
+	}
+}
