@@ -11,7 +11,7 @@ Script "SkullForge_CustomSlidingScript" ENTER
 	z = GetActorVelZ(0);
 	speed = FixedMul(x, x) + FixedMul(y, y) + FixedMul(z, z);
 	int buttons = GetPlayerInput(-1, INPUT_BUTTONS);
-	Print(i:speed);
+	//Print(i:speed);
 	if(buttons & BT_CROUCH)
 	{
 		crouching = TRUE;
