@@ -13,6 +13,6 @@ Class SF_Player : DoomPlayer
 		Player.WeaponSlot 2, "SF_NOVA";
 		Player.WeaponSlot 3, "SF_Slugger", "SF_Dominatus";
 		Player.WeaponSlot 4, "SF_Viper";
-		Player.WeaponSlot 6, "SF_InfernalHaze";
+		Player.WeaponSlot 5, "SF_InfernalHaze";
 	}
 }
