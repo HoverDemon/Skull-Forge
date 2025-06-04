@@ -95,7 +95,7 @@ Actor Saw_Puff
 	States
 	{
 		Spawn:
-			PUFF ABCDE 4 Bright
+			RPUF ABCD 4 Bright
 			Stop
 	}
 }

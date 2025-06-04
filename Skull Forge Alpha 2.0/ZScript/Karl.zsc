@@ -2,7 +2,7 @@ Class SF_Player : DoomPlayer
 {
 	Default
 	{
-		Speed 18.50;
+		Speed 15.5;
 		Player.ViewBob 0.75;
 		Player.TeleportFreezeTime 6;
 		Friction 0.85;

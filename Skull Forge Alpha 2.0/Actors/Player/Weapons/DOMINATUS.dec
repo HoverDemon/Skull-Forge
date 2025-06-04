@@ -188,7 +188,7 @@ Actor SF_DominatusPuff
 			TNT1 A 0
 			
 			TNT1 A 0 A_PlaySound("effect/richoshete",CHAN_BODY)
-			TNT1 AAAAAAAAA 1 A_SpawnItemEx("SF_DominatusPuffDeathEffect",fRandom(-0.8,0.8),fRandom(-0.8,0.8),fRandom(-2.8,2.8),fRandom(-2.8,2.8),fRandom(0,1.9))
+			PULF AAABBBCCCDDD 1 A_SpawnItemEx("SF_DominatusPuffDeathEffect",fRandom(-0.8,0.8),fRandom(-0.8,0.8),fRandom(-2.8,2.8),fRandom(-2.8,2.8),fRandom(0,1.9))
 			Stop
 		XDeath:
 			TNT1 A 0

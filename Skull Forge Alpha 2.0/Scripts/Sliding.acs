@@ -11,7 +11,7 @@ Script "SkullForge_CustomSlidingScript" ENTER
 	z = GetActorVelZ(0);
 	speed = FixedMul(x, x) + FixedMul(y, y) + FixedMul(z, z);
 	int buttons = GetPlayerInput(-1, INPUT_BUTTONS);
-	
+	Print(i:speed);
 	if(buttons & BT_CROUCH)
 	{
 		crouching = TRUE;
@@ -24,7 +24,7 @@ Script "SkullForge_CustomSlidingScript" ENTER
 	
 	if (crouching == TRUE && alreadySlided == FALSE && GetActorZ(0) == GetActorFloorZ(0))
 	{
-		if(speed > 9000000)
+		if(speed > 6000000)
 		{
 			ThrustThing(GetActorAngle(0) >> 8,100,0,0);
 			alreadySlided = TRUE;
