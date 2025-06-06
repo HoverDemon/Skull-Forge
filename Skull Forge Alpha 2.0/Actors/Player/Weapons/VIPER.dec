@@ -1,5 +1,7 @@
 Actor SF_Viper : WF_WeaponBase replaces Chaingun
 {
+	//$Title SAR-56 Viper
+	//$Sprite SARIA0
 	Weapon.SelectionOrder 1000
 	Weapon.AmmoUse 1
 	Weapon.AmmoGive 40

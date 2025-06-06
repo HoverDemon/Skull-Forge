@@ -1,5 +1,7 @@
 ACTOR SF_Axe : WF_WeaponBase replaces Fist
 {
+	//$Title Axe
+	//$Sprite AXEIA0
 	Weapon.SelectionOrder 2000
 	Obituary "\cb%o \umgot axed by \cr%k."
 	Inventory.Pickupmessage "\cqWEAPON AQUIRED: \cbAXE \c*(SLOT 1)"

@@ -1,5 +1,7 @@
 ACTOR SF_RipSaw : WF_WeaponBase replaces Chainsaw
 {
+	//$Title RipSaw
+	//$Sprite CSAWA0
 	Weapon.SelectionOrder 2000
 	Obituary "\cb%o \umgot sawed in half by \cr%k."
 	Inventory.Pickupmessage "\cqWEAPON AQUIRED: \cbRipsaw \c*(SLOT 1)"

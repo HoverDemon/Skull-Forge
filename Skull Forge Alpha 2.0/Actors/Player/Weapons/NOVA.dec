@@ -1,6 +1,6 @@
 ACTOR SF_NOVA : WF_WeaponBase replaces Pistol 5010
 {
-	//$Title Dominatus DBR-6
+	//$Title NOVA-9
 	//$Sprite PISTA0
 	Weapon.SelectionOrder 1900
 	Weapon.AmmoUse 1

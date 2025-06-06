@@ -1,5 +1,7 @@
 ACTOR SF_Slugger : WF_WeaponBase replaces Shotgun
 {
+	//$Title M-19 Slugger
+	//$Sprite SHOTA0
 	Weapon.SelectionOrder 1300
 	Weapon.AmmoUse 1
 	Weapon.AmmoGive 8

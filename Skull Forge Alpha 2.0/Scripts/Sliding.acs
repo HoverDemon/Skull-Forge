@@ -2,7 +2,7 @@
 
 bool alreadySlided = FALSE;
 bool crouching = FALSE;
-int x, y, z, speed;
+int x, y, z, speed, dashDelay;
 
 Script "SkullForge_CustomSlidingScript" ENTER
 {
@@ -22,7 +22,7 @@ Script "SkullForge_CustomSlidingScript" ENTER
 		alreadySlided = FALSE;
 	}
 	
-	if (crouching == TRUE && alreadySlided == FALSE && GetActorZ(0) == GetActorFloorZ(0))
+	if (crouching == TRUE && alreadySlided == FALSE && GetActorZ(0) == GetActorFloorZ(0) && dashDelay == 0)
 	{
 		if(speed > 6000000)
 		{
@@ -30,6 +30,8 @@ Script "SkullForge_CustomSlidingScript" ENTER
 			alreadySlided = TRUE;
 			SetActorProperty(0,APROP_Friction,1.0);
 			ACS_Execute(123,0,0,0,0);
+			dashDelay = 2 * 35;
+			ACS_Execute(124,0,0,0,0);
 		}
 	}
 	Delay(1);
@@ -46,4 +48,16 @@ Script 123 (Void)
 		Restart;
 	}
 	SetActorProperty(0,APROP_Friction,0.85);
+}
+
+Script 124 (Void)
+{
+	Delay(1);
+	dashDelay--;
+	
+	if(dashDelay > 0)
+	{
+		Restart;
+	}
+	dashDelay = 0;
 }

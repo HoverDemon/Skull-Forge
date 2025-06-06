@@ -6,3 +6,6 @@ Artists, musician or whatever else, whoe don't want / dont know how to, use slad
 
 
 !!PLEASE WRITE A DESCRIPTION IF YOU ARE PUSHING A NEW UPDATE!!
+
+FOR MAP MAPKERS:
+Remove any "Autosaves" files before submiting an update
