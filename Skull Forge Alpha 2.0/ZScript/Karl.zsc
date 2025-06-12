@@ -9,10 +9,68 @@ Class SF_Player : DoomPlayer
 		Player.DisplayName "Karl";
 		Player.StartItem "SF_Axe";
 		Player.Jumpz 9;
+		Player.WeaponSlot 0, "SF_WallJumpWeapon";
 		Player.WeaponSlot 1, "SF_Axe", "SF_RipSaw";
 		Player.WeaponSlot 2, "SF_NOVA";
 		Player.WeaponSlot 3, "SF_Slugger", "SF_Dominatus";
 		Player.WeaponSlot 4, "SF_Viper";
 		Player.WeaponSlot 5, "SF_InfernalHaze";
+	}
+
+	bool isUsing;
+	bool isWallAttached;
+	Vector3 wallAttachPos; // Store the position where the player attached
+
+	override void Tick()
+	{
+		super.Tick();
+
+		if (player.cmd.buttons & BT_USE)
+		{
+			if (!isUsing)
+			{
+				if (!isWallAttached)
+				{
+					// Robust wall scan using FLineTraceData
+					FLineTraceData LedgeTrace;
+					double TraceDistance = sqrt(2) * Radius + 1;
+					LineTrace(angle, TraceDistance, 0, TRF_BLOCKSELF|TRF_THRUACTORS, Height * 1.2, data: LedgeTrace);
+
+					if (LedgeTrace.HitType == TRACE_HitWall)
+					{
+						// Check wall texture
+						if (LedgeTrace.HitTexture == TexMan.CheckForTexture("WALLJUMP", TexMan.Type_Wall))
+						{
+							isWallAttached = true;
+							wallAttachPos = pos; // Store current position
+							vel = (0, 0, 0); // Freeze movement
+						}
+					}
+				}
+				else
+				{
+					// Launch off wall
+					isWallAttached = false;
+					Vector2 jumpDir2 = AngleToVector(angle);
+					double jumpStrength = 24.0;
+					vel = (jumpDir2.x * jumpStrength, jumpDir2.y * jumpStrength, JumpZ * 1.25);
+				}
+			}
+			isUsing = true;
+		}
+		else
+		{
+			isUsing = false;
+		}
+
+		// If attached to wall, freeze player position and check distance
+		if (isWallAttached)
+		{
+			vel = (0, 0, 0);
+			if ((pos - wallAttachPos).Length() > 8)
+			{
+				isWallAttached = false;
+			}
+		}
 	}
 }

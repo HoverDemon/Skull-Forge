@@ -1,5 +1,8 @@
 ACTOR Grunt replaces Zombieman
 {
+	//$Title Grunt (Zombieman)
+	//$Sprite POSSE1
+	//$Category Monster/Humanoid
 	Health 20
 	Radius 20
 	Height 56

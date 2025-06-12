@@ -17,3 +17,13 @@ Open the wad in UDB, and for the recorses, select "From Directory", and navigate
 ### HOW DO I EDIT THE PK3 ###
 
 In slade3 slick the option "Open Directory" and navigate to the same path
+
+### HOW TO MAKE A SHORT CUT TO SKULL FORGE###
+
+In your LZDoom folder holding right click drag and drop it onto your desktop and select the option "Create Shortcut Here"
+
+right click the shotcut and click "Properties"
+
+in the "Target" category type this in
+
+C:\THE PATH OF YOUR LZDOOM\lzdoom.exe "C:\Users\YOUR COMPUTER NAME\Documents\GitHub\Skull-Forge\Skull Forge Alpha 2.0" -iwad "freedoom1.wad" -file "C:\Users\YOUR COMPUTER NAME\Documents\GitHub\Skull-Forge\SFC1Maps.wad"

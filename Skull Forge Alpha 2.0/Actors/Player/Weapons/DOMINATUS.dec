@@ -2,6 +2,7 @@ ACTOR SF_Dominatus : WF_WeaponBase replaces Supershotgun 82
 {
 	//$Title Dominatus DBR-6
 	//$Sprite SGN2A0
+	//$Category Weapons
 	Weapon.SelectionOrder 400
 	Weapon.AmmoUse 2
 	Weapon.AmmoGive 16

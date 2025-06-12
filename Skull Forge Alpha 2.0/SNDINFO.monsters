@@ -1,0 +1,30 @@
+//### Berserkeer ###
+
+$Random monsters/berserker/see { berserker/see1 berserker/see2 berserker/see3 }
+
+berserker/see1 MBRSSIT1
+berserker/see2 MBRSSIT2
+berserker/see3 MBRSSIT3
+
+$Random monsters/berserker/active { berserker/active1 berserker/active2 }
+
+berserker/active1 MBRSACT1
+berserker/active2 MBRSACT2
+
+$Random monsters/berserker/pain { berserker/pain1 berserker/pain2 }
+
+berserker/pain1 MBRSPIN1
+berserker/pain2 MBRSPIN2
+
+$Random monsters/berserker/death { berserker/death1 berserker/death2 berserker/death3 }
+
+berserker/death1 MBRSDTH1
+berserker/death2 MBRSDTH2
+berserker/death3 MBRSDTH3
+
+$Random monsters/berserker/attack { berserker/attack1 berserker/attack2 berserker/attack3 berserker/attack4 }
+
+berserker/attack1 MBRSATK1
+berserker/attack2 MBRSATK2
+berserker/attack3 MBRSATK3
+berserker/attack4 MBRSATK4

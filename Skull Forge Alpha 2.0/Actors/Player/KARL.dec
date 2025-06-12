@@ -53,3 +53,32 @@ Actor SF_BulletPuffDeathEffect
 			Stop
 	}
 }
+
+Actor SF_WallJumpWeapon : WF_WeaponBase
+{
+	+WEAPON.NOAUTOAIM
+	+WEAPON.NOALERT
+	+WEAPON.CHEATNOTWEAPON
+	Weapon.KickBack 0
+	Weapon.BobRangeX 0.0
+	Weapon.BobRangeY 0.0
+	Weapon.BobSpeed 0.0
+	States
+	{
+		Spawn:
+			TNT1 A -1
+			Loop
+		Select:
+			TNT1 A 0 A_Raise
+			Loop
+		Deselect:
+			TNT1 A 0 A_Lower
+			Loop
+		Ready:	
+			TNT1 A -1
+			Loop
+		Fire:
+			TNT1 A -1
+			Loop
+	}
+}

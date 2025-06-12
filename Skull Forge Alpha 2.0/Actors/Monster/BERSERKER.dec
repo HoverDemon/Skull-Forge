@@ -1,5 +1,8 @@
 ACTOR Berserker 30111
 {
+	//$Title Berserker
+	//$Sprite LIBRC1
+	//$Category Monster/Geckoidal
 	Health 300
 	Radius 20
 	Height 56
@@ -7,14 +10,14 @@ ACTOR Berserker 30111
 	Speed 18
 	Scale 0.90
 	PainChance 200
-	MeleeRange 128
+	MeleeRange 96
 	Monster
 	+FLOORCLIP
 	+NOINFIGHTING
-	SeeSound "baron/sight"
-	PainSound "Lavamander/pain"
-	DeathSound "demon/death"
-	ActiveSound "imp/active"
+	SeeSound "monsters/berserker/see"
+	PainSound "monsters/berserker/pain"
+	DeathSound "monsters/berserker/death"
+	ActiveSound "monsters/berserker/active"
 	Obituary "%o got pummeled by a Descian Berserker."
 	States
 	{
@@ -25,15 +28,17 @@ ACTOR Berserker 30111
 			LIBR AABBCCDD 3 A_Chase
 			Loop
 		Melee:
-			LIBR EF 6 A_FaceTarget
-			LIBR F 0 A_SkelWhoosh
+			LIBR EE 3 A_FaceTarget
+			TNT1 A 0 A_PLaySound("monsters/berserker/attack",CHAN_BODY)
+			LIBR FF 3 A_FaceTarget
 			LIBR G 8 A_CustomMeleeAttack(random(1, 10) * 6, "demon/melee")
 			LIBR G 0 A_JumpIfTargetInsideMeleeRange("SecondMelee")
 			Goto See
 		SecondMelee:
-			LIBR HI 6 A_FaceTarget
-			LIBR I 0 A_SkelWhoosh
-			LIBR J 8 A_CustomMeleeAttack(random(1, 10) * 6, "demon/melee")
+			LIBR HH 3 A_FaceTarget
+			TNT1 A 0 A_PLaySound("monsters/berserker/attack",CHAN_BODY)
+			LIBR II 3 A_FaceTarget
+			LIBR J 8 A_CustomMeleeAttack(random(1, 10) * 6, "imp/melee")
 			Goto See
 		Pain:
 			LIBR K 2

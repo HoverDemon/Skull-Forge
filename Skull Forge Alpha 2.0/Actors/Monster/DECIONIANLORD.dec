@@ -1,5 +1,8 @@
 ACTOR DraconianLord replaces BaronOfHell
 {
+	//$Title Draconian Lord
+	//$Sprite BOSSG1
+	//$Category Monster/Draconian
 	Health 1000
 	Radius 24
 	Height 64

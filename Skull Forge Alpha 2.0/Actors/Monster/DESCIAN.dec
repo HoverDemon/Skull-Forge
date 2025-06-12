@@ -1,5 +1,8 @@
 ACTOR Descian 30112
 {
+	//$Title Descian
+	//$Sprite LVMDE1
+	//$Category Monster/Draconian
 	Health 350
 	Speed 19
 	Radius 32

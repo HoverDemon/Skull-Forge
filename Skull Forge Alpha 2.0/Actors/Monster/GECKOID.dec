@@ -1,5 +1,8 @@
 ACTOR Geckoid replaces DoomImp
 {
+	//$Title Geckoid
+	//$Sprite TROOG1
+	//$Category Monster/Geckoidal
 	Health 60
 	Radius 20
 	Height 56

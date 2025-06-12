@@ -1,5 +1,8 @@
 ACTOR Warlord replaces Cyberdemon
 {
+	//$Title Warlord
+	//$Sprite DRWAK1
+	//$Category Monster/Draconian
 	Health 4000
 	Radius 40
 	Height 110

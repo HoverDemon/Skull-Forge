@@ -2,6 +2,7 @@ ACTOR SF_InfernalHaze : WF_WeaponBase replaces RocketLauncher
 {
 	//$Title Infernal Haze FC-76
 	//$Sprite INHGA0
+	//$Category Weapons
 	Weapon.SelectionOrder 800
 	Weapon.AmmoUse 1
 	Weapon.AmmoGive 8
