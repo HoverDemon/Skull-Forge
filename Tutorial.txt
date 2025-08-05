@@ -16,5 +16,7 @@ Open the website provided in the folder, this website works offline, 100% on you
 
 Follow instructions on the website and safe the wad
 
+You can add specific maps, or all of them, to the pk3 itself, this is used more for testing
 
-REMINDER: Load both the newely generated PK3 and SFC1MAPS.wad togheter in your mod loader of choice
+TLDR; If you want assets for map creation, create a pk3 with no maps, and use it as your recorses inside UDB
+If you want to test, create a pk3 witha all the maps

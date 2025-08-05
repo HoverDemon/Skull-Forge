@@ -443,314 +443,217 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <img src="websitebanner.png" alt="PK3 Folder Packager Logo" style="max-width: 100%; height: auto; margin-bottom: 18px; border-radius: 10px; box-shadow: 0 4px 18px rgba(0,0,0,0.25);">
-            <h1>PK3 Folder Packager</h1>
-            <p class="subtitle">Convert your Skull Forge github folder into a pk3</p>
-        </header>
-        
-        <main>
-            <div class="card">
-                <h2><i>📁</i> Folder Selection</h2>
-                <div class="upload-area" id="dropArea">
-                    <i>📂</i>
-                    <div class="upload-text">Drag & Drop your folder here</div>
-                    <div class="upload-hint">or click to browse</div>
-                    <input type="file" id="folderInput" webkitdirectory directory multiple style="display: none;">
-                </div>
-                
-                <div class="file-list" id="fileList">
-                    <div class="file-item" style="justify-content: center; color: #777;">
-                        No files selected
-                    </div>
-                </div>
-                
-                <div class="controls">
-                    <button id="processBtn" class="btn" disabled>
-                        <i>⚙️</i> Create PK3 File
-                    </button>
-                    <button id="resetBtn" class="btn btn-warning" disabled>
-                        <i>🗑️</i> Reset Selection
-                    </button>
-                </div>
+<div class="container">
+    <header>
+        <img src="websitebanner.png" alt="PK3 Folder Packager Logo">
+        <h1>PK3 Folder Packager</h1>
+        <p class="subtitle">Convert your Skull Forge github folder into a pk3</p>
+    </header>
+    <main>
+        <div class="card">
+            <h2><i>📁</i> Folder Selection</h2>
+            <div class="upload-area" id="dropArea">
+                <i>📂</i>
+                <div class="upload-text">Drag & Drop your folder here</div>
+                <div class="upload-hint">or click to browse</div>
+                <input type="file" id="folderInput" webkitdirectory directory multiple style="display: none;">
             </div>
-            
-            <div class="card">
-                <h2><i>📊</i> Processing Status</h2>
-                <div class="progress-container">
-                    <div class="progress-bar" id="progressBar"></div>
-                </div>
-                <div class="status status-info" id="statusMessage">
-                    Waiting for folder selection...
-                </div>
+            <div class="upload-area" id="wadDropArea">
+                <i>🗺️</i>
+                <div class="upload-text">Click or Drop WAD file(s) (Optional)</div>
+                <div class="upload-hint">All WADs will be placed into the <code>maps/</code> folder inside the PK3</div>
+                <input type="file" id="wadInput" accept=".wad" multiple style="display: none;">
             </div>
-            
-            <div class="card">
-                <h2><i>📝</i> Instructions</h2>
-                <div class="instructions">
-                    <p>PK3 files are ZIP archives used by ZDoom to package game assets. This tool allows you to convert a folder of assets into a PK3 file.</p>
-                    
-                    <ol>
-                        <li>Click on the upload area or drag a folder containing your game assets</li>
-                        <li>Review the list of files to be included in your PK3 archive</li>
-                        <li>In this case the folder should be /Github/Skull-Forge/Skull Forge Alpha 2.0</li>
-                        <li>Make sure youre inside the folder before clicking "Send"</li>
-                        <li>Click "Create PK3 File" to generate your package</li>
-                        <li>Once processing is complete, your browser will download the PK3 file</li>
-                    </ol>
-                    
-                    <p><strong>Note:</strong> Due to browser security restrictions, you need to select files through the folder picker. The folder structure will be preserved in the PK3 file.</p>
-                </div>
+            <div class="file-list" id="fileList">
+                <div class="file-item" style="justify-content: center; color: #777;">No files selected</div>
             </div>
-        </main>
-        
-        <footer>
-            <p>Created by Korni27 • For ease of Skull Forge Beta Testing</p>
-            <p>Note: This tool runs entirely in your browser - no files are uploaded to any server</p>
-        </footer>
-    </div>
+            <div class="controls">
+                <button id="processBtn" class="btn" disabled><i>⚙️</i> Create PK3 File</button>
+                <button id="resetBtn" class="btn btn-warning" disabled><i>🗑️</i> Reset Selection</button>
+            </div>
+        </div>
+        <div class="card">
+            <h2><i>📊</i> Processing Status</h2>
+            <div class="progress-container"><div class="progress-bar" id="progressBar"></div></div>
+            <div class="status status-info" id="statusMessage">Waiting for folder selection...</div>
+        </div>
+        <div class="card">
+            <h2><i>📝</i> Instructions</h2>
+            <div class="instructions">
+                <p>PK3 files are ZIP archives used by ZDoom to package game assets. This tool allows you to convert a folder of assets into a PK3 file.</p>
+                <ol>
+                    <li>Click on the upload area or drag a folder containing your game assets</li>
+                    <li>Optionally, add WAD files (they will be placed in a <code>maps</code> folder)</li>
+                    <li>Make sure you are inside the correct folder before clicking "Create PK3 File"</li>
+                    <li>Click "Create PK3 File" to generate your package</li>
+                    <li>Once processing is complete, your browser will download the PK3 file</li>
+                </ol>
+                <p><strong>Note:</strong> Folder structure is preserved inside the PK3 file. This tool runs entirely in your browser.</p>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <p>Created by Korni27 • For ease of Skull Forge Beta Testing</p>
+        <p>Note: This tool runs entirely in your browser - no files are uploaded to any server</p>
+    </footer>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const dropArea = document.getElementById('dropArea');
+    const folderInput = document.getElementById('folderInput');
+    const fileList = document.getElementById('fileList');
+    const processBtn = document.getElementById('processBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const progressBar = document.getElementById('progressBar');
+    const statusMessage = document.getElementById('statusMessage');
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const dropArea = document.getElementById('dropArea');
-            const folderInput = document.getElementById('folderInput');
-            const fileList = document.getElementById('fileList');
-            const processBtn = document.getElementById('processBtn');
-            const resetBtn = document.getElementById('resetBtn');
-            const progressBar = document.getElementById('progressBar');
-            const statusMessage = document.getElementById('statusMessage');
-            
-            let selectedFiles = [];
-            let folderName = 'archive';
-            
-            // Click on drop area to trigger file input
-            dropArea.addEventListener('click', () => {
-                folderInput.click();
-            });
-            
-            // Handle folder selection
-            folderInput.addEventListener('change', (e) => {
-                if (e.target.files.length > 0) {
-                    selectedFiles = Array.from(e.target.files);
-                    folderName = getFolderNameFromPath(selectedFiles[0].webkitRelativePath);
-                    displayFileList();
-                    processBtn.disabled = false;
-                    resetBtn.disabled = false;
-                    updateStatus(`Folder "${folderName}" selected with ${selectedFiles.length} files`, 'info');
-                }
-            });
-            
-            // Drag and drop handling
-            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-                dropArea.addEventListener(eventName, preventDefaults, false);
-            });
-            
-            function preventDefaults(e) {
-                e.preventDefault();
-                e.stopPropagation();
-            }
-            
-            ['dragenter', 'dragover'].forEach(eventName => {
-                dropArea.addEventListener(eventName, highlight, false);
-            });
-            
-            ['dragleave', 'drop'].forEach(eventName => {
-                dropArea.addEventListener(eventName, unhighlight, false);
-            });
-            
-            function highlight() {
-                dropArea.style.backgroundColor = 'rgba(107, 147, 214, 0.2)';
-                dropArea.style.borderColor = '#4a6fa5';
-            }
-            
-            function unhighlight() {
-                dropArea.style.backgroundColor = '';
-                dropArea.style.borderColor = '';
-            }
-            
-            dropArea.addEventListener('drop', handleDrop, false);
-            
-            function handleDrop(e) {
-                const dt = e.dataTransfer;
-                const items = dt.items;
-                
-                // Check if the dropped item is a folder
-                for (let i = 0; i < items.length; i++) {
-                    const item = items[i];
-                    if (item.kind === 'file' && item.webkitGetAsEntry().isDirectory) {
-                        const entry = item.webkitGetAsEntry();
-                        readDirectory(entry);
-                        return;
-                    }
-                }
-                
-                updateStatus('Please drop a folder, not individual files', 'error');
-            }
-            
-            function readDirectory(directoryEntry) {
-                selectedFiles = [];
-                folderName = directoryEntry.name;
-                
-                function readEntries(entry) {
-                    return new Promise((resolve) => {
-                        const reader = entry.createReader();
-                        reader.readEntries(async (entries) => {
-                            for (const childEntry of entries) {
-                                if (childEntry.isDirectory) {
-                                    await readEntries(childEntry);
-                                } else {
-                                    const file = await getFile(childEntry);
-                                    selectedFiles.push(file);
-                                }
-                            }
-                            resolve();
-                        });
-                    });
-                }
-                
-                getFile(directoryEntry).then(() => {
-                    readEntries(directoryEntry).then(() => {
-                        displayFileList();
-                        processBtn.disabled = false;
-                        resetBtn.disabled = false;
-                        updateStatus(`Folder "${folderName}" selected with ${selectedFiles.length} files`, 'info');
-                    });
-                });
-            }
-            
-            function getFile(entry) {
-                return new Promise((resolve) => {
-                    entry.file(file => {
-                        // Preserve the relative path
-                        file.webkitRelativePath = entry.fullPath.substring(1);
-                        resolve(file);
-                    });
-                });
-            }
-            
-            function displayFileList() {
-                if (selectedFiles.length === 0) {
-                    fileList.innerHTML = '<div class="file-item" style="justify-content: center; color: #777;">No files selected</div>';
-                    return;
-                }
-                
-                fileList.innerHTML = '';
-                
-                // Group files by directory for better visualization
-                const filesByDir = {};
-                
-                selectedFiles.forEach(file => {
-                    const pathParts = file.webkitRelativePath.split('/');
-                    const dir = pathParts.slice(0, -1).join('/');
-                    
-                    if (!filesByDir[dir]) {
-                        filesByDir[dir] = [];
-                    }
-                    
-                    filesByDir[dir].push({
-                        name: pathParts[pathParts.length - 1],
-                        size: formatFileSize(file.size)
-                    });
-                });
-                
-                // Display directories and their files
-                Object.keys(filesByDir).sort().forEach(dir => {
-                    const dirHeader = document.createElement('div');
-                    dirHeader.className = 'file-item';
-                    dirHeader.innerHTML = `
-                        <div class="file-icon">📁</div>
-                        <div class="file-path">${dir || 'Root'}</div>
-                        <div class="file-size">${filesByDir[dir].length} files</div>
-                    `;
-                    fileList.appendChild(dirHeader);
-                    
-                    filesByDir[dir].forEach(file => {
-                        const fileItem = document.createElement('div');
-                        fileItem.className = 'file-item';
-                        fileItem.innerHTML = `
-                            <div class="file-icon">📄</div>
-                            <div class="file-path">${file.name}</div>
-                            <div class="file-size">${file.size}</div>
-                        `;
-                        fileList.appendChild(fileItem);
-                    });
-                });
-            }
-            
-            function formatFileSize(bytes) {
-                if (bytes === 0) return '0 Bytes';
-                const k = 1024;
-                const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-                const i = Math.floor(Math.log(bytes) / Math.log(k));
-                return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-            }
-            
-            function getFolderNameFromPath(path) {
-                return path.split('/')[0];
-            }
-            
-            // Process button click
-            processBtn.addEventListener('click', () => {
-                if (selectedFiles.length === 0) {
-                    updateStatus('No files selected!', 'error');
-                    return;
-                }
-                
-                updateStatus('Creating PK3 archive...', 'info');
-                progressBar.style.width = '0%';
-                processBtn.disabled = true;
-                
-                const zip = new JSZip();
-                let processed = 0;
-                
-                // Add files to zip
-                selectedFiles.forEach(file => {
-                    const reader = new FileReader();
-                    
-                    reader.onload = function(e) {
-                        zip.file(file.webkitRelativePath, e.target.result, {binary: true});
-                        processed++;
-                        
-                        // Update progress
-                        const progress = Math.floor((processed / selectedFiles.length) * 100);
-                        progressBar.style.width = `${progress}%`;
-                        
-                        if (processed === selectedFiles.length) {
-                            // All files processed, generate zip
-                            zip.generateAsync({type: 'blob'}, (metadata) => {
-                                progressBar.style.width = `${metadata.percent}%`;
-                            }).then(blob => {
-                                // Save as PK3 file
-                                saveAs(blob, `${folderName}.pk3`);
-                                updateStatus(`PK3 file created successfully! (${formatFileSize(blob.size)})`, 'success');
-                                processBtn.disabled = false;
-                                progressBar.style.width = '100%';
-                            });
-                        }
-                    };
-                    
-                    reader.readAsArrayBuffer(file);
-                });
-            });
-            
-            // Reset button click
-            resetBtn.addEventListener('click', () => {
-                selectedFiles = [];
-                folderInput.value = '';
-                displayFileList();
-                processBtn.disabled = true;
-                resetBtn.disabled = true;
-                progressBar.style.width = '0%';
-                updateStatus('Selection cleared. Ready for new folder.', 'info');
-            });
-            
-            function updateStatus(message, type) {
-                statusMessage.textContent = message;
-                statusMessage.className = 'status';
-                statusMessage.classList.add(`status-${type}`);
-            }
+    const wadInput = document.getElementById('wadInput');
+    const wadDropArea = document.getElementById('wadDropArea');
+    let selectedFiles = [];
+    let folderName = 'archive';
+    let wadFiles = [];
+
+    dropArea.addEventListener('click', () => folderInput.click());
+    folderInput.addEventListener('change', (e) => {
+        if (e.target.files.length > 0) {
+            selectedFiles = Array.from(e.target.files);
+            folderName = getFolderNameFromPath(selectedFiles[0].webkitRelativePath);
+            displayFileList();
+            processBtn.disabled = false;
+            resetBtn.disabled = false;
+            updateStatus(`Folder "${folderName}" selected with ${selectedFiles.length} files`, 'info');
+        }
+    });
+
+    wadDropArea.addEventListener('click', () => wadInput.click());
+    wadInput.addEventListener('change', (e) => {
+        if (e.target.files.length > 0) {
+            wadFiles = Array.from(e.target.files);
+            wadDropArea.querySelector('.upload-text').textContent = `Selected: ${wadFiles.map(f => f.name).join(', ')}`;
+            updateStatus(`${wadFiles.length} WAD file(s) will be added to /maps`, 'info');
+        }
+    });
+
+    wadDropArea.addEventListener('drop', (e) => {
+        e.preventDefault();
+        wadFiles = Array.from(e.dataTransfer.files).filter(file => file.name.endsWith('.wad'));
+        if (wadFiles.length > 0) {
+            wadDropArea.querySelector('.upload-text').textContent = `Selected: ${wadFiles.map(f => f.name).join(', ')}`;
+            updateStatus(`${wadFiles.length} WAD file(s) will be added to /maps`, 'info');
+        } else {
+            updateStatus('Please drop valid .wad files', 'error');
+        }
+    });
+
+    processBtn.addEventListener('click', () => {
+        if (selectedFiles.length === 0) {
+            updateStatus('No files selected!', 'error');
+            return;
+        }
+        updateStatus('Creating PK3 archive...', 'info');
+        progressBar.style.width = '0%';
+        processBtn.disabled = true;
+        const zip = new JSZip();
+        let processed = 0;
+        const totalFiles = selectedFiles.length + wadFiles.length;
+
+        selectedFiles.forEach(file => {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const relativePath = file.webkitRelativePath.split('/').slice(1).join('/');
+                zip.file(relativePath, e.target.result, { binary: true });
+                processed++;
+                updateProgress();
+            };
+            reader.readAsArrayBuffer(file);
         });
-    </script>
+
+        wadFiles.forEach(file => {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                zip.file(`maps/${file.name}`, e.target.result, { binary: true });
+                processed++;
+                updateProgress();
+            };
+            reader.readAsArrayBuffer(file);
+        });
+
+        function updateProgress() {
+            const progress = Math.floor((processed / totalFiles) * 100);
+            progressBar.style.width = `${progress}%`;
+            if (processed === totalFiles) finalizeZip();
+        }
+
+        function finalizeZip() {
+            zip.generateAsync({ type: 'blob' }, (metadata) => {
+                progressBar.style.width = `${metadata.percent}%`;
+            }).then(blob => {
+                saveAs(blob, `${folderName}.pk3`);
+                updateStatus(`PK3 file created successfully! (${formatFileSize(blob.size)})`, 'success');
+                processBtn.disabled = false;
+                progressBar.style.width = '100%';
+            });
+        }
+    });
+
+    resetBtn.addEventListener('click', () => {
+        selectedFiles = [];
+        wadFiles = [];
+        folderInput.value = '';
+        wadInput.value = '';
+        wadDropArea.querySelector('.upload-text').textContent = 'Click or Drop WAD file(s) (Optional)';
+        displayFileList();
+        processBtn.disabled = true;
+        resetBtn.disabled = true;
+        progressBar.style.width = '0%';
+        updateStatus('Selection cleared. Ready for new folder.', 'info');
+    });
+
+    function getFolderNameFromPath(path) {
+        return path.split('/')[0];
+    }
+
+    function formatFileSize(bytes) {
+        if (bytes === 0) return '0 Bytes';
+        const k = 1024;
+        const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    }
+
+    function updateStatus(message, type) {
+        statusMessage.textContent = message;
+        statusMessage.className = 'status';
+        statusMessage.classList.add(`status-${type}`);
+    }
+
+    function displayFileList() {
+        if (selectedFiles.length === 0) {
+            fileList.innerHTML = '<div class="file-item" style="justify-content: center; color: #777;">No files selected</div>';
+            return;
+        }
+        fileList.innerHTML = '';
+        const filesByDir = {};
+        selectedFiles.forEach(file => {
+            const pathParts = file.webkitRelativePath.split('/');
+            const dir = pathParts.slice(1, -1).join('/');
+            if (!filesByDir[dir]) filesByDir[dir] = [];
+            filesByDir[dir].push({ name: pathParts[pathParts.length - 1], size: formatFileSize(file.size) });
+        });
+        Object.keys(filesByDir).sort().forEach(dir => {
+            const dirHeader = document.createElement('div');
+            dirHeader.className = 'file-item';
+            dirHeader.innerHTML = `<div class="file-icon">📁</div><div class="file-path">${dir || 'Root'}</div><div class="file-size">${filesByDir[dir].length} files</div>`;
+            fileList.appendChild(dirHeader);
+            filesByDir[dir].forEach(file => {
+                const fileItem = document.createElement('div');
+                fileItem.className = 'file-item';
+                fileItem.innerHTML = `<div class="file-icon">📄</div><div class="file-path">${file.name}</div><div class="file-size">${file.size}</div>`;
+                fileList.appendChild(fileItem);
+            });
+        });
+    }
+});
+</script>
 </body>
 </html>
