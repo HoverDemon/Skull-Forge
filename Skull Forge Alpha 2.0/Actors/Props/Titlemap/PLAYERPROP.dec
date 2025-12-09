@@ -1,0 +1,24 @@
+Actor TITLEMAPRPOP_PlayeProp 32001
+{
+	//$Category Props/Titlemap
+	Scale 1.5
+	States
+	{
+		Spawn:
+			PPRP A 1
+			Loop
+	}
+}
+
+Actor TITLEMAPRPOP_Lamp 32002
+{
+	//$Category Props/Titlemap
+	Scale 1.5
+	States
+	{
+		Spawn:
+			PPRP B 25
+			PPRP CDEFG 4
+			Loop
+	}
+}

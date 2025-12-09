@@ -1,11 +1,11 @@
 DefaultListMenu
 {
-	Font "DBIGFONT", "Skull_Crimson"
+	Font "DBIGFONT", "Skull_Cyan"//"Skull_Crimson"
 }
 
 ListMenu "MainMenu"
 {
-    StaticPatch 7, 0, "M_DOOM"
+    //StaticPatch 7, 0, "M_DOOM"
 	Position 97, 72
 	TextItem "Start Game", "n", "PlayerclassMenu"
 	TextItem "Load Game", "l", "LoadGameMenu"

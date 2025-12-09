@@ -1,0 +1,47 @@
+/*
+   RBG color Value : 255 = GLights value
+*/
+
+PointLight TitlemapLampBright1
+{
+   color 0.0 0.56 1.0
+   size 30
+   offset 0 45 0
+}
+
+PointLight TitlemapLampBright2
+{
+   color 0.0 0.56 1.0
+   size 25
+   offset 0 45 0
+}
+
+PointLight TitlemapLampBright3
+{
+   color 0.0 0.56 1.0
+   size 21
+   offset 0 45 0
+}
+
+PointLight TitlemapLampBright4
+{
+   color 0.0 0.56 1.0
+   size 17
+   offset 0 45 0
+}
+
+PointLight TitlemapLampBright5
+{
+   color 0.0 0.56 1.0
+   size 15
+   offset 0 45 0
+}
+
+Object TITLEMAPRPOP_Lamp
+{
+	Frame PPRPC0 { Light TitlemapLampBright1 }
+	Frame PPRPD0 { Light TitlemapLampBright2 }
+	Frame PPRPE0 { Light TitlemapLampBright3 }
+	Frame PPRPF0 { Light TitlemapLampBright4 }
+	Frame PPRPG0 { Light TitlemapLampBright5 }
+}

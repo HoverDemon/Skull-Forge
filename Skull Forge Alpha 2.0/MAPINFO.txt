@@ -12,6 +12,12 @@ DefaultMap
 	AirControl = 0.25
 }
 
+Map TITLEMAP "The Titlemap"
+{
+	Music = ""
+	DefaultEnvironment = "Mountains"
+}
+
 Map E1M1 "Prison Labs"
 {
 	Music = "D_E1M1"
