@@ -24,6 +24,9 @@
 #include "Actors/Monster/HATCHLING.dec"
 #include "Actors/Monster/WARLORD.dec"
 
+//##PROP##
+#include "Actors/Props/Titlemap/PLAYERPROP.dec"
+
 //##MISC##
 
 #include "Actors/EFFECTS.dec"
