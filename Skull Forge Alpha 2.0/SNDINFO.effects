@@ -11,3 +11,7 @@ bloodsplat1 EFCBLD1
 bloodsplat2 EFCBLD2
 bloodsplat3 EFCBLD3
 bloodsplat4 EFCBLD4
+
+effect/wind SFXWIND
+effect/ping SFXPING
+effects/intro SFXINTRO

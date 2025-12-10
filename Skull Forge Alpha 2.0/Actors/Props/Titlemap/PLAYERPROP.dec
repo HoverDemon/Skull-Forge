@@ -1,24 +1,113 @@
 Actor TITLEMAPRPOP_PlayeProp 32001
 {
+	//$Title Carl Titlemap
 	//$Category Props/Titlemap
 	Scale 1.5
 	States
 	{
 		Spawn:
-			PPRP A 1
+			PPRP AHAHAHAHA 70
+			PPRP H 30
+			PPRP IJK 4
+			PPRP LMOPQRSTU 2
+			PPRP H 18
 			Loop
 	}
 }
 
 Actor TITLEMAPRPOP_Lamp 32002
 {
+	//$Title Titlemap Blinker
 	//$Category Props/Titlemap
+	//Arg 0 is weather it
 	Scale 1.5
 	States
 	{
 		Spawn:
-			PPRP B 25
-			PPRP CDEFG 4
+			PPRP B 70
+			TNT1 A 0 A_JumpIf(Args[1] == 1,2)
+			TNT1 A 0 A_Jump(64,8)
+			TNT1 A 0 A_JumpIf(Args[0] == 0,2)
+			TNT1 A 0 A_PlaySound("effect/ping",CHAN_BODY,0.05)
+			PPRP CDEFG 3
+			TNT1 A 0
+			Loop
+	}
+}
+
+Actor TITLEMAPPROP_WindPlayer 32003
+{
+	//$Title Wind Player (Global)
+	//$Category Props/Titlemap
+	Mass 0
+	States
+	{
+		Spawn:
+			TNT1 AAA 35
+		Spawn_025:
+			TNT1 A 0 A_PlaySound("effect/wind",CHAN_BODY,0.025,0.0,ATTN_NONE)
+			TNT1 AAAAAA 35
+		Spawn_05:
+			TNT1 A 0 A_PlaySound("effect/wind",CHAN_BODY,0.05,0.0,ATTN_NONE)
+			TNT1 AAAAAA 35
+		Spawn_075:
+			TNT1 A 0 A_PlaySound("effect/wind",CHAN_BODY,0.075,0.0,ATTN_NONE)
+			TNT1 AAAAAA 35
+		Spawn_1:
+			TNT1 A 0 A_PlaySound("effect/wind",CHAN_BODY,0.1,0.0,ATTN_NONE)
+			TNT1 AAAAAA 35
+		Spawn_125:
+			TNT1 A 0 A_PlaySound("effect/wind",CHAN_BODY,0.125,0.0,ATTN_NONE)
+			TNT1 AAAAAA 35
+			TNT1 A 0 A_JumpIf(Mass == 1,"Spawn_15")
+			loop
+		Spawn_15:
+			TNT1 A 0 A_PlaySound("effect/wind",CHAN_BODY,0.15,0.0,ATTN_NONE)
+			TNT1 AAAAAA 35
+		Spawn_175:
+			TNT1 A 0 A_PlaySound("effect/wind",CHAN_BODY,0.175,0.0,ATTN_NONE)
+			TNT1 AAAAAA 35
+		Spawn_2:
+			TNT1 A 0 A_PlaySound("effect/wind",CHAN_BODY,0.2,0.0,ATTN_NONE)
+			TNT1 AAAAAA 35
+		Spawn_225:
+			TNT1 A 0 A_PlaySound("effect/wind",CHAN_BODY,0.225,0.0,ATTN_NONE)
+			TNT1 AAAAAA 35
+		Spawn_25:
+			TNT1 A 0 A_PlaySound("effect/wind",CHAN_BODY,0.25,0.0,ATTN_NONE)
+			TNT1 AAAAAA 35
+		Spawn_275:
+			TNT1 A 0 A_PlaySound("effect/wind",CHAN_BODY,0.275,0.0,ATTN_NONE)
+			TNT1 AAAAAA 35
+		Spawn_3:
+			TNT1 A 0 A_PlaySound("effect/wind",CHAN_BODY,0.3,0.0,ATTN_NONE)
+			TNT1 AAAAAA 35
+		Spawn_325:
+			TNT1 A 0 A_PlaySound("effect/wind",CHAN_BODY,0.325,0.0,ATTN_NONE)
+			TNT1 AAAAAA 35
+		Spawn_35:
+			TNT1 A 0 A_PlaySound("effect/wind",CHAN_BODY,0.35,0.0,ATTN_NONE)
+			TNT1 AAAAAA 35
+		Spawn_375:
+			TNT1 A 0 A_PlaySound("effect/wind",CHAN_BODY,0.375,0.0,ATTN_NONE)
+			TNT1 AAAAAA 35
+		Spawn_4:
+			TNT1 A 0 A_PlaySound("effect/wind",CHAN_BODY,0.4,0.0,ATTN_NONE)
+			TNT1 AAAAAA 35
+			loop
+	}
+}
+
+Actor TITLEMAPPROP_WindPlayerLocal 32004
+{
+	//$Title Wind Player (Local)
+	//$Category Props/Titlemap
+	States
+	{
+		Spawn:
+			TNT1 A 0
+			TNT1 A 0 A_PlaySound("effect/wind",CHAN_BODY)
+			TNT1 AAAAAA 35
 			Loop
 	}
 }

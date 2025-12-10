@@ -64,13 +64,13 @@ ACTOR SF_Axe : WF_WeaponBase replaces Fist
 		QUAD_Nosound_Fire:
 			AXEG C 1 Offset(48,52) A_CustomPunch(2,FALSE,0,"Axe_Puff",64)
 			AXEG C 1 Offset(16,48) A_CustomPunch(4,FALSE,0,"Axe_Puff_Silent",86)
-			AXEG D 1 Offset(0,32) A_CustomPunch(9,FALSE,0,"Axe_Puff_Silent",128)
+			AXEG D 1 Offset(0,32) A_CustomPunch(8,FALSE,0,"Axe_Puff_Silent",128)
 			AXEG D 1 Offset(-32,48) A_CustomPunch(4,FALSE,0,"Axe_Puff_Silent",86)
 			AXEG D 1 Offset(-64,52) A_CustomPunch(2,FALSE,0,"Axe_Puff_Silent",64)
 			AXEG D 1 Offset(-96,64)
 			AXEG E 1 Offset(-112,52)
 			AXEG E 1 Offset(-148,64)
-			TNT1 A 12
+			TNT1 A 9
 			AXEG A 1 Offset(-64,128) A_Refire("Fire_Loop")
 			AXEG A 1 Offset(-48,96)
 			AXEG A 1 Offset(-24,72)

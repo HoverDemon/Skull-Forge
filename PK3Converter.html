@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PK3 Folder Packager</title>
+    <title>PK3 Folder Packager + Extractor</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
@@ -24,507 +24,56 @@
             --warning: #ffaa00;
             --error: #ff3366;
         }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            background: linear-gradient(135deg, var(--darker-bg) 0%, var(--dark-bg) 100%);
-            color: var(--text-light);
-            min-height: 100vh;
-            padding: 20px;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            position: relative;
-            overflow-x: hidden;
-        }
-        
-        body::before {
-            content: "";
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: 
-                radial-gradient(circle at 20% 30%, rgba(0, 102, 255, 0.05) 0%, transparent 20%),
-                radial-gradient(circle at 80% 70%, rgba(255, 0, 51, 0.05) 0%, transparent 20%);
-            z-index: -1;
-            pointer-events: none;
-        }
-        
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        
-        header {
-            text-align: center;
-            margin-bottom: 40px;
-            padding: 25px;
-            background: rgba(10, 20, 40, 0.9);
-            border-radius: 15px;
-            box-shadow: 
-                0 10px 30px rgba(0, 0, 0, 0.5),
-                0 0 30px rgba(0, 102, 255, 0.2),
-                0 0 15px rgba(255, 0, 51, 0.1);
-            border: 2px solid var(--neon-blue);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        header::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background: linear-gradient(90deg, 
-                var(--neon-blue), 
-                var(--neon-red), 
-                var(--neon-blue));
-            box-shadow: 0 0 10px var(--neon-blue);
-        }
-        
-        .logo-container {
-            width: 100%;
-            max-width: 800px;
-            margin: 0 auto 25px;
-            background: rgba(0, 0, 0, 0.5);
-            border-radius: 10px;
-            padding: 15px;
-            border: 2px solid var(--neon-blue);
-        }
-        
-        .logo-container img {
-            width: 100%;
-            height: auto;
-            display: block;
-            border-radius: 5px;
-        }
-        
-        h1 {
-            font-size: 3rem;
-            margin-bottom: 10px;
-            color: var(--text-light);
-            text-shadow: 0 0 10px var(--neon-blue);
-            font-weight: 700;
-        }
-        
-        .subtitle {
-            font-size: 1.3rem;
-            color: var(--text-dim);
-            margin-bottom: 10px;
-            max-width: 700px;
-            margin: 0 auto 10px;
-        }
-        
-        .card {
-            background: rgba(10, 20, 40, 0.8);
-            border-radius: 15px;
-            padding: 30px;
-            margin-bottom: 25px;
-            box-shadow: 
-                0 8px 25px rgba(0, 0, 0, 0.4),
-                0 0 15px rgba(0, 102, 255, 0.2);
-            border: 2px solid var(--neon-blue);
-            position: relative;
-        }
-        
-        h2 {
-            color: var(--neon-blue-light);
-            margin-bottom: 25px;
-            font-size: 1.8rem;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            font-weight: 600;
-            padding-bottom: 15px;
-            border-bottom: 2px solid rgba(0, 102, 255, 0.3);
-        }
-        
-        h2 i {
-            font-size: 1.8rem;
-            color: var(--neon-blue);
-            background: rgba(0, 0, 0, 0.5);
-            width: 55px;
-            height: 55px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            border: 2px solid var(--neon-blue);
-        }
-        
-        .upload-area {
-            border: 3px dashed var(--neon-blue);
-            border-radius: 12px;
-            padding: 60px 20px;
-            text-align: center;
-            margin-bottom: 25px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            background: rgba(0, 0, 0, 0.3);
-            position: relative;
-        }
-        
-        .upload-area:hover {
-            background: rgba(0, 51, 153, 0.2);
-            border-color: var(--neon-red);
-            box-shadow: 0 0 20px rgba(255, 0, 51, 0.3);
-        }
-        
-        .upload-area i {
-            font-size: 4.5rem;
-            color: var(--neon-blue);
-            margin-bottom: 20px;
-            text-shadow: 0 0 15px rgba(0, 102, 255, 0.7);
-        }
-        
-        .upload-text {
-            font-size: 1.6rem;
-            margin-bottom: 15px;
-            color: var(--text-light);
-            font-weight: 600;
-        }
-        
-        .upload-hint {
-            color: var(--text-dim);
-            font-size: 1.1rem;
-        }
-        
-        .btn {
-            background: linear-gradient(135deg, var(--neon-blue), var(--neon-blue-dark));
-            color: var(--text-light);
-            border: none;
-            padding: 16px 35px;
-            font-size: 1.2rem;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            box-shadow: 
-                0 5px 15px rgba(0, 0, 0, 0.3),
-                0 0 10px rgba(0, 102, 255, 0.5);
-            font-weight: 600;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-        }
-        
-        .btn:hover {
-            background: linear-gradient(135deg, var(--neon-blue-light), var(--neon-blue));
-            transform: translateY(-3px);
-            box-shadow: 
-                0 8px 20px rgba(0, 0, 0, 0.4),
-                0 0 15px rgba(0, 102, 255, 0.7);
-        }
-        
-        .btn:active {
-            transform: translateY(0);
-        }
-        
-        .btn:disabled {
-            background: #444;
-            color: #888;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-            border: 2px solid #666;
-        }
-        
-        .btn-warning {
-            background: linear-gradient(135deg, var(--warning), #cc8800);
-        }
-        
-        .btn-warning:hover {
-            background: linear-gradient(135deg, #ffbb33, var(--warning));
-        }
-        
-        .file-list {
-            max-height: 300px;
-            overflow-y: auto;
-            margin: 25px 0;
-            border: 2px solid rgba(0, 102, 255, 0.3);
-            border-radius: 8px;
-            padding: 15px;
-            background: rgba(0, 0, 0, 0.3);
-        }
-        
-        .file-item {
-            padding: 14px 18px;
-            border-bottom: 1px solid rgba(0, 102, 255, 0.2);
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            transition: all 0.2s ease;
-            border-radius: 5px;
-            background: rgba(0, 0, 0, 0.2);
-            margin-bottom: 5px;
-        }
-        
-        .file-item:hover {
-            background: rgba(0, 51, 153, 0.2);
-            border-left: 3px solid var(--neon-red);
-        }
-        
-        .file-item:last-child {
-            border-bottom: none;
-            margin-bottom: 0;
-        }
-        
-        .file-icon {
-            color: var(--neon-blue);
-            font-size: 1.3rem;
-            width: 35px;
-            text-align: center;
-        }
-        
-        .file-path {
-            flex: 1;
-            font-family: 'Consolas', monospace;
-            font-size: 1rem;
-            color: var(--text-light);
-            word-break: break-all;
-        }
-        
-        .file-size {
-            color: var(--neon-red);
-            font-size: 0.9rem;
-            min-width: 80px;
-            text-align: right;
-            font-weight: 500;
-        }
-        
-        .progress-container {
-            margin: 30px 0;
-            background: rgba(0, 0, 0, 0.4);
-            border-radius: 10px;
-            height: 25px;
-            overflow: hidden;
-            border: 2px solid var(--neon-blue);
-        }
-        
-        .progress-bar {
-            height: 100%;
-            background: linear-gradient(90deg, var(--neon-blue), var(--neon-red));
-            width: 0%;
-            transition: width 0.4s ease;
-            box-shadow: 0 0 15px rgba(0, 102, 255, 0.7);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .progress-bar::after {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, 
-                transparent, 
-                rgba(255, 255, 255, 0.2), 
-                transparent);
-            animation: scanline 2s infinite linear;
-        }
-        
-        .status {
-            text-align: center;
-            padding: 20px;
-            margin: 25px 0;
-            border-radius: 10px;
-            font-weight: 600;
-            font-size: 1.2rem;
-            border: 2px solid;
-        }
-        
-        .status-info {
-            background: rgba(0, 51, 153, 0.2);
-            color: var(--neon-blue-light);
-            border-color: var(--neon-blue);
-        }
-        
-        .status-success {
-            background: rgba(0, 255, 136, 0.1);
-            color: var(--success);
-            border-color: var(--success);
-        }
-        
-        .status-error {
-            background: rgba(255, 51, 102, 0.1);
-            color: var(--error);
-            border-color: var(--error);
-        }
-        
-        .controls {
-            display: flex;
-            justify-content: center;
-            gap: 25px;
-            margin-top: 30px;
-        }
-        
-        .instructions {
-            line-height: 1.7;
-            font-size: 1.1rem;
-            color: var(--text-dim);
-        }
-        
-        .instructions ol {
-            padding-left: 25px;
-            margin: 25px 0;
-        }
-        
-        .instructions li {
-            margin-bottom: 15px;
-            padding: 12px;
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 5px;
-            border-left: 3px solid var(--neon-blue);
-        }
-        
-        .instructions li::marker {
-            color: var(--neon-red);
-            font-weight: bold;
-        }
-        
-        .instructions code {
-            background: rgba(0, 0, 0, 0.4);
-            padding: 3px 8px;
-            border-radius: 3px;
-            font-family: 'Consolas', monospace;
-            color: var(--neon-blue-light);
-            border: 1px solid var(--neon-blue);
-        }
-        
-        footer {
-            text-align: center;
-            margin-top: 40px;
-            padding: 25px;
-            color: var(--text-dim);
-            font-size: 1rem;
-            background: rgba(10, 20, 40, 0.9);
-            border-radius: 12px;
-            border: 2px solid var(--neon-blue);
-        }
-        
-        footer p {
-            margin: 10px 0;
-        }
-        
-        @media (max-width: 768px) {
-            .container {
-                padding: 10px;
-            }
-            
-            h1 {
-                font-size: 2.5rem;
-            }
-            
-            .controls {
-                flex-direction: column;
-            }
-            
-            .btn {
-                width: 100%;
-            }
-            
-            .upload-area {
-                padding: 40px 15px;
-            }
-            
-            .logo-container {
-                padding: 10px;
-            }
-        }
-        
-        /* Custom scrollbar */
-        ::-webkit-scrollbar {
-            width: 10px;
-        }
-        
-        ::-webkit-scrollbar-track {
-            background: rgba(0, 0, 0, 0.2);
-        }
-        
-        ::-webkit-scrollbar-thumb {
-            background: var(--neon-blue);
-            border-radius: 5px;
-        }
-        
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--neon-blue-light);
-        }
-        
-        /* Animations */
-        @keyframes scanline {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
-        }
-        
-        @keyframes pulse {
-            0% { box-shadow: 0 0 10px rgba(0, 102, 255, 0.7); }
-            50% { box-shadow: 0 0 20px rgba(0, 102, 255, 0.9); }
-            100% { box-shadow: 0 0 10px rgba(0, 102, 255, 0.7); }
-        }
-        
-        .pulse {
-            animation: pulse 2s infinite;
-        }
-        
-        /* Simple tech elements */
-        .tech-grid {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: 
-                linear-gradient(rgba(0, 102, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 102, 255, 0.03) 1px, transparent 1px);
-            background-size: 40px 40px;
-            z-index: -1;
-            pointer-events: none;
-        }
-        
-        .corner-accent {
-            position: fixed;
-            width: 100px;
-            height: 100px;
-            border: 2px solid var(--neon-blue);
-            z-index: -1;
-            pointer-events: none;
-        }
-        
-        .corner-tl { top: 20px; left: 20px; border-right: none; border-bottom: none; }
-        .corner-tr { top: 20px; right: 20px; border-left: none; border-bottom: none; }
-        .corner-bl { bottom: 20px; left: 20px; border-right: none; border-top: none; }
-        .corner-br { bottom: 20px; right: 20px; border-left: none; border-top: none; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: linear-gradient(135deg, var(--darker-bg) 0%, var(--dark-bg) 100%); color: var(--text-light); min-height: 100vh; padding: 20px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; position: relative; overflow-x: hidden; }
+        body::before { content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-image: radial-gradient(circle at 20% 30%, rgba(0, 102, 255, 0.05) 0%, transparent 20%), radial-gradient(circle at 80% 70%, rgba(255, 0, 51, 0.05) 0%, transparent 20%); z-index: -1; pointer-events: none; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 20px; }
+        header { text-align: center; margin-bottom: 20px; padding: 20px; background: rgba(10, 20, 40, 0.9); border-radius: 15px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 30px rgba(0, 102, 255, 0.2), 0 0 15px rgba(255, 0, 51, 0.1); border: 2px solid var(--neon-blue); position: relative; overflow: hidden; }
+        header::before { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: linear-gradient(90deg, var(--neon-blue), var(--neon-red), var(--neon-blue)); box-shadow: 0 0 10px var(--neon-blue); }
+        .logo-container { width: 100%; max-width: 800px; margin: 0 auto 15px; background: rgba(0, 0, 0, 0.5); border-radius: 10px; padding: 10px; border: 2px solid var(--neon-blue); }
+        .logo-container img { width: 100%; height: auto; display: block; border-radius: 5px; }
+        h1 { font-size: 2.4rem; margin-bottom: 5px; color: var(--text-light); text-shadow: 0 0 10px var(--neon-blue); font-weight: 700; }
+        .subtitle { font-size: 1rem; color: var(--text-dim); margin-bottom: 10px; }
+        .tabs { display:flex; gap:10px; justify-content:center; margin-top:12px; }
+        .tab-btn { background: transparent; color: var(--text-dim); border: 2px solid rgba(255,255,255,0.06); padding: 10px 18px; border-radius: 8px; cursor: pointer; font-weight:600; transition: all 0.2s ease; }
+        .tab-btn.active { background: linear-gradient(135deg, var(--neon-blue), var(--neon-blue-dark)); color: white; box-shadow: 0 6px 18px rgba(0,102,255,0.25); border-color: var(--neon-blue-light); }
+        .card { background: rgba(10, 20, 40, 0.8); border-radius: 15px; padding: 25px; margin-bottom: 20px; box-shadow: 0 8px 25px rgba(0,0,0,0.4), 0 0 15px rgba(0,102,255,0.2); border: 2px solid var(--neon-blue); }
+        h2 { color: var(--neon-blue-light); margin-bottom: 18px; font-size: 1.5rem; display:flex; align-items:center; gap:12px; }
+        .upload-area { border: 3px dashed var(--neon-blue); border-radius: 12px; padding: 40px 18px; text-align: center; margin-bottom: 15px; cursor: pointer; transition: all 0.3s ease; background: rgba(0,0,0,0.3); position: relative; }
+        .upload-area:hover { background: rgba(0,51,153,0.12); border-color: var(--neon-red); box-shadow: 0 0 20px rgba(255,0,51,0.15); }
+        .upload-area i { font-size: 3rem; color: var(--neon-blue); margin-bottom: 12px; }
+        .upload-text { font-size:1.2rem; font-weight:600; }
+        .upload-hint { color: var(--text-dim); font-size:0.95rem; }
+        .btn { background: linear-gradient(135deg, var(--neon-blue), var(--neon-blue-dark)); color: var(--text-light); border: none; padding: 12px 20px; font-size: 1rem; border-radius: 8px; cursor: pointer; transition: all 0.25s ease; display: inline-flex; gap:10px; align-items:center; }
+        .btn:hover { transform: translateY(-3px); }
+        .btn:disabled { background:#444; color:#888; cursor:not-allowed; }
+        .file-list { max-height: 260px; overflow-y:auto; margin:15px 0; border: 2px solid rgba(0,102,255,0.2); border-radius:8px; padding:12px; background: rgba(0,0,0,0.3); }
+        .file-item { padding:10px 12px; border-bottom:1px solid rgba(0,102,255,0.08); display:flex; align-items:center; gap:10px; }
+        .progress-container { margin: 15px 0; background: rgba(0,0,0,0.4); border-radius: 10px; height: 18px; overflow: hidden; border: 2px solid var(--neon-blue); }
+        .progress-bar { height:100%; width:0%; transition: width 0.3s ease; background: linear-gradient(90deg,var(--neon-blue),var(--neon-red)); }
+        .status { text-align:center; padding:12px; margin-top:10px; border-radius:8px; font-weight:600; }
+        .status-info { background: rgba(0,51,153,0.12); color: var(--neon-blue-light); }
+        .status-success { background: rgba(0,255,136,0.06); color: var(--success); }
+        .status-error { background: rgba(255,51,102,0.06); color: var(--error); }
+        footer { text-align:center; margin-top:20px; padding:12px; color:var(--text-dim); background: rgba(10,20,40,0.9); border-radius:10px; border:2px solid var(--neon-blue); }
+        @media (max-width:768px){ .container{padding:10px;} h1{font-size:1.8rem;} .tabs{flex-wrap:wrap;} }
     </style>
 </head>
 <body>
-    <div class="tech-grid"></div>
-    <div class="corner-accent corner-tl"></div>
-    <div class="corner-accent corner-tr"></div>
-    <div class="corner-accent corner-bl"></div>
-    <div class="corner-accent corner-br"></div>
-    
     <div class="container">
         <header>
-            <div class="logo-container">
-                <img src="websitebanner.png" alt="PK3 Packager Logo">
-            </div>
+            <div class="logo-container"><img src="websitebanner.png" alt="PK3 Packager Logo"></div>
             <h1>PK3 Folder Packager</h1>
-            <p class="subtitle">Convert your game files into a PK3 archive for Skull Forge</p>
+            <div class="subtitle">Create and extract PK3 archives — runs entirely in your browser</div>
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="pack">Create PK3</button>
+                <button class="tab-btn" data-tab="extract">Extract PK3</button>
+            </div>
         </header>
-        
+
         <main>
-            <div class="card">
+            <!-- PACKAGER (original UI) -->
+            <section id="pack" class="card tab-content">
                 <h2><i class="fas fa-folder-open"></i> Select Your Files</h2>
                 <div class="upload-area" id="dropArea">
                     <i class="fas fa-folder-plus"></i>
@@ -539,46 +88,68 @@
                     <input type="file" id="wadInput" accept=".wad" multiple style="display: none;">
                 </div>
                 <div class="file-list" id="fileList">
-                    <div class="file-item" style="justify-content: center; color: #888;">
-                        No files selected yet
-                    </div>
+                    <div class="file-item" style="justify-content:center; color:#888;">No files selected yet</div>
                 </div>
-                <div class="controls">
+                <div style="display:flex; gap:12px; justify-content:center; margin-top:8px;">
                     <button id="processBtn" class="btn" disabled><i class="fas fa-cogs"></i> Create PK3 File</button>
-                    <button id="resetBtn" class="btn btn-warning" disabled><i class="fas fa-redo"></i> Clear Selection</button>
+                    <button id="resetBtn" class="btn" style="background:linear-gradient(135deg,var(--warning),#cc8800);" disabled><i class="fas fa-redo"></i> Clear Selection</button>
                 </div>
-            </div>
-            
-            <div class="card">
-                <h2><i class="fas fa-tasks"></i> Processing Status</h2>
-                <div class="progress-container"><div class="progress-bar" id="progressBar"></div></div>
-                <div class="status status-info" id="statusMessage">Ready to process files</div>
-            </div>
-            
-            <div class="card">
+                <div class="progress-container" style="margin-top:12px;"><div class="progress-bar" id="progressBar"></div></div>
+                <div id="statusMessage" class="status status-info">Ready to process files</div>
+            </section>
+
+            <!-- EXTRACTOR (new UI) -->
+            <section id="extract" class="card tab-content" style="display:none;">
+                <h2><i class="fas fa-file-archive"></i> Extract a PK3 File</h2>
+                <div class="upload-area" id="pk3DropArea">
+                    <i class="fas fa-file-zipper"></i>
+                    <div class="upload-text">Select or Drag & Drop a .pk3 file</div>
+                    <div class="upload-hint">This will convert the PK3 back into a .zip of all contained files</div>
+                    <input type="file" id="pk3Input" accept=".pk3" style="display:none;">
+                </div>
+                <div class="file-list" id="pk3FileList">
+                    <div class="file-item" style="justify-content:center; color:#888;">No PK3 selected</div>
+                </div>
+                <div style="display:flex; gap:12px; justify-content:center; margin-top:8px;">
+                    <button id="extractBtn" class="btn" disabled><i class="fas fa-file-export"></i> Extract to ZIP</button>
+                    <button id="extractResetBtn" class="btn" style="background:linear-gradient(135deg,var(--neon-red),#cc0029);" disabled><i class="fas fa-trash"></i> Clear</button>
+                </div>
+                <div class="progress-container" style="margin-top:12px;"><div class="progress-bar" id="extractProgress"></div></div>
+                <div id="extractStatus" class="status status-info">No action yet</div>
+            </section>
+
+            <section class="card">
                 <h2><i class="fas fa-info-circle"></i> How to Use</h2>
-                <div class="instructions">
-                    <p>PK3 files are ZIP archives used by modern Doom engines like GZDoom. This tool helps you package your game files.</p>
-                    <ol>
-                        <li><strong>Select your game folder</strong> - Click the first upload area or drag your folder containing all game files (textures, sounds, scripts, etc.)</li>
-                        <li><strong>Add WAD files (optional)</strong> - If you have map files in WAD format, add them here. They'll go in a <code>maps/</code> folder.</li>
-                        <li><strong>Review the file list</strong> - Make sure all your important files are shown.</li>
-                        <li><strong>Create the PK3</strong> - Click "Create PK3 File" to package everything.</li>
-                        <li><strong>Download</strong> - Your browser will download the PK3 file when complete.</li>
+                <div style="line-height:1.6; color:var(--text-dim);">
+                    <p>Use the tabs to switch between creating a PK3 from a folder and extracting a PK3 back into a zip of files. All work is done locally in your browser.</p>
+                    <ol style="padding-left:18px; margin-top:10px;">
+                        <li style="margin-bottom:8px;">To <strong>create</strong> a PK3: go to <em>Create PK3</em>, select your folder (or drag files), optionally add WADs, then click <code>Create PK3 File</code>.</li>
+                        <li style="margin-bottom:8px;">To <strong>extract</strong> a PK3: go to <em>Extract PK3</em>, choose a PK3 file (or drag it in), then click <code>Extract to ZIP</code>.</li>
                     </ol>
-                    <p><strong>Note:</strong> All processing happens in your browser. No files are uploaded to any server.</p>
                 </div>
-            </div>
+            </section>
         </main>
-        
+
         <footer>
-            <p>Created for Skull Forge Beta Testing</p>
-            <p>This tool runs entirely in your browser - your files stay on your computer</p>
+            <p>Created for Skull Forge Beta Testing — runs entirely in your browser</p>
         </footer>
     </div>
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
+    // Tab handling
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const tabContents = document.querySelectorAll('.tab-content');
+    tabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            tabBtns.forEach(b=>b.classList.remove('active'));
+            btn.classList.add('active');
+            const target = btn.dataset.tab;
+            tabContents.forEach(tc => { tc.style.display = (tc.id === target) ? 'block' : 'none'; });
+        });
+    });
+
+    // ------------------ PACKAGER CODE (from original) ------------------
     const dropArea = document.getElementById('dropArea');
     const folderInput = document.getElementById('folderInput');
     const fileList = document.getElementById('fileList');
@@ -593,7 +164,6 @@ document.addEventListener('DOMContentLoaded', function () {
     let folderName = 'archive';
     let wadFiles = [];
 
-    // Select folder
     dropArea.addEventListener('click', () => folderInput.click());
     folderInput.addEventListener('change', (e) => {
         if (e.target.files.length > 0) {
@@ -606,31 +176,15 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // Drag and drop for folder
-    dropArea.addEventListener('dragover', (e) => {
-        e.preventDefault();
-        dropArea.style.borderColor = 'var(--neon-red)';
-        dropArea.style.boxShadow = '0 0 20px rgba(255, 0, 51, 0.3)';
-    });
-
-    dropArea.addEventListener('dragleave', () => {
-        dropArea.style.borderColor = 'var(--neon-blue)';
-        dropArea.style.boxShadow = 'none';
-    });
-
+    dropArea.addEventListener('dragover', (e) => { e.preventDefault(); dropArea.style.borderColor = 'var(--neon-red)'; dropArea.style.boxShadow = '0 0 20px rgba(255, 0, 51, 0.3)'; });
+    dropArea.addEventListener('dragleave', () => { dropArea.style.borderColor = 'var(--neon-blue)'; dropArea.style.boxShadow = 'none'; });
     dropArea.addEventListener('drop', (e) => {
-        e.preventDefault();
-        dropArea.style.borderColor = 'var(--neon-blue)';
-        dropArea.style.boxShadow = 'none';
-        
-        // Note: Browser security restrictions may limit folder drag & drop
-        // This primarily works with files
+        e.preventDefault(); dropArea.style.borderColor = 'var(--neon-blue)'; dropArea.style.boxShadow = 'none';
         if (e.dataTransfer.items) {
             for (let i = 0; i < e.dataTransfer.items.length; i++) {
                 if (e.dataTransfer.items[i].kind === 'file') {
-                    const entry = e.dataTransfer.items[i].webkitGetAsEntry();
+                    const entry = e.dataTransfer.items[i].webkitGetAsEntry && e.dataTransfer.items[i].webkitGetAsEntry();
                     if (entry && entry.isDirectory) {
-                        // Handle directory - for now we'll show a message
                         updateStatus('Please select folder using the "click to browse" option', 'info');
                     }
                 }
@@ -638,7 +192,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // Select WAD files
     wadDropArea.addEventListener('click', () => wadInput.click());
     wadInput.addEventListener('change', (e) => {
         if (e.target.files.length > 0) {
@@ -647,208 +200,141 @@ document.addEventListener('DOMContentLoaded', function () {
             updateStatus(`Added ${wadFiles.length} WAD file(s) to maps/ folder`, 'info');
         }
     });
-
-    // Drag and drop for WAD files
-    wadDropArea.addEventListener('dragover', (e) => {
-        e.preventDefault();
-        wadDropArea.style.borderColor = 'var(--neon-red)';
-        wadDropArea.style.boxShadow = '0 0 20px rgba(255, 0, 51, 0.3)';
-    });
-
-    wadDropArea.addEventListener('dragleave', () => {
-        wadDropArea.style.borderColor = 'var(--neon-blue)';
-        wadDropArea.style.boxShadow = 'none';
-    });
-
+    wadDropArea.addEventListener('dragover', (e) => { e.preventDefault(); wadDropArea.style.borderColor = 'var(--neon-red)'; wadDropArea.style.boxShadow = '0 0 20px rgba(255, 0, 51, 0.3)'; });
+    wadDropArea.addEventListener('dragleave', () => { wadDropArea.style.borderColor = 'var(--neon-blue)'; wadDropArea.style.boxShadow = 'none'; });
     wadDropArea.addEventListener('drop', (e) => {
-        e.preventDefault();
-        wadDropArea.style.borderColor = 'var(--neon-blue)';
-        wadDropArea.style.boxShadow = 'none';
-        
+        e.preventDefault(); wadDropArea.style.borderColor = 'var(--neon-blue)'; wadDropArea.style.boxShadow = 'none';
         wadFiles = Array.from(e.dataTransfer.files).filter(file => file.name.toLowerCase().endsWith('.wad'));
         if (wadFiles.length > 0) {
             wadDropArea.querySelector('.upload-text').textContent = `${wadFiles.length} WAD file(s) added`;
             updateStatus(`Added ${wadFiles.length} WAD file(s) to maps/ folder`, 'info');
-        } else {
-            updateStatus('Please select only .wad files', 'error');
-        }
+        } else { updateStatus('Please select only .wad files', 'error'); }
     });
 
-    // Create PK3
     processBtn.addEventListener('click', () => {
-        if (selectedFiles.length === 0) {
-            updateStatus('Please select a folder first', 'error');
-            return;
-        }
-        
-        updateStatus('Creating PK3 archive...', 'info');
-        progressBar.style.width = '0%';
-        processBtn.disabled = true;
-        resetBtn.disabled = true;
-        
-        const zip = new JSZip();
-        let processed = 0;
-        const totalFiles = selectedFiles.length + wadFiles.length;
-        
-        if (totalFiles === 0) {
-            updateStatus('No files to process', 'error');
-            processBtn.disabled = false;
-            resetBtn.disabled = false;
-            return;
-        }
-
-        // Process folder files
+        if (selectedFiles.length === 0) { updateStatus('Please select a folder first', 'error'); return; }
+        updateStatus('Creating PK3 archive...', 'info'); progressBar.style.width = '0%'; processBtn.disabled = true; resetBtn.disabled = true;
+        const zip = new JSZip(); let processed = 0; const totalFiles = selectedFiles.length + wadFiles.length;
+        if (totalFiles === 0) { updateStatus('No files to process', 'error'); processBtn.disabled = false; resetBtn.disabled = false; return; }
         selectedFiles.forEach(file => {
             const reader = new FileReader();
-            reader.onload = function (e) {
-                const relativePath = file.webkitRelativePath.split('/').slice(1).join('/');
-                zip.file(relativePath, e.target.result, { binary: true });
-                processed++;
-                updateProgress();
-            };
+            reader.onload = function (e) { const relativePath = file.webkitRelativePath.split('/').slice(1).join('/'); zip.file(relativePath, e.target.result, { binary: true }); processed++; updateProgress(); };
             reader.readAsArrayBuffer(file);
         });
-
-        // Process WAD files
         wadFiles.forEach(file => {
             const reader = new FileReader();
-            reader.onload = function (e) {
-                zip.file(`maps/${file.name}`, e.target.result, { binary: true });
-                processed++;
-                updateProgress();
-            };
+            reader.onload = function (e) { zip.file(`maps/${file.name}`, e.target.result, { binary: true }); processed++; updateProgress(); };
             reader.readAsArrayBuffer(file);
         });
-
-        function updateProgress() {
-            const progress = Math.floor((processed / totalFiles) * 100);
-            progressBar.style.width = `${progress}%`;
-            
-            if (processed === totalFiles) {
-                finalizeZip();
-            }
-        }
-
-        function finalizeZip() {
-            zip.generateAsync({ type: 'blob' }, (metadata) => {
-                progressBar.style.width = `${metadata.percent}%`;
-            }).then(blob => {
-                saveAs(blob, `${folderName}.pk3`);
-                updateStatus(`PK3 created successfully! (${formatFileSize(blob.size)})`, 'success');
-                processBtn.disabled = false;
-                resetBtn.disabled = false;
-                progressBar.style.width = '100%';
-                
-                // Success animation
-                processBtn.classList.add('pulse');
-                setTimeout(() => processBtn.classList.remove('pulse'), 2000);
-            }).catch(error => {
-                updateStatus(`Error creating PK3: ${error.message}`, 'error');
-                processBtn.disabled = false;
-                resetBtn.disabled = false;
-            });
-        }
+        function updateProgress() { const progress = Math.floor((processed / totalFiles) * 100); progressBar.style.width = `${progress}%`; if (processed === totalFiles) finalizeZip(); }
+        function finalizeZip() { zip.generateAsync({ type: 'blob' }, (metadata) => { progressBar.style.width = `${metadata.percent}%`; }).then(blob => { saveAs(blob, `${folderName}.pk3`); updateStatus(`PK3 created successfully! (${formatFileSize(blob.size)})`, 'success'); processBtn.disabled = false; resetBtn.disabled = false; progressBar.style.width = '100%'; processBtn.classList.add('pulse'); setTimeout(() => processBtn.classList.remove('pulse'), 2000); }).catch(error => { updateStatus(`Error creating PK3: ${error.message}`, 'error'); processBtn.disabled = false; resetBtn.disabled = false; }); }
     });
 
-    // Reset selection
     resetBtn.addEventListener('click', () => {
-        selectedFiles = [];
-        wadFiles = [];
-        folderInput.value = '';
-        wadInput.value = '';
-        wadDropArea.querySelector('.upload-text').textContent = 'Add WAD Files (Optional)';
-        displayFileList();
-        processBtn.disabled = true;
-        resetBtn.disabled = true;
-        progressBar.style.width = '0%';
-        updateStatus('Ready to process files', 'info');
+        selectedFiles = []; wadFiles = []; folderInput.value = ''; wadInput.value = ''; wadDropArea.querySelector('.upload-text').textContent = 'Add WAD Files (Optional)'; displayFileList(); processBtn.disabled = true; resetBtn.disabled = true; progressBar.style.width = '0%'; updateStatus('Ready to process files', 'info');
     });
 
-    // Helper functions
-    function getFolderNameFromPath(path) {
-        return path.split('/')[0];
-    }
-
-    function formatFileSize(bytes) {
-        if (bytes === 0) return '0 Bytes';
-        const k = 1024;
-        const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-        const i = Math.floor(Math.log(bytes) / Math.log(k));
-        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-    }
-
-    function updateStatus(message, type) {
-        statusMessage.textContent = message;
-        statusMessage.className = 'status';
-        statusMessage.classList.add(`status-${type}`);
-    }
-
+    function getFolderNameFromPath(path) { return path.split('/')[0]; }
+    function formatFileSize(bytes) { if (bytes === 0) return '0 Bytes'; const k = 1024; const sizes = ['Bytes', 'KB', 'MB', 'GB']; const i = Math.floor(Math.log(bytes) / Math.log(k)); return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]; }
+    function updateStatus(message, type) { statusMessage.textContent = message; statusMessage.className = 'status'; statusMessage.classList.add(`status-${type}`); }
     function displayFileList() {
-        if (selectedFiles.length === 0) {
-            fileList.innerHTML = '<div class="file-item" style="justify-content: center; color: #888;">No files selected yet</div>';
-            return;
-        }
-        
+        if (selectedFiles.length === 0) { fileList.innerHTML = '<div class="file-item" style="justify-content: center; color: #888;">No files selected yet</div>'; return; }
         fileList.innerHTML = '';
         const filesByDir = {};
-        
         selectedFiles.forEach(file => {
             const pathParts = file.webkitRelativePath.split('/');
             const dir = pathParts.slice(1, -1).join('/');
             if (!filesByDir[dir]) filesByDir[dir] = [];
-            filesByDir[dir].push({ 
-                name: pathParts[pathParts.length - 1], 
-                size: formatFileSize(file.size) 
-            });
+            filesByDir[dir].push({ name: pathParts[pathParts.length - 1], size: formatFileSize(file.size) });
         });
-        
-        // Sort directories
         Object.keys(filesByDir).sort().forEach(dir => {
-            const dirHeader = document.createElement('div');
-            dirHeader.className = 'file-item';
-            dirHeader.innerHTML = `
+            const dirHeader = document.createElement('div'); dirHeader.className = 'file-item'; dirHeader.innerHTML = `
                 <div class="file-icon"><i class="fas fa-folder"></i></div>
                 <div class="file-path">${dir || 'Main folder'}</div>
                 <div class="file-size">${filesByDir[dir].length} files</div>
-            `;
-            fileList.appendChild(dirHeader);
-            
-            // Show files in this directory
-            filesByDir[dir].forEach(file => {
-                const fileItem = document.createElement('div');
-                fileItem.className = 'file-item';
-                fileItem.innerHTML = `
+            `; fileList.appendChild(dirHeader);
+            filesByDir[dir].forEach(file => { const fileItem = document.createElement('div'); fileItem.className = 'file-item'; fileItem.innerHTML = `
                     <div class="file-icon"><i class="fas fa-file"></i></div>
                     <div class="file-path">${file.name}</div>
                     <div class="file-size">${file.size}</div>
-                `;
-                fileList.appendChild(fileItem);
-            });
+                `; fileList.appendChild(fileItem); });
         });
-        
-        // Show WAD files if any
         if (wadFiles.length > 0) {
-            const wadHeader = document.createElement('div');
-            wadHeader.className = 'file-item';
-            wadHeader.innerHTML = `
+            const wadHeader = document.createElement('div'); wadHeader.className = 'file-item'; wadHeader.innerHTML = `
                 <div class="file-icon"><i class="fas fa-map"></i></div>
                 <div class="file-path">maps/ folder (WAD files)</div>
                 <div class="file-size">${wadFiles.length} files</div>
-            `;
-            fileList.appendChild(wadHeader);
-            
-            wadFiles.forEach(file => {
-                const fileItem = document.createElement('div');
-                fileItem.className = 'file-item';
-                fileItem.innerHTML = `
+            `; fileList.appendChild(wadHeader);
+            wadFiles.forEach(file => { const fileItem = document.createElement('div'); fileItem.className = 'file-item'; fileItem.innerHTML = `
                     <div class="file-icon"><i class="fas fa-file"></i></div>
                     <div class="file-path">${file.name}</div>
                     <div class="file-size">${formatFileSize(file.size)}</div>
-                `;
-                fileList.appendChild(fileItem);
-            });
+                `; fileList.appendChild(fileItem); });
         }
     }
+
+    // ------------------ EXTRACTOR CODE ------------------
+    const pk3DropArea = document.getElementById('pk3DropArea');
+    const pk3Input = document.getElementById('pk3Input');
+    const pk3FileList = document.getElementById('pk3FileList');
+    const extractBtn = document.getElementById('extractBtn');
+    const extractResetBtn = document.getElementById('extractResetBtn');
+    const extractProgress = document.getElementById('extractProgress');
+    const extractStatus = document.getElementById('extractStatus');
+    let currentPk3File = null;
+
+    pk3DropArea.addEventListener('click', () => pk3Input.click());
+    pk3Input.addEventListener('change', (e) => { if (e.target.files.length > 0) { currentPk3File = e.target.files[0]; displayPk3Info(); extractBtn.disabled = false; extractResetBtn.disabled = false; updateExtractStatus(`Selected ${currentPk3File.name}`, 'info'); } });
+
+    pk3DropArea.addEventListener('dragover', (e) => { e.preventDefault(); pk3DropArea.style.borderColor = 'var(--neon-red)'; pk3DropArea.style.boxShadow = '0 0 20px rgba(255, 0, 51, 0.3)'; });
+    pk3DropArea.addEventListener('dragleave', () => { pk3DropArea.style.borderColor = 'var(--neon-blue)'; pk3DropArea.style.boxShadow = 'none'; });
+    pk3DropArea.addEventListener('drop', (e) => {
+        e.preventDefault(); pk3DropArea.style.borderColor = 'var(--neon-blue)'; pk3DropArea.style.boxShadow = 'none';
+        const files = Array.from(e.dataTransfer.files).filter(f => f.name.toLowerCase().endsWith('.pk3'));
+        if (files.length === 0) { updateExtractStatus('Please drop a .pk3 file', 'error'); return; }
+        currentPk3File = files[0]; displayPk3Info(); extractBtn.disabled = false; extractResetBtn.disabled = false; updateExtractStatus(`Selected ${currentPk3File.name}`, 'info');
+    });
+
+    extractBtn.addEventListener('click', async () => {
+        if (!currentPk3File) { updateExtractStatus('No PK3 selected', 'error'); return; }
+        extractBtn.disabled = true; extractResetBtn.disabled = true; extractProgress.style.width = '0%'; updateExtractStatus('Reading PK3...', 'info');
+        try {
+            const arrayBuffer = await currentPk3File.arrayBuffer();
+            const pk3zip = await JSZip.loadAsync(arrayBuffer);
+            const outZip = new JSZip();
+            const entries = Object.keys(pk3zip.files);
+            let processed = 0;
+            for (const path of entries) {
+                const file = pk3zip.files[path];
+                if (!file.dir) {
+                    const content = await file.async('arraybuffer');
+                    outZip.file(path, content);
+                }
+                processed++;
+                const pct = Math.floor((processed / entries.length) * 100);
+                extractProgress.style.width = pct + '%';
+            }
+            updateExtractStatus('Generating ZIP...', 'info');
+            const outBlob = await outZip.generateAsync({ type: 'blob' }, metadata => { extractProgress.style.width = Math.floor(metadata.percent) + '%'; });
+            saveAs(outBlob, currentPk3File.name.replace(/\.pk3$/, '_extracted.zip'));
+            updateExtractStatus('Extraction complete!', 'success');
+        } catch (err) {
+            updateExtractStatus('Error: ' + err.message, 'error');
+        } finally {
+            extractBtn.disabled = false; extractResetBtn.disabled = false; extractProgress.style.width = '100%';
+        }
+    });
+
+    extractResetBtn.addEventListener('click', () => { currentPk3File = null; pk3Input.value = ''; pk3FileList.innerHTML = '<div class="file-item" style="justify-content:center; color:#888;">No PK3 selected</div>'; extractBtn.disabled = true; extractResetBtn.disabled = true; extractProgress.style.width = '0%'; updateExtractStatus('Ready', 'info'); });
+
+    function displayPk3Info() { if (!currentPk3File) return; pk3FileList.innerHTML = ''; const infoItem = document.createElement('div'); infoItem.className = 'file-item'; infoItem.innerHTML = `
+            <div style="flex:1; font-weight:600;">${currentPk3File.name}</div>
+            <div style="min-width:120px; text-align:right;">${formatFileSize(currentPk3File.size)}</div>
+        `; pk3FileList.appendChild(infoItem); }
+    function updateExtractStatus(msg, type) { extractStatus.textContent = msg; extractStatus.className = 'status'; extractStatus.classList.add(`status-${type}`); }
+
+    // initialize
+    displayFileList(); updateStatus('Ready to process files', 'info'); updateExtractStatus('Ready', 'info');
 });
 </script>
 </body>
