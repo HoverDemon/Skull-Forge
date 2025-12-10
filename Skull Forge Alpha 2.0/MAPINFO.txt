@@ -58,12 +58,12 @@ Skill Nightmare
 	Name = "BLOODBATH!"
 	Key = "b"
 	DamageFactor = 2.0
-	AmmoFactor = 2.0
+	AmmoFactor = 1.5
 	FastMonsters
 	NoInfighting
-	MonsterHealth = 3.0
+	MonsterHealth = 2.0
 	SpawnFilter = Nightmare
-	MustConfirm = "Damage Taken +100%; Monster Health +200%; Fast Monsters; No Infighting; Ammo Pickup Rate +200%; NOT FAIR AT ALL!"
+	MustConfirm = "Damage Taken +100%; Monster Health +100%; Fast Monsters; No Infighting; Ammo Pickup Rate +50%; NOT FAIR AT ALL!"
 }
 
 
