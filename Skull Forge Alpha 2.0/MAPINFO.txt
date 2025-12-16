@@ -66,6 +66,12 @@ Skill Nightmare
 	MustConfirm = "Damage Taken +100%; Monster Health +100%; Fast Monsters; No Infighting; Ammo Pickup Rate +50%; NOT FAIR AT ALL!"
 }
 
+ClearEpisode
+
+Episdoe E1M0
+{
+	Name = "Blood And Iron"
+}
 
 DefaultMap
 {
@@ -80,6 +86,7 @@ Map TITLEMAP "The Titlemap"
 	Music = ""
 	DefaultEnvironment = "Mountains"
 }
+
 Map TESTMAP "Outer Base"
 {
   Sky1 = "HVSKY1"
@@ -87,9 +94,12 @@ Map TESTMAP "Outer Base"
   Music = "D_SADIST"
   Next = "TITLEMAP"
   Defaultenvironment = "Spacestation Medium Room"
-  AirControl = 0.25
-  }
-  
+}
+
+Map E1M0 "MAP00 NAME"
+{
+	
+}
 
 Map E1M1 "Prison Labs"
 {
