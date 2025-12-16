@@ -80,6 +80,16 @@ Map TITLEMAP "The Titlemap"
 	Music = ""
 	DefaultEnvironment = "Mountains"
 }
+Map TESTMAP "Outer Base"
+{
+  Sky1 = "HVSKY1"
+  Sky2 = "HVSKY1"
+  Music = "D_SADIST"
+  Next = "TITLEMAP"
+  Defaultenvironment = "Spacestation Medium Room"
+  AirControl = 0.25
+  }
+  
 
 Map E1M1 "Prison Labs"
 {
