@@ -13,11 +13,15 @@ axe/wall1 AXEHITW1
 axe/wall2 AXEHITW2
 axe/wall3 AXEHITW3
 
+$Limit weapons/axe/hit/wall 8
+
 $Random weapons/axe/hit/flesh { axe/flesh1 axe/flesh2 axe/flesh3 }
 
 axe/flesh1 AXEHITF1
 axe/flesh2 AXEHITF2
 axe/flesh3 AXEHITF3
+
+$Limit weapons/axe/hit/flesh 8
 
 $Random weapons/axe/up { axe/up1 axe/up2 }
 
@@ -127,33 +131,13 @@ viper/up2 HARDUP2
 
 weapons/viper/down HARDDOWN
 
-//INFERNAL HAZE SOUNDS
+//SPEED HUCKER SOUNDS
 
-$Random weapons/infernalhaze/fire { infernalhaze/fire1 infernalhaze/fire2 infernalhaze/fire3 infernalhaze/fire4 infernalhaze/fire5 infernalhaze/fire6 infernalhaze/fire7 infernalhaze/fire8 }
+$Random weapons/speedhucker/fire { speedhucker/fire1 speedhucker/fire2 speedhucker/fire3 }
 
-infernalhaze/fire1 INFHFIR1
-infernalhaze/fire2 INFHFIR2
-infernalhaze/fire3 INFHFIR3
-infernalhaze/fire4 INFHFIR4
-infernalhaze/fire5 INFHFIR5
-infernalhaze/fire6 INFHFIR6
-infernalhaze/fire7 INFHFIR7
-infernalhaze/fire8 INFHFIR8
-
-$Random weapons/infernalhaze/prefire { infernalhaze/prefire1 infernalhaze/prefire2 infernalhaze/prefire3 infernalhaze/prefire4 infernalhaze/prefire5 }
-
-infernalhaze/prefire1 INFHPFR1
-infernalhaze/prefire2 INFHPFR2
-infernalhaze/prefire3 INFHPFR3
-infernalhaze/prefire4 INFHPFR4
-infernalhaze/prefire5 INFHPFR5
-
-$Random weapons/infernalhaze/fastprefire { infernalhaze/fastprefire1 infernalhaze/fastprefire2 infernalhaze/fastprefire3 infernalhaze/fastprefire4 }
-
-infernalhaze/fastprefire1 INFHFFR1
-infernalhaze/fastprefire2 INFHFFR2
-infernalhaze/fastprefire3 INFHFFR3
-infernalhaze/fastprefire4 INFHFFR4
+speedhucker/fire1 SPHCFIR1
+speedhucker/fire2 SPHCFIR2
+speedhucker/fire3 SPHCFIR3
 
 $Random weapons/infernalhaze/explode { infernalhaze/explode1 infernalhaze/explode2 infernalhaze/explode3 infernalhaze/explode4 }
 
@@ -162,20 +146,14 @@ infernalhaze/explode2 INFHEXP2
 infernalhaze/explode3 INFHEXP3
 infernalhaze/explode4 INFHEXP4
 
-$Random weapons/infernalhaze/up { infernalhaze/up1 infernalhaze/up2 infernalhaze/up3 }
+$Random weapons/speedhucker/up { speedhucker/up1 speedhucker/up2 speedhucker/up3 }
 
-infernalhaze/up1 INFHUP1
-infernalhaze/up2 INFHUP2
-infernalhaze/up3 INFHUP3
+speedhucker/up1 SPHCUP1
+speedhucker/up2 SPHCUP2
+speedhucker/up3 SPHCUP3
 
-$Random weapons/infernalhaze/down { infernalhaze/down1 infernalhaze/down2 infernalhaze/down3 }
+$Random weapons/speedhucker/down { speedhucker/down1 speedhucker/down2 speedhucker/down3 }
 
-infernalhaze/down1 INFHDOW1
-infernalhaze/down2 INFHDOW2
-infernalhaze/down3 INFHDOW3
-
-$Random weapons/infernalhaze/flame { infernalhaze/flame1 infernalhaze/flame2 infernalhaze/flame3 }
-
-infernalhaze/flame1 INFHFLM1
-infernalhaze/flame2 INFHFLM2
-infernalhaze/flame3 INFHFLM3
+speedhucker/down1 SPHCDOW1
+speedhucker/down2 SPHCDOW2
+speedhucker/down3 SPHCDOW3

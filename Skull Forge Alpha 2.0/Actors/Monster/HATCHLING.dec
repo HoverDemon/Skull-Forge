@@ -3,50 +3,127 @@ ACTOR Hatchling replaces Lostsoul
 	//$Title Hatchling
 	//$Sprite SKULLE1
 	//$Category Monster/Geckoidal
-	Health 60
-	Radius 16
-	Height 56
-	Mass 50
-	Speed 6
-	Damage 4
+	Health 10
+	Radius 8
+	Height 28
+	Scale 0.5
+	Mass 25
+	Speed 8
+	Damage 0
 	PainChance 256
 	Monster
 	+FLOAT
 	+NOGRAVITY
-	+MISSILEMORE
 	+DONTFALL
 	+NOICEDEATH
 	+NOINFIGHTING
-	AttackSound "skull/melee"
-	PainSound "skull/pain"
-	DeathSound "skull/death"
-	ActiveSound "skull/active"
-	RenderStyle SoulTrans
-	Obituary "$OB_SKULL" // "%o was spooked by a lost soul."
+	MeleeRange 16
+	SeeSound "monsters/hatchling/see"
+	AttackSound "monsters/hatchling/attack"
+	DeathSound "monsters/hatchling/death"
+	ActiveSound "monsters/hatchling/active"
+	Obituary "%o has been exploded by a hatchling."
+	BloodColor "Green"
+	ExplosionDamage 96
+   	ExplosionRadius 96
 	States
 	{
 		Spawn:
-			SKUL AB 10 Bright A_Look
+			SKUL AABB 5 Bright A_Look
 			Loop
 		See:
-			SKUL AB 6 Bright A_Chase
+			SKUL AABB 3 Bright A_Chase
 			Loop
+		Melee:
+			TNT1 A 0 A_Die
+			Wait
 		Missile:
-			SKUL C 10 Bright A_FaceTarget
+			SKUL C 12 Bright A_FaceTarget
 			SKUL D 4 Bright A_SkullAttack
 			SKUL CD 4 Bright
 			Goto Missile+2
 		Pain:
-			SKUL E 3 Bright
-			SKUL E 3 Bright A_Pain
-			Goto See
+			SKUL E 2 Bright
+			Goto Melee
 		Death:
-			SKUL F 6 Bright
-			SKUL G 6 Bright A_Scream
-			SKUL H 6 Bright
-			SKUL I 6 Bright A_NoBlocking
-			SKUL J 6
-			SKUL K 6
+			SKUL E 6 Bright A_Scream
+			SKUL F 7 Bright 
+			SKUL G 1 Bright
+			TNT1 A 0 {
+				A_Explode;
+				A_SpawnItem("SF_Hatchling_ExplosionEffect",0,14);
+			}
 			Stop
 	}
+}
+
+Actor SF_Hatchling_ExplosionEffect
+{
+	RenderStyle Add
+	Alpha 0.75
+	Scale 0.75
+	+NOBLOCKMAP
+	+NOGRAVITY
+	States
+	{
+		Spawn:
+			TNT1 A 0
+			NULL A 0 A_Quake(2.5,5,0,96)
+			BOOM AB 2 Bright {
+				A_SpawnItemEx("SF_Hatchling_ExplosionMark",Random(-16,16),Random(-16,16),Random(4,12));
+				A_SpawnItemEx("SF_Hatchling_ExplosionMark",Random(-16,16),Random(-16,16),Random(4,12));
+				A_SpawnItemEx("SF_Hatchling_ExplosionMark_Gravity",Random(-2,2),Random(-2,2),Random(0,8),fRandom(-4,4),fRandom(-4,4),fRandom(3.0,6.0));
+				A_SpawnItemEx("SF_Hatchling_ExplosionMark_Gravity",Random(-2,2),Random(-2,2),Random(0,8),fRandom(-4,4),fRandom(-4,4),fRandom(3.0,6.0));
+				A_SpawnItemEx("SF_Hatchling_ExplosionMark_Gravity",Random(-2,2),Random(-2,2),Random(0,8),fRandom(-4,4),fRandom(-4,4),fRandom(3.0,6.0));
+			}
+			NULL A 0 A_Quake(2.0,4,0,128)
+			BOOM CDE 1 Bright A_SpawnItemEx("SF_Hatchling_ExplosionMark",Random(-16,16),Random(-16,16),Random(4,12))
+			NULL A 0 A_Quake(1.5,10,0,196)
+			BOOM FGHIJKLM 1 Bright A_SpawnItemEx("SF_Hatchling_ExplosionMark_Small",Random(-16,16),Random(-16,16),Random(4,12))
+			NULL A 0 A_Quake(0.25,11,0,224)
+			BOOM NOPQRSTUV 1 Bright
+			Stop
+	}
+}
+
+Actor SF_Hatchling_ExplosionMark
+{
+	RenderStyle Add
+	Alpha 0.5
+	Scale 0.25
+	+NOBLOCKMAP
+	+NOGRAVITY
+	States
+	{
+		Spawn:
+			BOOM ABCDEFG 2 Bright
+			BOOM HIJKLMNOPQRSTUV 1 Bright A_FadeOut(0.03)
+			Stop
+	}	
+}
+
+Actor SF_Hatchling_ExplosionMark_Gravity
+{
+	-NOGRAVITY
+	+NOCLIP
+	Gravity 0.4
+	States
+	{
+		Spawn:
+			TNT1 AAAA 1 A_SpawnItem("SF_Hatchling_ExplosionMark")
+			TNT1 AAAAAAAAAAA 1 A_SpawnItem("SF_Hatchling_ExplosionMark_Small")
+			Stop
+	}	
+}
+
+Actor SF_Hatchling_ExplosionMark_Small : SF_Hatchling_ExplosionMark
+{
+	Scale 0.15
+	States
+	{
+		Spawn:
+			BOOM ACEG 1 Bright
+			BOOM IKMOQSU 1 Bright A_FadeOut(0.0714285714285714)
+			Stop
+	}	
 }

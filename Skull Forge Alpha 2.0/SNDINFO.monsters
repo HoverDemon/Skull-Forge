@@ -28,3 +28,118 @@ berserker/attack1 MBRSATK1
 berserker/attack2 MBRSATK2
 berserker/attack3 MBRSATK3
 berserker/attack4 MBRSATK4
+
+//### Hatchling ###
+
+$Random monsters/hatchling/see { hatchling/see1 hatchling/see2 hatchling/see3 }
+
+hatchling/see1 HTCHSIT1
+hatchling/see2 HTCHSIT2
+hatchling/see3 HTCHSIT3
+
+monsters/hatchling/active HTCHACT1
+
+$Random monsters/hatchling/attack { hatchling/attack1 hatchling/attack2 hatchling/attack3 }
+
+hatchling/attack1 HTCHATK1
+hatchling/attack2 HTCHATK2
+hatchling/attack3 HTCHATK3
+
+$Random monsters/hatchling/death { hatchling/death1 hatchling/death2 hatchling/death3 }
+
+hatchling/death1 HTCHDTH1
+hatchling/death2 HTCHDTH2
+hatchling/death3 HTCHDTH3
+
+//### Subject ###
+
+$Random monsters/subject/see { subject/see1 subject/see2 subject/see3 }
+
+subject/see1 SUBJSIT1
+subject/see2 SUBJSIT2
+subject/see3 SUBJSIT3
+
+$Random monsters/subject/active { subject/active1 subject/active2 }
+
+subject/active1 SUBJACT1
+subject/active2 SUBJACT2
+
+$Random monsters/subject/pain { subject/pain1 subject/pain2 }
+
+subject/pain1 SUBJPIN1
+subject/pain2 SUBJPIN2
+subject/pain2 SUBJPIN3
+
+$Random monsters/subject/death { subject/death1 subject/death2 }
+
+subject/death1 SUBJDTH1
+subject/death2 SUBJDTH2
+
+$Random monsters/subject/attack { subject/attack1 subject/attack2 subject/attack3 }
+
+subject/attack1 SUBJATK1
+subject/attack2 SUBJATK2
+subject/attack3 SUBJATK3
+
+$Random monsters/subject/hit { subject/hit1 subject/hit2 subject/hit3 }
+
+subject/hit1 SUBJHIT1
+subject/hit2 SUBJHIT2
+subject/hit3 SUBJHIT3
+
+$Random monsters/subject/step { subject/step1 subject/step2 subject/step3 }
+
+subject/step1 SUBJSTP1
+subject/step2 SUBJSTP2
+subject/step3 SUBJSTP3
+
+//### Grunt ###
+
+$Random monsters/grunt/see { grunt/see1 grunt/see2 grunt/see3 }
+
+grunt/see1 GRNTSIT1
+grunt/see2 GRNTSIT2
+grunt/see3 GRNTSIT3
+
+$Random monsters/grunt/active { grunt/active1 grunt/active2 }
+
+grunt/active1 GRNTACT1
+grunt/active2 GRNTACT2
+
+$Random monsters/grunt/pain { grunt/pain1 grunt/pain2 grunt/pain3 }
+
+grunt/pain1 GRNTPIN1
+grunt/pain2 GRNTPIN2
+grunt/pain3 GRNTPIN3
+
+$Random monsters/grunt/death { grunt/death1 grunt/death2 grunt/death3 }
+
+grunt/death1 GRNTDTH1
+grunt/death2 GRNTDTH2
+grunt/death3 GRNTDTH3
+
+//### Breacher ###
+    
+$Random monsters/breacher/see { breacher/see1 breacher/see2 breacher/see3 }
+
+breacher/see1 BRCHSIT1
+breacher/see2 BRCHSIT2
+breacher/see3 BRCHSIT3
+
+$Random monsters/breacher/active { breacher/active1 breacher/active2 breacher/active3 }
+
+breacher/active1 BRCHACT1
+breacher/active2 BRCHACT2
+breacher/active3 BRCHACT3
+
+$Random monsters/breacher/pain { breacher/pain1 breacher/pain2 breacher/pain3 }
+
+breacher/pain1 BRCHPIN1
+breacher/pain2 BRCHPIN2
+breacher/pain3 BRCHPIN3
+
+$Random monsters/breacher/death { breacher/death1 breacher/death2 breacher/death3 }
+
+breacher/death1 BRCHDTH1
+breacher/death2 BRCHDTH2
+breacher/death3 BRCHDTH3

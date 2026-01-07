@@ -1,0 +1,35 @@
+//##PLAYER STUFF##
+#include "Actors/Player/KARL.dec"
+
+#include "Actors/Player/Weapons/AXE.dec"
+#include "Actors/Player/Weapons/RIPSAW.dec"
+#include "Actors/Player/Weapons/NOVA.dec"
+#include "Actors/Player/Weapons/SLUGGER.dec"
+#include "Actors/Player/Weapons/DOMINATUS.dec"
+#include "Actors/Player/Weapons/VIPER.dec"
+#include "Actors/Player/Weapons/SPEEDHUCKER.dec"
+
+//##PICKUPS##
+
+#include "Actors/Pickups/Powerups/QUAD.dec"
+
+//##MONSTERS##
+
+#include "Actors/Monster/GRUNT.dec"
+#include "Actors/Monster/BREACHER.dec"
+#include "Actors/Monster/GECKOID.dec"
+#include "Actors/Monster/BERSERKER.dec"
+#include "Actors/Monster/DESCIAN.dec"
+#include "Actors/Monster/DECIONIANLORD.dec"
+#include "Actors/Monster/HATCHLING.dec"
+#include "Actors/Monster/WARLORD.dec"
+#include "Actors/Monster/SUBJECT.dec"
+
+//##PROP##
+
+#include "Actors/Props/Titlemap/PLAYERPROP.dec"
+#include "Actors/Props/Generic/BARREL.dec"
+
+//##MISC##
+
+#include "Actors/EFFECTS.dec"

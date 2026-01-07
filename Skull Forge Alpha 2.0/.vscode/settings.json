@@ -1,0 +1,9 @@
+{
+    // Map custom file extensions to language ids. This maps .vgxhv to the ZScript language
+    "files.associations": {
+        "*.zcs": "zscript",
+        "*.map": "mapinfo",
+        "*.dec": "decorate",
+        "SNDINFO.*": "sndinfo"
+    }
+}

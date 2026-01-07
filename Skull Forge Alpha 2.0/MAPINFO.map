@@ -1,0 +1,193 @@
+GameInfo
+{
+	PlayerClasses = "SF_Player"
+	TitleMusic = "D_INTRO"
+}
+
+ClearSkills
+
+Skill Baby
+{
+	TextColor = "Skull_Cyan"
+	Name = "Food for the Sowserpents"
+	Key = "z"
+	DamageFactor = 0.5
+	HealthFactor = 2.0
+	AmmoFactor = 2.0
+	EasyKey
+	TotalInfighting
+	MonsterHealth = 0.75
+	SpawnFilter = baby
+	MustConfirm = "Damage Takem -50%; Monster Health -25%; Ammo Pickup Rate +100%; Health Pickup Rate +100%; Total Infighting; Automap Keys; Less Monsters;"
+}
+
+Skill Easy
+{
+	TextColor = "Skull_Cyan"
+	Name = "Easy With The Claws!"
+	Key = "x"
+	DamageFactor = 0.75
+	AmmoFactor = 1.5
+	EasyKey
+	SpawnFilter = Easy
+	MustConfirm = "Damage Takem -25%; Ammo Pickup Rate +50%; Automap Keys; Less Monsters;"
+}
+
+Skill Normal
+{
+	TextColor = "Skull_Cyan"
+	Name = "I OWN SKULLFORGE!"
+	Key = "c"
+	SpawnFilter = Normal
+	MustConfirm = "Less Monsters;"
+}
+
+Skill Hard
+{
+	TextColor = "Skull_Cyan"
+	Name = "Mauled By Warlords"
+	Key = "v"
+	DefaultSkill
+	SpawnFilter = Hard
+	MustConfirm = "Intended Way To Play;"
+}
+
+Skill Nightmare
+{
+	TextColor = "Skull_Cyan"
+	Name = "BLOODBATH!"
+	Key = "b"
+	DamageFactor = 2.0
+	AmmoFactor = 1.5
+	FastMonsters
+	NoInfighting
+	MonsterHealth = 2.0
+	SpawnFilter = Nightmare
+	MustConfirm = "Damage Taken +100%; Monster Health +100%; Fast Monsters; No Infighting; Ammo Pickup Rate +50%; NOT FAIR AT ALL!"
+}
+
+ClearEpisodes
+
+Episode E1M1
+{
+	Name = "Blood And Iron"
+}
+
+Episode E1M2
+{
+	Name = "Testing Map"
+}
+
+DefaultMap
+{
+	Sky1 = "SF_SKY1"
+	Sky2 = "OSKY04"
+	DefaultEnvironment = "Spacestation Medium Room"
+	AirControl = 0.25
+	exitpic = "INTERPIC"
+	enterpic = "INTERPIC"
+}
+
+Map TITLEMAP "The Titlemap"
+{
+	Music = ""
+	DefaultEnvironment = "Mountains"
+}
+
+Map TESTMAP "Outer Base" //Aint really a test map
+{
+  Sky1 = "HVSKY1"
+  Sky2 = "HVSKY1"
+  Music = "D_SADIST"
+  Next = "TITLEMAP"
+  Defaultenvironment = "Spacestation Medium Room"
+}
+
+Map E1M0 "Whereabouts Unknown"
+{
+	Music = "D_E1M0"
+	Next = "E1M1"
+	Sky1 = "SF_SKY1"
+
+	Defaultenvironment = "Spacestation Large Room"
+}
+
+Map E1M1 "Prison Labs"
+{
+	Music = "D_E1M1"
+	Sky1 = "SF_SKY1"
+	
+	Next = "E1M2"
+}
+
+Map E1M2 "MAP02 NAME"
+{
+	Music = "D_E1M2"
+	Sky1 = "SF_SKY1"
+	
+	Next = "E1M3"
+}
+
+Map E1M3 "MAP03 NAME"
+{
+	Music = "D_E1M3"
+	Sky1 = "SF_SKY1"
+	
+	Next = "E1M4"
+	SecretNext = "E1M9"
+}
+
+Map E1M4 "MAP04 NAME"
+{
+	Music = "D_E1M4"
+	Sky1 = "SF_SKY1"
+	
+	Next = "E1M5"
+}
+
+Map E1M5 "MAP05 NAME"
+{
+	Music = "D_E1M5"
+	Sky1 = "SF_SKY1"
+	
+	Next = "E1M6"
+}
+
+Map E1M6 "MAP06 NAME"
+{
+	Music = "D_E1M6"
+	Sky1 = "SF_SKY1"
+	
+	Next = "E1M7"
+}
+
+Map E1M7 "MAP07 NAME"
+{
+	Music = "D_E1M7"
+	Sky1 = "SF_SKY1"
+	
+	Next = "E1M8"
+}
+
+Map E1M8 "MAP08 NAME"
+{
+	Music = "D_E1M8"
+	Sky1 = "SF_SKY1"
+	DefaultEnvironment = "Mountains"
+	
+	BaronSpecial
+}
+
+Map E1M9 "MAP09 NAME"
+{
+	Music = "D_E1M9"
+	Next = "E1M4"
+	Sky1 = "SF_SKY1"
+}
+
+Map E2M1 "Testing Grounds"
+{
+	Music = "D_E2M2"
+	Next = "E2M2"
+	Sky1 = "SF_SKY2"
+}

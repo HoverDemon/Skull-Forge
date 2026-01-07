@@ -2,7 +2,7 @@ ACTOR Grunt replaces Zombieman
 {
 	//$Title Grunt (Zombieman)
 	//$Sprite POSSE1
-	//$Category Monster/Humanoid
+	//$Category Monster/Post-Human
 	Health 20
 	Radius 20
 	Height 56
@@ -11,15 +11,14 @@ ACTOR Grunt replaces Zombieman
 	Monster
 	+FLOORCLIP
 	+NOINFIGHTING
-	SeeSound "grunt/sight"
+	SeeSound "monsters/grunt/see"
 	AttackSound "Weapons/CR56FIR"
-	PainSound "grunt/pain"
-	DeathSound "grunt/death"
-	ActiveSound "grunt/active"
+	PainSound "monsters/grunt/pain"
+	DeathSound "monsters/grunt/death"
+	ActiveSound "monsters/grunt/active"
 	Obituary "%o was shot by a Grunt"
 	DropItem "clip"
 	DropItem "clip"
-	DropItem "CR-56", 10
 	States
 	{
 		Spawn:
