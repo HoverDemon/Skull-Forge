@@ -1,13 +1,13 @@
-ACTOR DraconianLord replaces BaronOfHell
+ACTOR DrakonianHoplite replaces BaronOfHell
 {
-	//$Title Draconian Lord
+	//$Title Drakonian Hoplite
 	//$Sprite BOSSG1
 	//$Category Monster/Draconian
 	Health 1000
 	Radius 24
 	Height 64
 	Mass 1000
-	Speed 8
+	Speed 9
 	PainChance 50
 	Monster
 	DropItem "HPSG-6"
@@ -19,8 +19,8 @@ ACTOR DraconianLord replaces BaronOfHell
 	PainSound "baron/pain"
 	DeathSound "baron/death"
 	ActiveSound "baron/active"
-	Obituary "$OB_BARON"
-	HitObituary "$OB_BARONHIT"
+	Obituary "%o was Shredded by a Drakonian Hoplite's Dominatus"
+	HitObituary "%o was struck down by a Drakonian Hoplite's Sword"
 	States
 	{
 		Spawn:

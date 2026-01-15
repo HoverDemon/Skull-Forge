@@ -2,7 +2,7 @@ ACTOR Berserker 30111
 {
 	//$Title Berserker
 	//$Sprite LIBRC1
-	//$Category Monster/Geckoidal
+	//$Category Monster/Descian
 	Health 300
 	Radius 20
 	Height 56
