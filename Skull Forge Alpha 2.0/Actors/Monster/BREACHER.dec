@@ -2,7 +2,7 @@ ACTOR Breacher replaces ShotgunGuy
 {
 	//$Title Breacher (Shotgunner)
 	//$Sprite SPOSE1
-	//$Category Monster/Humanoid
+	//$Category Monster/Post-Human
 	Health 40
 	Radius 20
 	Height 56
@@ -12,11 +12,10 @@ ACTOR Breacher replaces ShotgunGuy
 	Monster
 	+NOINFIGHTING
 	+FLOORCLIP
-	SeeSound "shotguy/sight"
-	AttackSound "shotguy/attack"
-	PainSound "shotguy/pain"
-	DeathSound "shotguy/death"
-	ActiveSound "shotguy/active"
+	SeeSound "monsters/breacher/see"
+	PainSound "monsters/breacher/pain"
+	DeathSound "monsters/breacher/death"
+	ActiveSound "monsters/breacher/active"
 	Obituary "%o was misted by a Breacher's Shotgun blast."
 	DropItem "Shotgun"
 	States
