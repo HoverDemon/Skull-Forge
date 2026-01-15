@@ -25,7 +25,9 @@
 #include "Actors/Monster/COLOSSUS.dec"
 
 //##PROP##
+
 #include "Actors/Props/Titlemap/PLAYERPROP.dec"
+#include "Actors/Props/Generic/BARREL.dec"
 
 //##MISC##
 
