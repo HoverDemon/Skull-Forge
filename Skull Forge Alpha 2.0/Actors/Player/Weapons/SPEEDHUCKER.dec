@@ -8,8 +8,8 @@ ACTOR SF_SpeedHucker : WF_WeaponBase replaces RocketLauncher
 	Weapon.AmmoGive 8
 	Weapon.AmmoType "RocketAmmo"
 	Obituary "\cb%o \umhas been burned to death by \cr%k's \cmRPM-14."
-	Inventory.Pickupmessage "\cqWEAPON AQUIRED: \cbSpeed Hucker RPM-14 \c*(SLOT 5)"
-	Tag "Speed Hucker RPM-14"
+	Inventory.Pickupmessage "\cqWEAPON AQUIRED: \cbRPM-14 Speedhucker \c*(SLOT 5)"
+	Tag "RPM-14 Speedhucker"
 	Inventory.PickupSound "weapons/speedhucker/up"
 	Weapon.KickBack 275
 	//+WEAPON.NOAUTOFIRE
