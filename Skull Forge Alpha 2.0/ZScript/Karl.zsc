@@ -21,6 +21,15 @@ Class SF_Player : DoomPlayer
 	bool isWallAttached;
 	Vector3 wallAttachPos; // Store the position where the player attached
 
+	bool didDeathCam;
+	int deathCamTics;
+
+	double wobbleDir;
+	double targetPitch;
+	double targetYaw;
+	double targetRoll;
+
+
 	override void Tick()
 	{
 		super.Tick();
@@ -72,5 +81,57 @@ Class SF_Player : DoomPlayer
 				isWallAttached = false;
 			}
 		}
+
+		// Trigger once
+		if (health <= 0 && player && !didDeathCam)
+		{
+			StartDeathCam();
+			Vector2 back = -AngleToVector(angle);
+			vel.x += back.x * 128.0;
+			vel.y += back.y * 128.0;
+		}
+
+		// Death camera sequence
+		if (didDeathCam && player)
+		{
+			deathCamTics++;
+
+			// Fall and Look up
+			if (deathCamTics <= 30)
+			{
+				pitch += (targetPitch - pitch) * 0.15;
+			}
+
+			// Wobble
+			else if (deathCamTics <= 100)
+			{
+				double t = deathCamTics - 30;
+
+				pitch = targetPitch + sin(t * 0.15) * 2.5;
+				roll  = sin(t * 0.12) * 3.5;
+
+				angle += sin(t * 0.10) * 0.4;
+			}
+
+			// Die
+			else
+			{
+				pitch = targetPitch;
+				player.mo.angle += (targetYaw - player.mo.angle) * 0.035;
+				roll += ((targetRoll * 0.4) - roll) * 0.03;
+			}
+		}
+	}
+
+	void StartDeathCam()
+	{
+		didDeathCam = true;
+		deathCamTics = 0;
+
+		wobbleDir = (Random(0, 1) == 0) ? -1.0 : 1.0;
+
+		targetPitch = -78;                 // almost straight up
+		targetYaw   = angle + (35 * wobbleDir);
+		targetRoll  = 45 * wobbleDir;
 	}
 }

@@ -68,12 +68,12 @@ Skill Nightmare
 
 ClearEpisodes
 
-Episode E1M1
+Episode E1M0
 {
 	Name = "Blood And Iron"
 }
 
-Episode E1M2
+Episode E2M1
 {
 	Name = "Testing Map"
 }

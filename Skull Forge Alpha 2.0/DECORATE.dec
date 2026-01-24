@@ -17,6 +17,7 @@
 
 #include "Actors/Monster/GRUNT.dec"
 #include "Actors/Monster/BREACHER.dec"
+#include "Actors/Monster/SUBJECT.dec"
 #include "Actors/Monster/GECKOID.dec"
 #include "Actors/Monster/BERSERKER.dec"
 #include "Actors/Monster/DESCIAN.dec"
