@@ -20,22 +20,22 @@ Actor SF_Subject 3300
             SUBJ AABB 8 A_Look
             Loop
         See:
-            SUBJ AAAA 4 A_Chase
-            SUBJ BBBB 2 A_Chase
-            SUBJ CCCC 2 A_Chase
-            SUBJ DDDD 2 A_Chase
+            SUBJ AAAA 4 Fast A_Chase
+            SUBJ BBBB 2 Fast A_Chase
+            SUBJ CCCC 2 Fast A_Chase
+            SUBJ DDDD 2 Fast A_Chase
             TNT1 A 0 A_PlaySound("monsters/subject/step",CHAN_BODY)
             Loop
         Melee:
             TNT1 A 0 A_PlaySound("monsters/subject/attack",CHAN_VOICE)
-            SUBJ EEEEEE 3 A_FaceTarget
-            SUBJ F 2 A_CustomMeleeAttack((13),"monsters/subject/hit","",0,TRUE)
-            SUBJ FFF 2 A_FaceTarget
-            SUBJ GGGG 3 A_FaceTarget
+            SUBJ EEEEEE 3 Fast A_FaceTarget
+            SUBJ F 2 Fast A_CustomMeleeAttack((13),"monsters/subject/hit","",0,TRUE)
+            SUBJ FFF 2 Fast A_FaceTarget
+            SUBJ GGGG 3 Fast A_FaceTarget
             Goto See
         Pain:
-            SUBJ H 3
-            SUBJ H 3 A_Pain
+            SUBJ H 3 Fast 
+            SUBJ H 3 Fast A_Pain
             Goto See
         Death:
             SUBJ I 4 A_Scream
@@ -54,10 +54,10 @@ Actor SF_Subject_Wander : SF_Subject 3301
     {
         Spawn:
             TNT1 A 0 A_PlaySound("monsters/subject/step",CHAN_BODY)
-            SUBJ AAAA 6 { A_Look; A_Wander; }
-            SUBJ BBBB 4 { A_Look; A_Wander; }
-            SUBJ CCCC 4 { A_Look; A_Wander; }
-            SUBJ DDDD 4 { A_Look; A_Wander; }
+            SUBJ AAAA 6 Fast { A_Look; A_Wander; }
+            SUBJ BBBB 4 Fast { A_Look; A_Wander; }
+            SUBJ CCCC 4 Fast { A_Look; A_Wander; }
+            SUBJ DDDD 4 Fast { A_Look; A_Wander; }
             Loop
     }
 }

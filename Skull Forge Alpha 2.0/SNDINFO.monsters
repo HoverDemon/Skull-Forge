@@ -1,3 +1,9 @@
+//### Generic ###
+
+monsters/generic/missile/fire MISLSUMN
+monsters/generic/missile/explode MISLEXPL
+$limit monsters/generic/missile/explode 8
+
 //### Berserkeer ###
 
 $Random monsters/berserker/see { berserker/see1 berserker/see2 berserker/see3 }
@@ -177,3 +183,36 @@ $Random monsters/geckoid/death { geckoid/death1 geckoid/death2 geckoid/death3 }
 geckoid/death1 GECKDTH1
 geckoid/death2 GECKDTH2
 geckoid/death3 GECKDTH3
+
+monsters/geckoid/missile/fire MISLSUMN
+
+$pitchset monsters/geckoid/missile/fire 1.25
+
+monsters/geckoid/missile/explode MISLEXPL
+
+$pitchset monsters/geckoid/missile/explode 1.25
+$limit monsters/geckoid/missile/explode 8
+
+//### Hoplite ###
+
+$Random monsters/hoplite/see { hoplite/see1 hoplite/see2 hoplite/see3 }
+
+hoplite/see1 HOPLSIT1
+hoplite/see2 HOPLSIT2
+hoplite/see3 HOPLSIT3
+
+$Random monsters/hoplite/active { hoplite/active1 hoplite/active2 }
+
+hoplite/active1 HOPLACT1
+hoplite/active2 HOPLACT2
+
+$Random monsters/hoplite/pain { hoplite/pain1 hoplite/pain2 hoplite/pain3 }
+
+hoplite/pain1 HOPLPIN1
+hoplite/pain2 HOPLPIN2
+hoplite/pain3 HOPLPIN3
+
+$Random monsters/hoplite/death { hoplite/death1 hoplite/death2 }
+
+hoplite/death1 HOPLDTH1
+hoplite/death2 HOPLDTH2

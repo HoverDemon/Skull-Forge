@@ -91,6 +91,14 @@ Class SF_Player : DoomPlayer
 			vel.y += back.y * 32.0;
 		}
 
+		// Abort death cam if resurrected
+		if (didDeathCam && health > 1)
+		{
+			ResetDeathCam();
+			return;
+		}
+
+
 		// Death camera sequence
 		if (didDeathCam && player)
 		{
@@ -134,4 +142,17 @@ Class SF_Player : DoomPlayer
 		targetYaw   = angle + (35 * wobbleDir);
 		targetRoll  = 45 * wobbleDir;
 	}
+
+	void ResetDeathCam()
+	{
+		didDeathCam = false;
+		deathCamTics = 0;
+
+		// Restore view
+		pitch = 0;
+		roll  = 0;
+
+		// Nothing else should be modifying yaw anymore
+	}
+
 }

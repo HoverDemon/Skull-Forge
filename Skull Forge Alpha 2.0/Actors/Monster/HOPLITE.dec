@@ -15,10 +15,10 @@ ACTOR DrakonianHoplite replaces BaronOfHell
 	+BOSSDEATH
 	+NOINFIGHTING
 	+DONTHARMSPECIES
-	SeeSound "baron/sight"
-	PainSound "baron/pain"
-	DeathSound "baron/death"
-	ActiveSound "baron/active"
+	SeeSound "monsters/hoplite/see"
+	PainSound "monsters/hoplite/pain"
+	DeathSound "monsters/hoplite/death"
+	ActiveSound "monsters/hoplite/active"
 	Obituary "%o was Shredded by a Drakonian Hoplite's Dominatus"
 	HitObituary "%o was struck down by a Drakonian Hoplite's Sword"
 	States
