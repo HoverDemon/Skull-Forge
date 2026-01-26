@@ -34,6 +34,13 @@ Class SF_Player : DoomPlayer
 	{
 		super.Tick();
 
+		A_LogFloat(GetCrouchFactor());
+
+		if(GetCrouchFactor() == 0.5)
+		{
+			GiveInventory("CrochProt_Giver", 1);
+		}
+
 		if (player.cmd.buttons & BT_USE)
 		{
 			if (!isUsing)
@@ -155,4 +162,22 @@ Class SF_Player : DoomPlayer
 		// Nothing else should be modifying yaw anymore
 	}
 
+}
+
+Class CrochProt_Giver : PowerupGiver
+{
+	Default
+	{
+		Powerup.Type "PowerCrochProt";
+		+INVENTORY.AUTOACTIVATE;
+	}
+}
+
+Class PowerCrochProt : PowerProtection
+{
+	Default
+	{
+		Powerup.Duration 1;
+		damageFactor "normal", 0.5;
+	}
 }
