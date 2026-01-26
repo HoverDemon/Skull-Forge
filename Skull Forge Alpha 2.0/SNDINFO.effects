@@ -27,3 +27,10 @@ explosion2 GRNEXPL2
 explosion3 GRNEXPL3
 
 $Limit generic/explosion 8
+
+world/metalbarsbreak E1M0SND1
+
+world/drip gloop
+world/watersplash gloop
+world/lavasizzle acid5
+world/sludgegloop muck5

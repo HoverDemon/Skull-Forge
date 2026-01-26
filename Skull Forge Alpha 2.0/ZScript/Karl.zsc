@@ -87,8 +87,8 @@ Class SF_Player : DoomPlayer
 		{
 			StartDeathCam();
 			Vector2 back = -AngleToVector(angle);
-			vel.x += back.x * 128.0;
-			vel.y += back.y * 128.0;
+			vel.x += back.x * 32.0;
+			vel.y += back.y * 32.0;
 		}
 
 		// Death camera sequence

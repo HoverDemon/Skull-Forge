@@ -29,6 +29,7 @@
 
 #include "Actors/Props/Titlemap/PLAYERPROP.dec"
 #include "Actors/Props/Generic/BARREL.dec"
+#include "Actors/props/TERRAIN.dec"
 
 //##MISC##
 

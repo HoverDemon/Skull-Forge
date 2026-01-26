@@ -79,6 +79,11 @@ ACTOR SF_NOVA : WF_WeaponBase replaces Pistol 5010
 			PISG DDEEEDDCBA 1 A_WeaponReady(WRF_NOSECONDARY | WRF_NOBOB | WRF_NOSWITCH)
 			Goto RealReady
 
+		Fire_LongRange:
+			TNT1 A 0 A_FireBullets(0.8,0.8,1,10,"SF_BulletPuff")
+			TNT1 A 0 A_FireCustomMissile("SF_BulletTracer",fRandom(-0.8,0.8),FALSE)
+			Goto Fire_Anim
+
 		Flash:
 			PISF A 1 Bright A_Light1
 			PISF A 1 Bright A_Light2

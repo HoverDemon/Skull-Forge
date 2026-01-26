@@ -7,6 +7,7 @@ Actor SF_Barrels : RandomSpawner replaces ExplosiveBarrel
 Actor SF_Barrel_Variant_A
 {
     +SHOOTABLE
+	+SOLID
     Health 30
     Radius 16
     Height 48
@@ -39,6 +40,7 @@ Actor SF_Barrel_Variant_A
 Actor SF_Barrel_Variant_B
 {
     +SHOOTABLE
+	+SOLID
     Health 30
     Radius 16
     Height 48

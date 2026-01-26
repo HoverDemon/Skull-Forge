@@ -4,6 +4,7 @@
         "*.zcs": "zscript",
         "*.map": "mapinfo",
         "*.dec": "decorate",
-        "SNDINFO.*": "sndinfo"
+        "SNDINFO.*": "sndinfo",
+        "gldefs.*": "gldefs"
     }
 }

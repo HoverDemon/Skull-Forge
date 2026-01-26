@@ -118,6 +118,14 @@ grunt/death1 GRNTDTH1
 grunt/death2 GRNTDTH2
 grunt/death3 GRNTDTH3
 
+$Random monsters/grunt/guarding { grunt/guard1 grunt/guard2 grunt/guard3 grunt/guard4 grunt/guard5 }
+
+grunt/guard1 GRNTGRD1
+grunt/guard2 GRNTGRD2
+grunt/guard3 GRNTGRD3
+grunt/guard4 GRNTGRD4
+grunt/guard5 GRNTGRD5
+
 //### Breacher ###
     
 $Random monsters/breacher/see { breacher/see1 breacher/see2 breacher/see3 }
@@ -143,3 +151,29 @@ $Random monsters/breacher/death { breacher/death1 breacher/death2 breacher/death
 breacher/death1 BRCHDTH1
 breacher/death2 BRCHDTH2
 breacher/death3 BRCHDTH3
+
+//### Geckoid ###
+
+$Random monsters/geckoid/see { geckoid/see1 geckoid/see2 geckoid/see3 }
+
+geckoid/see1 GECKSIT1
+geckoid/see2 GECKSIT2
+geckoid/see3 GECKSIT3
+
+$Random monsters/geckoid/active { geckoid/active1 geckoid/active2 geckoid/active3 }
+
+geckoid/active1 GECKACT1
+geckoid/active2 GECKACT2
+geckoid/active3 GECKACT3
+
+$Random monsters/geckoid/pain { geckoid/pain1 geckoid/pain2 geckoid/pain3 }
+
+geckoid/pain1 GECKPIN1
+geckoid/pain2 GECKPIN2
+geckoid/pain3 GECKPIN3
+
+$Random monsters/geckoid/death { geckoid/death1 geckoid/death2 geckoid/death3 }
+
+geckoid/death1 GECKDTH1
+geckoid/death2 GECKDTH2
+geckoid/death3 GECKDTH3

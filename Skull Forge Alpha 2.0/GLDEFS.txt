@@ -45,3 +45,53 @@ Object TITLEMAPRPOP_Lamp
 	Frame PPRPF0 { Light TitlemapLampBright4 }
 	Frame PPRPG0 { Light TitlemapLampBright5 }
 }
+
+//brightmaps for the slime (nukage) splash actors
+//without these, they're hard to see against the nukage flat if used in gzDoom with brightmap support
+BrightMap Sprite SLIMA0
+{
+Map "brightmaps/BMSLIMA0"
+DisableFullBright
+}
+
+BrightMap Sprite SLIMB0
+{
+Map "brightmaps/BMSLIMB0"
+DisableFullBright
+}
+
+BrightMap Sprite SLIMC0
+{
+Map "brightmaps/BMSLIMC0"
+DisableFullBright
+}
+
+BrightMap Sprite SLIMD0
+{
+Map "brightmaps/BMSLIMD0"
+DisableFullBright
+}
+
+BrightMap Sprite SLIME0
+{
+Map "brightmaps/BMSLIME0"
+DisableFullBright
+}
+
+BrightMap Sprite SLIMF0
+{
+Map "brightmaps/BMSLIMF0"
+DisableFullBright
+}
+
+BrightMap Sprite SLIMG0
+{
+Map "brightmaps/BMSLIMG0"
+DisableFullBright
+}
+
+BrightMap Sprite SLIMH0
+{
+Map "brightmaps/BMSLIMH0"
+DisableFullBright
+}
