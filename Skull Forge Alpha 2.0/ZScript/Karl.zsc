@@ -34,8 +34,6 @@ Class SF_Player : DoomPlayer
 	{
 		super.Tick();
 
-		A_LogFloat(GetCrouchFactor());
-
 		if(GetCrouchFactor() == 0.5)
 		{
 			GiveInventory("CrochProt_Giver", 1);

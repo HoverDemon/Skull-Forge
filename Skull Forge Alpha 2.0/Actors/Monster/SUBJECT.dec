@@ -2,6 +2,9 @@ Actor SF_Subject 3300
 {
     //$category Monster/Post-Human
     //$title Subject (Guarding)
+    //$Arg0 Asleep
+    //$Arg0Tooltip If set to 1 the Subject will apear as a corpse before getting close
+    //$Color 12
     Monster
     Health 35
     Radius 16
@@ -17,8 +20,23 @@ Actor SF_Subject 3300
     States
     {
         Spawn:
+            TNT1 A 0 A_JumpIf(Args[0] == 1, "Spawn_Lay")
             SUBJ AABB 8 A_Look
             Loop
+        Spawn_Lay:
+            SUBJ M 1 {
+                A_LookEx(LOF_NOSOUNDCHECK,0,256,0,360,"Jump");
+                A_SetSize(16,13);
+            }
+            Loop
+        Jump:
+            SUBJ L 2 {
+                ThrustThingZ(0,32,0,0);
+                A_SetSize(16,24);
+            }
+            SUBJ K 2 A_SetSize(16,38)
+            SUBJ J 4 A_SetSize(16,48)
+            SUBJ I 2 A_SetSize(16,54)
         See:
             SUBJ AAAA 4 Fast A_Chase
             SUBJ BBBB 2 Fast A_Chase
@@ -50,6 +68,8 @@ Actor SF_Subject_Wander : SF_Subject 3301
 {
     //$category Monster/Post-Human
     //$title Subject (Wandering)
+    //$ClearArgs
+    //$Color 4
     States
     {
         Spawn:
