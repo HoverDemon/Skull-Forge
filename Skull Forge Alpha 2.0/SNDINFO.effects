@@ -5,7 +5,7 @@ richoshete2 EFCRIC2
 richoshete3 EFCRIC3
 richoshete4 EFCRIC4
 
-$Limit effect/richoshete 12
+$Singular effect/richoshete
 
 $Random effect/splatter { bloodsplat1 bloodsplat2 bloodsplat3 bloodsplat4 }
 

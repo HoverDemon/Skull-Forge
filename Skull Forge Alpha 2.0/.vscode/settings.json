@@ -5,6 +5,7 @@
         "*.map": "mapinfo",
         "*.dec": "decorate",
         "SNDINFO.*": "sndinfo",
-        "gldefs.*": "gldefs"
+        "gldefs.*": "gldefs",
+        "TRNSLATE.*" : "Trnslate"
     }
 }

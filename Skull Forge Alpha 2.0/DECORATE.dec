@@ -24,6 +24,7 @@
 #include "Actors/Monster/HOPLITE.dec"
 #include "Actors/Monster/HATCHLING.dec"
 #include "Actors/Monster/COLOSSUS.dec"
+#include "Actors/Monster/SOWSERPENTS.dec"
 
 //##PROP##
 

@@ -1,0 +1,49 @@
+ACTOR SF_Sowserpents replaces Demon
+{
+	//$Title Sowserpent
+	//$Sprite TROOG3
+	//$Category Monster/Descian
+	Health 125
+	Radius 25
+	Height 47
+	Mass 350
+	Speed 12
+    Scale 0.83
+	PainChance 120
+	Monster
+	+FLOORCLIP
+	+NOINFIGHTING
+	SeeSound "monsters/geckoid/see"
+	PainSound "monsters/geckoid/pain"
+	DeathSound "monsters/geckoid/death"
+	ActiveSound "monsters/geckoid/active"
+	HitObituary "%o was Slimed by a Sowserpent"
+	States
+	{
+		Spawn:
+			SARG AB 10 A_Look
+			Loop
+		See:
+			SARG AAABBBCCCDDD 2 Fast A_Chase
+			Loop
+		Melee:
+            SARG EF 6 Fast A_FaceTarget
+            SARG G 6 Fast A_CustomMeleeAttack(6,"monsters/subject/hit","",0,TRUE)
+            Goto See
+		Pain:
+			SARG H 2 Fast
+			SARG H 2 Fast A_Pain
+			Goto See
+		Death:
+			SARG I 8
+			SARG J 8 A_Scream
+			SARG K 6
+			SARG L 6 A_NoBlocking
+			SARG M -1
+			Stop
+		Raise:
+			SARG ML 8
+			SARG KJI 6
+			Goto See
+	}
+}

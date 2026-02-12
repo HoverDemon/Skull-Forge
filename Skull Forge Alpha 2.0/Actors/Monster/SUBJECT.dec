@@ -69,7 +69,7 @@ Actor SF_Subject_Wander : SF_Subject 3301
     //$category Monster/Post-Human
     //$title Subject (Wandering)
     //$ClearArgs
-    //$Color 4
+    //$Color 12
     States
     {
         Spawn:

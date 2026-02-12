@@ -108,7 +108,7 @@ ACTOR SF_NOVA : WF_WeaponBase replaces Pistol 5010
 
 		ThunderBolt_Ready:
 			TNT1 A 0 A_PlaySound("weapons/nova/up",CHAN_6)
-			THNB A 1 Offset(-64,128)
+			THNB A 1 Offset(-64,128) A_ChangeFlag("WEAPON.NOAUTOFIRE",False)
 			THNB A 1 Offset(-52,112)
 			THNB A 1 Offset(-48,96)
 			THNB A 1 Offset(-32,86)
@@ -151,7 +151,23 @@ ACTOR SF_NOVA : WF_WeaponBase replaces Pistol 5010
 	}
 }
 
-Actor SF_ThunderBoltUpgrade : Inventory { +INVENTORY.UNDROPPABLE Inventory.MaxAmount 1 }
+Actor SF_ThunderBoltUpgrade : Inventory 3400
+{ 
+	//$Title ThunderBolt (NOVA-9 Upgrade)
+	//$Category Pickups/Upgrades
+	//$NotAngled
+	//$Colour 13
+	+INVENTORY.UNDROPPABLE 
+	Inventory.MaxAmount 1 
+	Inventory.PickUpMessage "You got the upgrade to the pistol, Thunderbolt-440!"
+	Inventory.PickupSound "weapons/upgradepickup"
+	States
+	{
+		Spawn:
+			THNI A -1 Bright
+			Stop
+	}
+}
 
 Actor SF_BulletTracer : FastProjectile
 {

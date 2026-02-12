@@ -2,6 +2,9 @@ ACTOR SF_QuadDamage : PowerupGiver replaces Blursphere
 {
 	//$Title Quad Damage
 	//$Category PowerUps
+	//$Category Pickups/Power ups
+	//$Colour 9
+	//$NotAngled
 	+COUNTITEM
 	+NOGRAVITY
 	+FLOATBOB

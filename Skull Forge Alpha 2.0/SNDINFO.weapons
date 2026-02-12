@@ -1,3 +1,5 @@
+weapons/upgradepickup UPGRDUPS
+
 //AXE MELEE SOUNDS
 
 $Random weapons/axe/swing { axe/swing1 axe/swing2 axe/swing3 axe/swing4 }
