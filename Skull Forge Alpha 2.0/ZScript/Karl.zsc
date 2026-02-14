@@ -15,6 +15,8 @@ Class SF_Player : DoomPlayer
 		Player.WeaponSlot 3, "SF_Slugger", "SF_Dominatus";
 		Player.WeaponSlot 4, "SF_Viper";
 		Player.WeaponSlot 5, "SF_SpeedHucker";
+	
+		DamageFactor "NODAMAGEPLAYER", 0;
 	}
 
 	bool isUsing;

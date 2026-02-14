@@ -3,7 +3,7 @@ ACTOR SF_Geckoid replaces DoomImp
 	//$Title Geckoid
 	//$Sprite TROOG3
 	//$Category Monster/Geckoidal
-	Health 50
+	Health 40
 	Radius 20
 	Height 56
 	Mass 100

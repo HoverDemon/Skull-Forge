@@ -120,7 +120,7 @@ Map E1M1 "Prison Labs"
 	Next = "E1M2"
 }
 
-Map E1M2 "MAP02 NAME"
+Map E1M2 "Vendeta"
 {
 	Music = "SF_Cherish"
 	Sky1 = "SF_SKY1"

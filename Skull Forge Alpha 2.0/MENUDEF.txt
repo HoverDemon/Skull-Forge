@@ -9,7 +9,7 @@ ListMenu "MainMenu"
 	Position 32, 82
 	TextItem "Start Game", "n", "PlayerclassMenu"
 	TextItem " Load Game", "l", "LoadGameMenu"
-	TextItem "  Save Game", "s", "SaveGameMenu"
+	//TextItem "  Save Game", "s", "SaveGameMenu" LMAO fuck you, you ain't getting no saves
 	TextItem "   Options", "o", "OptionsMenu"
     TextItem "    Quit Game", "q", "QuitMenu"
 }

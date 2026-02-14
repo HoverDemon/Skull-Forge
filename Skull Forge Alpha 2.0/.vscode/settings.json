@@ -6,6 +6,7 @@
         "*.dec": "decorate",
         "SNDINFO.*": "sndinfo",
         "gldefs.*": "gldefs",
-        "TRNSLATE.*" : "Trnslate"
+        "TRNSLATE.*" : "Trnslate",
+        "animdefs.*" : "animdefs"
     }
 }

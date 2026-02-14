@@ -1,0 +1,1 @@
+cameratexture E1M2CAM 512 512 fit 64 64

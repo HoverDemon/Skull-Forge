@@ -6,7 +6,7 @@ Actor SF_Subject 3300
     //$Arg0Tooltip If set to 1 the Subject will apear as a corpse before getting close
     //$Color 12
     Monster
-    Health 35
+    Health 80
     Radius 16
     Height 54
     Mass 80

@@ -28,9 +28,17 @@ explosion3 GRNEXPL3
 
 $Limit generic/explosion 8
 
+effect/steam STEMLOOP
+
 world/metalbarsbreak E1M0SND1
 
 world/drip gloop
 world/watersplash gloop
 world/lavasizzle acid5
 world/sludgegloop muck5
+
+world/rollinggate/start ROLLSTRT
+world/rollinggate/end ROLLEND
+
+world/megadoor/start MDORSTRT
+world/megadoor/end MDOREND

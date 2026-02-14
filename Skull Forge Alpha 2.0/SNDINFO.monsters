@@ -4,6 +4,8 @@ monsters/generic/missile/fire MISLSUMN
 monsters/generic/missile/explode MISLEXPL
 $limit monsters/generic/missile/explode 8
 
+monsters/turning/scream SCREAM
+
 //### Berserkeer ###
 
 $Random monsters/berserker/see { berserker/see1 berserker/see2 berserker/see3 }
