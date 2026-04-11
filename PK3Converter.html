@@ -213,7 +213,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     processBtn.addEventListener('click', () => {
         if (selectedFiles.length === 0) { updateStatus('Please select a folder first', 'error'); return; }
-        updateStatus('Creating PK3 archive...', 'info'); progressBar.style.width = '0%'; processBtn.disabled = true; resetBtn.disabled = true;
+        updateStatus('Creating IPK3 archive...', 'info'); progressBar.style.width = '0%'; processBtn.disabled = true; resetBtn.disabled = true;
         const zip = new JSZip(); let processed = 0; const totalFiles = selectedFiles.length + wadFiles.length;
         if (totalFiles === 0) { updateStatus('No files to process', 'error'); processBtn.disabled = false; resetBtn.disabled = false; return; }
         selectedFiles.forEach(file => {
@@ -227,7 +227,7 @@ document.addEventListener('DOMContentLoaded', function () {
             reader.readAsArrayBuffer(file);
         });
         function updateProgress() { const progress = Math.floor((processed / totalFiles) * 100); progressBar.style.width = `${progress}%`; if (processed === totalFiles) finalizeZip(); }
-        function finalizeZip() { zip.generateAsync({ type: 'blob' }, (metadata) => { progressBar.style.width = `${metadata.percent}%`; }).then(blob => { saveAs(blob, `${folderName}.pk3`); updateStatus(`PK3 created successfully! (${formatFileSize(blob.size)})`, 'success'); processBtn.disabled = false; resetBtn.disabled = false; progressBar.style.width = '100%'; processBtn.classList.add('pulse'); setTimeout(() => processBtn.classList.remove('pulse'), 2000); }).catch(error => { updateStatus(`Error creating PK3: ${error.message}`, 'error'); processBtn.disabled = false; resetBtn.disabled = false; }); }
+        function finalizeZip() { zip.generateAsync({ type: 'blob' }, (metadata) => { progressBar.style.width = `${metadata.percent}%`; }).then(blob => { saveAs(blob, `${folderName}.ipk3`); updateStatus(`PK3 created successfully! (${formatFileSize(blob.size)})`, 'success'); processBtn.disabled = false; resetBtn.disabled = false; progressBar.style.width = '100%'; processBtn.classList.add('pulse'); setTimeout(() => processBtn.classList.remove('pulse'), 2000); }).catch(error => { updateStatus(`Error creating PK3: ${error.message}`, 'error'); processBtn.disabled = false; resetBtn.disabled = false; }); }
     });
 
     resetBtn.addEventListener('click', () => {

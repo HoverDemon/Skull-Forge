@@ -7,6 +7,8 @@
         "SNDINFO.*": "sndinfo",
         "gldefs.*": "gldefs",
         "TRNSLATE.*" : "Trnslate",
-        "animdefs.*" : "animdefs"
+        "animdefs.*" : "animdefs",
+        "*.iwad": "iwadinfo",
+        "*.game": "gameinfo"
     }
 }

@@ -2,6 +2,8 @@ GameInfo
 {
 	PlayerClasses = "SF_Player"
 	TitleMusic = "D_INTRO"
+	DimColor = "4f92ff"
+	DimAmount = 0.23
 }
 
 ClearSkills

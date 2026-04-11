@@ -205,7 +205,7 @@ Actor SF_SubjectTurn 32007
 			PLAY A 1 A_Look
 			loop
 		See:
-			PLAY G 10
+			PLAY G 35
 			PLAY H 3 Offset(8,32) A_Scream
 			PLAY H 3 Offset(-8,32)
 			PLAY H 3 Offset(8,32)

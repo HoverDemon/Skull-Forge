@@ -1,0 +1,10 @@
+IWAD
+{
+	Name = "Skull Forge - Blood and Iron [TESTING BRANCH DO NOT REDISTRIBUTE]"
+	BannerColors = "0384fc" , "8f2525"
+	Autoname = "SF"
+	Game = "Doom"
+	Config = "MyStandaloneGame"
+	IWADName = "Skull Forge Alpha 2.0.ipk3"
+	Mapinfo = "mapinfo/mindefaults.txt"
+}
