@@ -1,4 +1,4 @@
-ACTOR Warlord replaces Cyberdemon
+ACTOR Warlord 7
 {
 	//$Title Warlord
 	//$Sprite DRWAK1

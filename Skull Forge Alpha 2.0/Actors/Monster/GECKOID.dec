@@ -1,4 +1,4 @@
-ACTOR SF_Geckoid replaces DoomImp
+ACTOR SF_Geckoid 3001
 {
 	//$Title Geckoid
 	//$Sprite TROOG3
@@ -60,7 +60,7 @@ ACTOR SF_Geckoid replaces DoomImp
 	}
 }
 
-Actor SF_GeckoidBall Replaces DoomImpBall
+Actor SF_GeckoidBall
 {
 	Projectile
 	Radius 3

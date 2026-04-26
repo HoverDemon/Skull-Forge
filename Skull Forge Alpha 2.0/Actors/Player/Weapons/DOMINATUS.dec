@@ -1,4 +1,4 @@
-ACTOR SF_Dominatus : WF_WeaponBase replaces Supershotgun 82
+ACTOR SF_Dominatus : WF_WeaponBase 82
 {
 	//$Title Dominatus DBR-6
 	//$Sprite SGN2A0

@@ -1,4 +1,4 @@
-ACTOR SF_Slugger : WF_WeaponBase replaces Shotgun
+ACTOR SF_Slugger : WF_WeaponBase 2001
 {
 	//$Title M-19 Slugger
 	//$Sprite SHOTA0

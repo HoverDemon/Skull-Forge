@@ -1,3 +1,13 @@
+//IPK# compat Depricate Later
+#include "Actors/freedoom/deadthings.txt"
+#include "Actors/freedoom/doomammo.txt"
+#include "Actors/freedoom/doomarmor.txt"
+#include "Actors/freedoom/doomartifacts.txt"
+#include "Actors/freedoom/doomdecorations.txt"
+#include "Actors/freedoom/doomhealth.txt"
+#include "Actors/freedoom/doomkeys.txt"
+#include "Actors/freedoom/doommisc.txt"
+
 //##PLAYER STUFF##
 #include "Actors/Player/KARL.dec"
 

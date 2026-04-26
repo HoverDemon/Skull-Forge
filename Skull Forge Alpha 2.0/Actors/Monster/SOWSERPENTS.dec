@@ -1,4 +1,4 @@
-ACTOR SF_Sowserpent replaces Demon
+ACTOR SF_Sowserpent 3002
 {
 	//$Title Sowserpent
 	//$Sprite TROOG3

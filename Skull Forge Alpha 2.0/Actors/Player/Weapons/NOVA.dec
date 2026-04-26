@@ -1,4 +1,4 @@
-ACTOR SF_NOVA : WF_WeaponBase replaces Pistol 5010
+ACTOR SF_NOVA : WF_WeaponBase 5010
 {
 	//$Title NOVA-9
 	//$Sprite PISTA0

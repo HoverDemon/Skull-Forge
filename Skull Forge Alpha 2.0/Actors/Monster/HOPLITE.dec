@@ -1,4 +1,4 @@
-ACTOR DrakonianHoplite replaces BaronOfHell
+ACTOR DrakonianHoplite 3003
 {
 	//$Title Drakonian Hoplite
 	//$Sprite BOSSG1

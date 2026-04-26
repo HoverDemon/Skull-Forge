@@ -1,4 +1,4 @@
-Actor SF_Viper : WF_WeaponBase replaces Chaingun
+Actor SF_Viper : WF_WeaponBase 2002
 {
 	//$Title SAR-56 Viper
 	//$Sprite SARIA0

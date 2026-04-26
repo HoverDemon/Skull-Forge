@@ -1,4 +1,4 @@
-ACTOR Colossus replaces Cyberdemon
+ACTOR Colossus 16
 {
 	//$Title Warlord
 	//$Sprite DRWAK1

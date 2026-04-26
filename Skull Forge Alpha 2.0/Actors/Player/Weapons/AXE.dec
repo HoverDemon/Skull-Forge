@@ -1,4 +1,4 @@
-ACTOR SF_Axe : WF_WeaponBase replaces Fist
+ACTOR SF_Axe : WF_WeaponBase
 {
 	//$Title Axe
 	//$Sprite AXEIA0

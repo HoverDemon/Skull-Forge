@@ -1,4 +1,4 @@
-ACTOR SF_SpeedHucker : WF_WeaponBase replaces RocketLauncher
+ACTOR SF_SpeedHucker : WF_WeaponBase 2003
 {
 	//$Title Speed Hucker RPM-14
 	//$Sprite INHGA0

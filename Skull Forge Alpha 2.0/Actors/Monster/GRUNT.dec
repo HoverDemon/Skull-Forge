@@ -1,4 +1,4 @@
-ACTOR Grunt replaces Zombieman
+ACTOR Grunt 3004
 {
 	//$Title Grunt (Zombieman)
 	//$Sprite POSSE1

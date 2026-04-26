@@ -1,4 +1,4 @@
-ACTOR SF_RipSaw : WF_WeaponBase replaces Chainsaw
+ACTOR SF_RipSaw : WF_WeaponBase 2005
 {
 	//$Title RipSaw
 	//$Sprite CSAWA0

@@ -1,4 +1,4 @@
-ACTOR SF_QuadDamage : PowerupGiver replaces Blursphere
+ACTOR SF_QuadDamage : PowerupGiver 2024
 {
 	//$Title Quad Damage
 	//$Category PowerUps

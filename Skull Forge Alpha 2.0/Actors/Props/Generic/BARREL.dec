@@ -1,4 +1,4 @@
-Actor SF_Barrels : RandomSpawner replaces ExplosiveBarrel
+Actor SF_Barrels : RandomSpawner 2035
 {
     DropItem "SF_Barrel_Variant_A", 256, 128
     DropItem "SF_Barrel_Variant_B", 256, 128

@@ -1,4 +1,4 @@
-ACTOR Breacher replaces ShotgunGuy
+ACTOR Breacher 9
 {
 	//$Title Breacher (Shotgunner)
 	//$Sprite SPOSE1
