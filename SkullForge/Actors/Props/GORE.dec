@@ -1,0 +1,17 @@
+Actor SF_PoolOfBlood 24
+{
+    //$Title Pool o' Blood
+    //$Colour 4
+    //$NotAngled
+    //$IsDecoration
+    -SOLID
+    -NOGRAVITY
+    Height 10
+    Radius 26
+    States
+    {
+        Spawn:
+            POL5 A -1
+            Stop
+    }
+}

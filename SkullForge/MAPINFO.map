@@ -3,7 +3,9 @@ GameInfo
 	PlayerClasses = "SF_Player"
 	TitleMusic = "D_INTRO"
 	DimColor = "4f92ff"
-	DimAmount = 0.23
+	DimAmount = 0.2
+	BorderFlat = "OBKMTD49"
+	BlurAmount = 0.05
 }
 
 ClearSkills
@@ -88,6 +90,7 @@ DefaultMap
 	AirControl = 0.25
 	exitpic = "INTERPIC"
 	enterpic = "INTERPIC"
+	AirControl = 1.0
 }
 
 Map TITLEMAP "The Titlemap"

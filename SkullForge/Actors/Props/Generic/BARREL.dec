@@ -1,5 +1,10 @@
 Actor SF_Barrels : RandomSpawner 2035
 {
+	//$Title Explosive Barrels (Random)
+	//$Sprite BARREL.png
+    //$Colour 3
+    //$NotAngled
+    //$IsDecoration
     DropItem "SF_Barrel_Variant_A", 256, 128
     DropItem "SF_Barrel_Variant_B", 256, 128
 }

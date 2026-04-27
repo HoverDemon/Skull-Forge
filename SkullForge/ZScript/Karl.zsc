@@ -1,0 +1,271 @@
+Class SF_Player : DoomPlayer
+{
+	Default
+	{
+		Speed 1.05;
+        Gravity 0.6;
+        Radius 16;
+        Height 56;
+        Player.JumpZ 8.1;
+
+		Player.TeleportFreezeTime 6;
+		Player.DisplayName "Karl";
+		Player.StartItem "SF_Axe";
+		Player.WeaponSlot 0, "SF_WallJumpWeapon";
+		Player.WeaponSlot 1, "SF_Axe", "SF_RipSaw";
+		Player.WeaponSlot 2, "SF_NOVA";
+		Player.WeaponSlot 3, "SF_Slugger", "SF_Dominatus";
+		Player.WeaponSlot 4, "SF_Viper";
+		Player.WeaponSlot 5, "SF_SpeedHucker";
+	
+		DamageFactor "NODAMAGEPLAYER", 0;
+	}
+
+	// ---------- Wall jump ----------
+	bool isUsing;
+	bool isWallAttached;
+	Vector3 wallAttachPos;
+
+	// ---------- Death camera ----------
+	bool didDeathCam;
+	int deathCamTics;
+	double wobbleDir;
+	double targetPitch, targetYaw, targetRoll;
+
+	// ---------- Slide ----------
+	private bool isSliding;
+	private int slideTics;
+	private int slideCooldownTics;
+	private double normalHeight;		// saved standing height
+	private double normalViewHeight;	// saved standing view height
+
+	// Crouch transition tracking
+	private bool wasCrouching;
+
+	override void Tick()
+	{
+		// ---- Existing crouch protection ----
+		if(GetCrouchFactor() == 0.5)
+		{
+			GiveInventory("CrochProt_Giver", 1);
+		}
+
+		// ---- Wall jump logic ----
+		if (player.cmd.buttons & BT_USE)
+		{
+			if (!isUsing)
+			{
+				if (!isWallAttached)
+				{
+					FLineTraceData LedgeTrace;
+					double TraceDistance = sqrt(2) * Radius + 1;
+					LineTrace(angle, TraceDistance, 0, TRF_BLOCKSELF|TRF_THRUACTORS, Height * 1.2, data: LedgeTrace);
+
+					if (LedgeTrace.HitType == TRACE_HitWall)
+					{
+						if (LedgeTrace.HitTexture == TexMan.CheckForTexture("WALLJUMP", TexMan.Type_Wall))
+						{
+							isWallAttached = true;
+							wallAttachPos = pos;
+							vel = (0, 0, 0);
+						}
+					}
+				}
+				else
+				{
+					isWallAttached = false;
+					Vector2 jumpDir2 = AngleToVector(angle);
+					double jumpStrength = 24.0;
+					vel = (jumpDir2.x * jumpStrength, jumpDir2.y * jumpStrength, JumpZ * 1.25);
+				}
+			}
+			isUsing = true;
+		}
+		else
+		{
+			isUsing = false;
+		}
+
+		if (isWallAttached)
+		{
+			vel = (0, 0, 0);
+			if ((pos - wallAttachPos).Length() > 8)
+				isWallAttached = false;
+		}
+
+		// ---- Death camera logic ----
+		if (health <= 0 && player && !didDeathCam)
+		{
+			StartDeathCam();
+			Vector2 back = -AngleToVector(angle);
+			vel.x += back.x * 32.0;
+			vel.y += back.y * 32.0;
+		}
+
+		if (didDeathCam && health > 1)
+		{
+			ResetDeathCam();
+			return;
+		}
+
+		if (didDeathCam && player)
+		{
+			deathCamTics++;
+			if (deathCamTics <= 30)
+				pitch += (targetPitch - pitch) * 0.15;
+			else if (deathCamTics <= 100)
+			{
+				double t = deathCamTics - 30;
+				pitch = targetPitch + sin(t * 0.15) * 2.5;
+				roll  = sin(t * 0.12) * 3.5;
+				angle += sin(t * 0.10) * 0.4;
+			}
+			else
+			{
+				pitch = targetPitch;
+				player.mo.angle += (targetYaw - player.mo.angle) * 0.035;
+				roll += ((targetRoll * 0.4) - roll) * 0.03;
+			}
+		}
+
+		// ---- Slide logic ----
+		// Decrease cooldown every tick
+		if (slideCooldownTics > 0)
+			slideCooldownTics--;
+
+		// Detect crouch button press (transition from not crouching to crouching)
+		bool crouchDown = (player.cmd.buttons & BT_CROUCH) != 0;
+		if (crouchDown && !wasCrouching)
+		{
+			// Conditions to start a slide
+			if (!isSliding && slideCooldownTics <= 0 && health > 0)
+			{
+				// Must be on the ground
+				if (pos.z <= floorz)
+				{
+					// Must be running at full speed – check horizontal speed
+					double curSpeed = vel.xy.Length();
+					// "Full speed" threshold: at least 8.0 map units per tic.
+					// Adjust this value if your actual running speed differs significantly.
+					if (curSpeed >= 8.0)
+					{
+						StartSlide();
+					}
+				}
+			}
+		}
+		wasCrouching = crouchDown;
+
+		// Manage active slide
+		if (isSliding)
+		{
+			// Block jumping during the slide
+			player.cmd.buttons &= ~BT_JUMP;
+
+			// Height reduction (25%) stays constant throughout the slide
+			height = normalHeight * 0.25;
+			player.viewheight = normalViewHeight * 0.25;
+			player.crouchfactor = 0.25;
+
+			// Decreasing boost in the looking direction
+			// slideTics runs from 0 to 7, after 8 boosts the slide ends
+			double t = slideTics / 7.0;					// 0 → 7  maps to 0.0 → 1.0
+			double boost = 24.0 * (1.0 - t) + 4.0 * t;	// from 24 down to 4
+			Vector2 forward = AngleToVector(angle);
+			vel.xy = forward * boost;
+			if (pos.z <= floorz)
+				vel.z = 0;
+
+			slideTics++;
+			if (slideTics >= 8)
+				EndSlide();
+		}
+		else
+		{
+			// Let the default system handle height / viewheight when not sliding.
+			// The engine normally adjusts them based on crouch input.
+			super.Tick();
+		}
+	}
+
+	// ---------- Slide helper functions ----------
+	private void StartSlide()
+	{
+		isSliding = true;
+		slideTics = 0;
+
+		// Save original dimensions
+		normalHeight = Height;
+		normalViewHeight = player.viewheight;
+
+		// Immediately shrink to 25% height
+		height = normalHeight * 0.25;
+		player.viewheight = normalViewHeight * 0.25;
+		player.crouchfactor = 0.25;
+
+		// Play slide sound (add a definition for "slide/start" in SNDINFO)
+		A_StartSound("slide/start", CHAN_BODY);
+	}
+
+	private void EndSlide()
+	{
+		isSliding = false;
+		slideCooldownTics = 105;		// 3 seconds at 35 tics/sec
+
+		// Restore height based on whether the player is still holding crouch
+		bool stillCrouching = (player.cmd.buttons & BT_CROUCH) != 0;
+		if (stillCrouching)
+		{
+			height = normalHeight * 0.5;
+			player.viewheight = normalViewHeight * 0.5;
+			player.crouchfactor = 0.5;
+		}
+		else
+		{
+			height = normalHeight;
+			player.viewheight = normalViewHeight;
+			player.crouchfactor = 1.0;
+		}
+	}
+
+	// ---------- Death camera functions (unchanged) ----------
+	void StartDeathCam()
+	{
+		didDeathCam = true;
+		deathCamTics = 0;
+
+		wobbleDir = (Random(0, 1) == 0) ? -1.0 : 1.0;
+
+		targetPitch = -78;
+		targetYaw   = angle + (35 * wobbleDir);
+		targetRoll  = 45 * wobbleDir;
+	}
+
+	void ResetDeathCam()
+	{
+		didDeathCam = false;
+		deathCamTics = 0;
+
+		pitch = 0;
+		roll  = 0;
+	}
+}
+
+// ---- Required power‑up classes (unchanged) ----
+Class CrochProt_Giver : PowerupGiver
+{
+	Default
+	{
+		Powerup.Type "PowerCrochProt";
+		+INVENTORY.AUTOACTIVATE;
+	}
+}
+
+Class PowerCrochProt : PowerProtection
+{
+	Default
+	{
+		Powerup.Duration 1;
+		damageFactor "normal", 0.5;
+	}
+}

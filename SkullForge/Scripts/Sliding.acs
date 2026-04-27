@@ -28,9 +28,9 @@ Script "SkullForge_CustomSlidingScript" ENTER
 		{
 			ThrustThing(GetActorAngle(0) >> 8,100,0,0);
 			alreadySlided = TRUE;
-			SetActorProperty(0,APROP_Friction,1.0);
+			SetActorProperty(0,APROP_Friction,1.5);
 			ACS_Execute(123,0,0,0,0);
-			dashDelay = 2 * 35;
+			dashDelay = 3 * 35;
 			ACS_Execute(124,0,0,0,0);
 		}
 	}
@@ -40,14 +40,14 @@ Script "SkullForge_CustomSlidingScript" ENTER
 
 Script 123 (Void)
 {
-	Delay(1);
+	Delay(3);
 	SetActorProperty(0,APROP_Friction,GetActorProperty(0,APROP_Friction) - 0.01);
 	
-	if(GetActorProperty(0,APROP_Friction) > 0.85)
+	if(GetActorProperty(0,APROP_Friction) > 1.0)
 	{
 		Restart;
 	}
-	SetActorProperty(0,APROP_Friction,0.85);
+	SetActorProperty(0,APROP_Friction,1.0);
 }
 
 Script 124 (Void)
