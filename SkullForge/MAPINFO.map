@@ -6,6 +6,12 @@ GameInfo
 	DimAmount = 0.2
 	BorderFlat = "OBKMTD49"
 	BlurAmount = 0.05
+
+	MenuFontColor_Title = "Skull_Cyan"
+	MenuFontColor_Label = "Skull_Cyan"
+	MenuFontColor_Value = "Skull_White"
+	MenuFontColor_Highlight = "Skull_White"
+	MenuFontColor_Selection = "Skull_White"
 }
 
 ClearSkills

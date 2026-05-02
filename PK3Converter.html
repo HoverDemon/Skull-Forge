@@ -77,14 +77,14 @@
                 <h2><i class="fas fa-folder-open"></i> Select Your Files</h2>
                 <div class="upload-area" id="dropArea">
                     <i class="fas fa-folder-plus"></i>
-                    <div class="upload-text">Select or Drag & Drop Your Game Folder</div>
-                    <div class="upload-hint">This should be the folder containing all your game assets</div>
+                    <div class="upload-text">Import SkullForge Asset Forlder</div>
+                    <div class="upload-hint">This should be the folder named "SkullForge"</div>
                     <input type="file" id="folderInput" webkitdirectory directory multiple style="display: none;">
                 </div>
                 <div class="upload-area" id="wadDropArea">
                     <i class="fas fa-map"></i>
-                    <div class="upload-text">Add WAD Files (Optional)</div>
-                    <div class="upload-hint">WAD files will be placed in the <code>maps/</code> folder inside the PK3</div>
+                    <div class="upload-text">Add Map WAD Files (Optional)</div>
+                    <div class="upload-hint">Add any file in the "Maps" folder and it will get added to the IPK3</div>
                     <input type="file" id="wadInput" accept=".wad" multiple style="display: none;">
                 </div>
                 <div class="file-list" id="fileList">
@@ -100,10 +100,10 @@
 
             <!-- EXTRACTOR (new UI) -->
             <section id="extract" class="card tab-content" style="display:none;">
-                <h2><i class="fas fa-file-archive"></i> Extract a PK3 File</h2>
+                <h2><i class="fas fa-file-archive"></i> Decompile a PK3 File</h2>
                 <div class="upload-area" id="pk3DropArea">
                     <i class="fas fa-file-zipper"></i>
-                    <div class="upload-text">Select or Drag & Drop a .pk3 file</div>
+                    <div class="upload-text">Select or Drag & Drop a .pk3/.ipk3 file</div>
                     <div class="upload-hint">This will convert the PK3 back into a .zip of all contained files</div>
                     <input type="file" id="pk3Input" accept=".pk3" style="display:none;">
                 </div>

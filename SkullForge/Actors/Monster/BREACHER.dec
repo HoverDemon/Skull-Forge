@@ -17,7 +17,7 @@ ACTOR Breacher 9
 	DeathSound "monsters/breacher/death"
 	ActiveSound "monsters/breacher/active"
 	Obituary "%o was misted by a Breacher's Shotgun blast."
-	DropItem "Shotgun"
+	DropItem "SF_Slugger"
 	States
 	{
 		Spawn:

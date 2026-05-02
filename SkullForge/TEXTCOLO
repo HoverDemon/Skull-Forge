@@ -1,9 +1,9 @@
 Skull_Crimson
 {
 	#69101E  #2F0709
- Console:
-	#000000  #007F7F    0 127
-	#00FFFF  #DEFFFF  128 256
+Console:
+	#220000  #7f0000    0 127
+	#ff0000  #ffdede  128 256
 }
 
 Skull_Cyan
@@ -16,4 +16,15 @@ Console:
 	#008fff  #008fff  128 256
 Flat:
 	#155588
+}
+
+Skull_White
+{
+	#000000  #000000    0 127
+	#cacaca  #cacaca  128 256
+Flat:
+	#cacaca
+Console:
+	#000000  #000000    0 127
+	#cacaca  #cacaca  128 256
 }
