@@ -1,0 +1,143 @@
+ClearLocks
+
+Lock 1 Doom
+{
+	SF_RedEntryCard
+	Message "You Need a Red Entry Card To Open This Door"
+	RemoteMessage "You Need a Red Entry Card To Use This Object"
+	Mapcolor 255 0 0
+}
+
+
+Lock 2 Doom
+{
+	SF_BlueEntryCard
+	Message "You Need a Blue Entry Card To Open This Door"
+	RemoteMessage "You Need a Blue Entry Card To Use This Object"
+	Mapcolor 0 0 255
+}
+
+
+Lock 3 Doom
+{
+	SF_YellowEntryCard
+	Message "You Need a Yellow Entry Card To Open This Door"
+	RemoteMessage "You Need a Yellow Entry Card To Use This Object"
+	Mapcolor 255 255 0
+}
+
+
+Lock 4 Doom
+{
+	SF_RedRuneKey
+	Message "You Need a Red Rune Key To Open This Door"
+	RemoteMessage "You Need a Red Rune Key To Use This Object"
+	Mapcolor 255 0 0
+}
+
+
+Lock 5 Doom
+{
+	SF_BlueRuneKey
+	Message "You Need a Blue Rune Key To Open This Door"
+	RemoteMessage "You Need a Blue Rune Key To Use This Object"
+	Mapcolor 0 0 255
+}
+
+
+Lock 6 Doom
+{
+	SF_YellowRuneKey
+	Message "You Need a Yellow Rune Key To Open This Door"
+	RemoteMessage "You Need a Yellow Rune Key To Use This Object"
+	Mapcolor 255 255 0
+}
+
+
+Lock 129 Doom
+{
+	Any { SF_RedEntryCard SF_RedRuneKey }
+	Message "You Need a Any Red Key To Open This Door"
+	RemoteMessage "You Need a Any Red Key To Use This Object"
+	Mapcolor 255 0 0
+}
+
+
+Lock 130 Doom
+{
+	Any { SF_BlueEntryCard SF_BlueRuneKey }
+	Message "You Need a Any Blue Key To Open This Door"
+	RemoteMessage "You Need a Any Blue Key To Use This Object"
+	Mapcolor 0 0 255
+}
+
+
+Lock 131 Doom
+{
+	Any { SF_YellowEntryCard SF_YellowRuneKey }
+	Message "You Need a Any Yellow Key To Open This Door"
+	RemoteMessage "You Need a Any Yellow Key To Use This Object"
+	Mapcolor 255 255 0
+}
+
+
+Lock 132 Doom
+{
+	Any { SF_RedEntryCard SF_RedRuneKey }
+	Message "You Need a Any Red Key To Open This Door"
+	RemoteMessage "You Need a Any Red Key To Use This Object"
+	Mapcolor 255 0 0
+}
+
+
+Lock 133 Doom
+{
+	Any { SF_BlueEntryCard SF_BlueRuneKey }
+	Message "You Need a Any Blue Key To Open This Door"
+	RemoteMessage "You Need a Any Blue Key To Use This Object"
+	Mapcolor 0 0 255
+}
+
+
+Lock 134 Doom
+{
+	Any { SF_YellowEntryCard SF_YellowRuneKey }
+	Message "You Need a Any Yellow Key To Open This Door"
+	RemoteMessage "You Need a Any Yellow Key To Use This Object"
+	Mapcolor 255 255 0
+}
+
+Lock 100
+{
+	Message "You Need a Any Key To Open This Door"
+	RemoteMessage "You Need a Any Key To Use This Object"
+	Mapcolor 128 128 255
+}
+
+Lock 228
+{
+	Message "You Need a Any Yellow Key To Open This Door"
+	RemoteMessage "You Need a Any Yellow Key To Use This Object"
+	Mapcolor 128 128 255
+}
+
+Lock 229 Doom
+{
+	Any { SF_BlueEntryCard SF_BlueRuneKey }
+	Any { SF_YellowEntryCard SF_YellowRuneKey }
+	Any { SF_RedEntryCard SF_RedRuneKey }
+	Message "You Need all 3 Keys To Open This Door"
+	RemoteMessage "You Need all 3 Keys To Use This Object"
+}
+
+Lock 101 Doom
+{
+	SF_BlueEntryCard
+	SF_BlueRuneKey
+	SF_YellowEntryCard
+	SF_YellowRuneKey
+	SF_RedEntryCard
+	SF_RedRuneKey
+	Message "You Need all 3 Keys and Demon Runes To Open This Door"
+	RemoteMessage "You Need all 3 Keys and Demon Runes To Use This Object"
+}

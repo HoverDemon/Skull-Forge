@@ -1,0 +1,15 @@
+Actor SF_AmmoBackPack : BackPackItem 8
+{
+    //$Title Munitions Backpack
+	//$Sprite AMOBA0
+	//$Category Ammo
+    //$Colour 19
+    Inventory.Pickupmessage "\ckAMMO AQUIRED: \cbMunitions Backpack \c*(MAX AMMO INCREASED)"
+    Inventory.PickupSound "ammo/backpack/pickup"
+    States
+    {
+        Spawn:
+            AMOB A -1
+            Loop
+    }
+}

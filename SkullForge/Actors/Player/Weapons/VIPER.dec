@@ -3,10 +3,11 @@ Actor SF_Viper : WF_WeaponBase 2002
 	//$Title SAR-56 Viper
 	//$Sprite SARIA0
 	//$Category Weapons
+	//$Colour 14
 	Weapon.SelectionOrder 1000
 	Weapon.AmmoUse 1
 	Weapon.AmmoGive 40
-	Weapon.AmmoType "Clip"
+	Weapon.AmmoType "SF_Bullets"
 	Obituary "\cb%o \umwas worked over by \cr%k's \cmSAR-56."
 	Inventory.Pickupmessage "\cqWEAPON AQUIRED: \cbSAR-56 Viper \c*(SLOT 4)"
 	Tag "SAR-56 Viper"

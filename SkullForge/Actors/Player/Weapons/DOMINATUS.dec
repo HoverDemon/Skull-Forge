@@ -3,10 +3,11 @@ ACTOR SF_Dominatus : WF_WeaponBase 82
 	//$Title Dominatus DBR-6
 	//$Sprite SGN2A0
 	//$Category Weapons
+	//$Colour 14
 	Weapon.SelectionOrder 400
 	Weapon.AmmoUse 2
 	Weapon.AmmoGive 16
-	Weapon.AmmoType "Shell"
+	Weapon.AmmoType "SF_Shells"
 	Obituary "\cb%o \umhas vaporized by \cr%k's \cmDBR-6."
 	Inventory.Pickupmessage "\cqWEAPON AQUIRED: \cbDominatus DBR-6 \c*(SLOT 3)"
 	Tag "Dominatus DBR-6"

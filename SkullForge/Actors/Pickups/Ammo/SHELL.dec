@@ -1,0 +1,38 @@
+Actor SF_Shells : Ammo 2008
+{
+    //$Title Shells
+	//$Sprite AMO2A0
+	//$Category Ammo
+    //$Colour 19
+    Inventory.Amount 4
+    Inventory.MaxAmount 100
+    Ammo.BackpackAmount 2
+    Ammo.BackpackMaxAmount 200
+    Inventory.Pickupmessage "\ckAMMO AQUIRED: \cbShells \c*(SLOT 3)"
+    Inventory.PickupSound "ammo/shells/small/pickup"
+    Inventory.Icon "AMO2A0"
+    States
+    {
+        Spawn:
+            AMO2 A -1
+            Loop
+    }
+}
+
+Actor SF_ShellBox : SF_Shells 2049
+{
+    //$Title Shell Box
+	//$Sprite AMO2B0
+	//$Category Ammo
+    //$Colour 19
+    Inventory.Amount 20
+    Inventory.Pickupmessage "\ckAMMO AQUIRED: \cbShell Box \c*(SLOT 3)"
+    Inventory.Icon "AMO2B0"
+    Inventory.PickupSound "ammo/shells/big/pickup"
+    States
+    {
+        Spawn:
+            AMO2 B -1
+            Loop
+    }
+}

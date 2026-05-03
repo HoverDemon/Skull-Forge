@@ -13,10 +13,10 @@ ACTOR SF_Sowserpent 3002
 	Monster
 	+FLOORCLIP
 	+NOINFIGHTING
-	SeeSound "monsters/geckoid/see"
-	PainSound "monsters/geckoid/pain"
-	DeathSound "monsters/geckoid/death"
-	ActiveSound "monsters/geckoid/active"
+	SeeSound "monsters/sowserpent/see"
+	PainSound "monsters/sowserpent/pain"
+	DeathSound "monsters/sowserpent/death"
+	ActiveSound "monsters/sowserpent/active"
 	HitObituary "%o was Slimed by a Sowserpent"
 	States
 	{
@@ -28,7 +28,7 @@ ACTOR SF_Sowserpent 3002
 			Loop
 		Melee:
             SARG EF 6 Fast A_FaceTarget
-            SARG G 6 Fast A_CustomMeleeAttack(6,"monsters/subject/hit","",0,TRUE)
+            SARG G 6 Fast A_CustomMeleeAttack(6,"monsters/subject/hit","monsters/sowserpent/attack",0,TRUE)
             Goto See
 		Pain:
 			SARG H 2 Fast

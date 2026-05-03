@@ -3,6 +3,7 @@ ACTOR SF_RipSaw : WF_WeaponBase 2005
 	//$Title RipSaw
 	//$Sprite CSAWA0
 	//$Category Weapons
+	//$Colour 14
 	Weapon.SelectionOrder 2000
 	Obituary "\cb%o \umgot sawed in half by \cr%k."
 	Inventory.Pickupmessage "\cqWEAPON AQUIRED: \cbRipsaw \c*(SLOT 1)"

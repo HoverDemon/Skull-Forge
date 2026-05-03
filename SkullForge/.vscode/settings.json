@@ -9,6 +9,7 @@
         "TRNSLATE.*" : "Trnslate",
         "animdefs.*" : "animdefs",
         "*.iwad": "iwadinfo",
-        "*.game": "gameinfo"
+        "*.game": "gameinfo",
+        "LOCKDEFS.*": "lockdefs"
     }
 }

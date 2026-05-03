@@ -1,14 +1,11 @@
 //IPK# compat Depricate Later
 #include "Actors/freedoom/deadthings.txt"
-#include "Actors/freedoom/doomammo.txt"
-#include "Actors/freedoom/doomarmor.txt"
 #include "Actors/freedoom/doomartifacts.txt"
 #include "Actors/freedoom/doomdecorations.txt"
-#include "Actors/freedoom/doomhealth.txt"
-#include "Actors/freedoom/doomkeys.txt"
 #include "Actors/freedoom/doommisc.txt"
 
 //##PLAYER STUFF##
+
 #include "Actors/Player/KARL.dec"
 
 #include "Actors/Player/Weapons/AXE.dec"
@@ -21,14 +18,25 @@
 
 //##PICKUPS##
 
+#include "Actors/Pickups/KEYS.dec"
+
+#include "Actors/Pickups/Ammo/BACKPACK.dec"
+#include "Actors/Pickups/Ammo/BULLETS.dec"
+#include "Actors/Pickups/Ammo/SHELL.dec"
+#include "Actors/Pickups/Ammo/ROCKET.dec"
+#include "Actors/Pickups/Ammo/CELLS.dec"
+
+#include "Actors/Pickups/Health n Armor/HEALTH.dec"
+#include "Actors/Pickups/Health n Armor/ARMOR.dec"
+
 #include "Actors/Pickups/Powerups/QUAD.dec"
 
 //##MONSTERS##
 
 #include "Actors/Monster/GRUNT.dec"
 #include "Actors/Monster/BREACHER.dec"
-#include "Actors/Monster/SUBJECT.dec"
-#include "Actors/Monster/GECKOID.dec"
+//#include "Actors/Monster/SUBJECT.dec"
+//#include "Actors/Monster/GECKOID.dec"
 #include "Actors/Monster/BERSERKER.dec"
 #include "Actors/Monster/DESCIAN.dec"
 #include "Actors/Monster/HOPLITE.dec"

@@ -1,0 +1,38 @@
+Actor SF_RocketAmmo : Ammo 2010
+{
+    //$Title Rocket
+	//$Sprite AMO3A0
+	//$Category Ammo
+    //$Colour 19
+    Inventory.Amount 1
+    Inventory.MaxAmount 50
+    Ammo.BackpackAmount 1
+    Ammo.BackpackMaxAmount 100
+    Inventory.Pickupmessage "\ckAMMO AQUIRED: \cbRocket \c*(SLOT 5)"
+    Inventory.PickupSound "ammo/rocket/small/pickup"
+    Inventory.Icon "AMO3A0"
+    States
+    {
+        Spawn:
+            AMO3 A -1
+            Loop
+    }
+}
+
+Actor SF_RocketBox : SF_RocketAmmo 2046
+{
+    //$Title Rocket Box
+	//$Sprite AMO3B0
+	//$Category Ammo
+    //$Colour 19
+    Inventory.Amount 5
+    Inventory.Pickupmessage "\ckAMMO AQUIRED: \cbRocket Box \c*(SLOT 5)"
+    Inventory.Icon "AMO3B0"
+    Inventory.PickupSound "ammo/rocket/big/pickup"
+    States
+    {
+        Spawn:
+            AMO3 B -1
+            Loop
+    }
+}

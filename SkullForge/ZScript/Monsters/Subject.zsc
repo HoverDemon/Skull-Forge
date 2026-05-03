@@ -1,0 +1,152 @@
+class SF_Subject : Actor
+{
+    Default
+    {
+        //$Category "Monster/Post-Human"
+        //$Title "Subject (Guarding)"
+        //$Arg0 "Asleep"
+        //$Arg0Tooltip "If set to 1 the Subject will appear as a corpse before getting close"
+        //$Color 12
+        Monster;
+        Health 60;
+        Radius 16;
+        Height 54;
+        Mass 80;
+        Speed 4;
+        PainChance 200;
+        SeeSound "monsters/subject/see";
+        ActiveSound "monsters/subject/active";
+        PainSound "monsters/subject/pain";
+        DeathSound "monsters/subject/death";
+        MeleeRange 32;
+    }
+
+    // Custom function to check for a wall and climb if it meets height conditions
+    void TryClimbWall()
+    {
+        FLineTraceData traceData;
+        // Trace directly in front of the monster (radius + 16 units for foresight)
+        bool hit = LineTrace(angle, radius + 16.0, 0, TRF_THRUACTORS, 8.0, 0, 0, traceData);
+
+        // Check if we specifically hit a wall
+        if (hit && traceData.HitType == TRACE_HitWall)
+        {
+            Line hitLine = traceData.HitLine;
+            
+            // Ensure there is a sector on the other side of this line (not a 1-sided wall)
+            if (hitLine && hitLine.backsector)
+            {
+                // Identify the sector on the opposite side of the line we just hit
+                Sector otherSector = (hitLine.frontsector == traceData.HitSector) ? hitLine.backsector : hitLine.frontsector;
+
+                if (otherSector)
+                {
+                    // Calculate the height of the floor in the next sector compared to the actor's feet
+                    // We append .XY to HitLocation to safely convert the Vector3 to a Vector2
+                    double targetFloorZ = otherSector.floorplane.ZAtPoint(traceData.HitLocation.XY);
+                    double stepHeight = targetFloorZ - pos.z;
+
+                    // Condition: higher than a standard step (24), but less than 48 units
+                    if (stepHeight > 24.0 && stepHeight < 48.0)
+                    {
+                        // Apply an upward vaulting force and slight forward momentum
+                        vel.z = 9.0; 
+                        vel.x += cos(angle) * 6.0; 
+                        vel.y += sin(angle) * 6.0;
+                    }
+                }
+            }
+        }
+    }
+
+    States
+    {
+    Spawn:
+        TNT1 A 0 A_JumpIf(args[0] == 1, "Spawn_Lay");
+        SUBJ AABB 8 A_Look();
+        Loop;
+    Spawn_Lay:
+        SUBJ M 1 
+        {
+            A_LookEx(LOF_NOSOUNDCHECK, 0, 256, 0, 360, "Jump");
+            A_SetSize(16, 13);
+            A_ChangeFlag("ALWAYSPAIN", true); // Reverted to A_ChangeFlag to satisfy the compiler
+        }
+        Loop;
+    Jump:
+        SUBJ L 2 
+        {
+            ThrustThingZ(0, 32, 0, 0);
+            A_SetSize(16, 24);
+            args[0] = 0; 
+        }
+        SUBJ K 2 A_SetSize(16, 38);
+        SUBJ J 4 A_SetSize(16, 48);
+        SUBJ I 2 A_SetSize(16, 54);
+    See:
+        SUBJ AAAA 4 Fast 
+        {
+            A_Chase();
+            TryClimbWall(); 
+            A_SetTics(random(1, 7));
+        }
+        SUBJ BBBB 2 Fast A_Chase();
+        SUBJ CCCC 2 Fast A_Chase();
+        SUBJ DDDD 2 Fast A_Chase();
+        TNT1 A 0 
+        {
+            A_StartSound("monsters/subject/step", CHAN_BODY);
+            Speed = random(1, 9); 
+        }
+        Loop;
+    Melee:
+        TNT1 A 0 A_StartSound("monsters/subject/attack", CHAN_VOICE);
+        SUBJ EEEEEE 3 Fast 
+        {
+            A_FaceTarget();
+            A_SetTics(random(1, 5));
+        }
+        TNT1 A 0 
+        {
+            A_Recoil(-5);
+            ThrustThingZ(0, 24, 0, 0);
+        }
+        SUBJ F 2 Fast A_CustomMeleeAttack(13, "monsters/subject/hit", "", 'Melee', true);
+        SUBJ FFF 2 Fast A_FaceTarget();
+        SUBJ GGGG 3 Fast A_FaceTarget();
+        Goto See;
+    Pain:
+        TNT1 A 0 A_JumpIf(args[0] == 1, "Jump");
+        SUBJ H 3 Fast; 
+        SUBJ H 3 Fast A_Pain();
+        Goto See;
+    Death:
+        SUBJ I 4 A_Scream();
+        SUBJ J 8 A_NoBlocking();
+        SUBJ KL 4;
+        SUBJ M -1;
+        Stop;
+    }
+}
+
+class SF_Subject_Wander : SF_Subject
+{
+    Default
+    {
+        //$Category "Monster/Post-Human"
+        //$Title "Subject (Wandering)"
+        //$ClearArgs
+        //$Color 12
+    }
+    
+    States
+    {
+    Spawn:
+        TNT1 A 0 A_StartSound("monsters/subject/step", CHAN_BODY);
+        SUBJ AAAA 6 Fast { A_Look(); A_Wander(); TryClimbWall(); }
+        SUBJ BBBB 4 Fast { A_Look(); A_Wander(); TryClimbWall(); }
+        SUBJ CCCC 4 Fast { A_Look(); A_Wander(); TryClimbWall(); }
+        SUBJ DDDD 4 Fast { A_Look(); A_Wander(); TryClimbWall(); }
+        Loop;
+    }
+}

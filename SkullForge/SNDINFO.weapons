@@ -159,3 +159,19 @@ $Random weapons/speedhucker/down { speedhucker/down1 speedhucker/down2 speedhuck
 speedhucker/down1 SPHCDOW1
 speedhucker/down2 SPHCDOW2
 speedhucker/down3 SPHCDOW3
+
+//AMMO PICKUP SOUNDS
+
+ammo/bullets/small/pickup BUL1PCK
+ammo/bullets/big/pickup BUL2PCK
+
+ammo/shells/small/pickup SHL1PCK
+ammo/shells/big/pickup SHL2PCK
+
+ammo/rocket/small/pickup RCK1PCK
+ammo/rocket/big/pickup RCK2PCK
+
+ammo/cell/small/pickup CEL1PCK
+ammo/cell/big/pickup CEL2PCK
+
+ammo/backpack/pickup BACKPCK

@@ -1,0 +1,38 @@
+Actor SF_Bullets : Ammo 2007
+{
+    //$Title Magazine
+	//$Sprite AMO1A0
+	//$Category Ammo
+    //$Colour 19
+    Inventory.Amount 20
+    Inventory.MaxAmount 200
+    Ammo.BackpackAmount 10
+    Ammo.BackpackMaxAmount 400
+    Inventory.Pickupmessage "\ckAMMO AQUIRED: \cbMagazine \c*(SLOT 2 & 4)"
+    Inventory.PickupSound "ammo/bullets/small/pickup"
+    Inventory.Icon "AMO1A0"
+    States
+    {
+        Spawn:
+            AMO1 A -1
+            Loop
+    }
+}
+
+Actor SF_BulletBox : SF_Bullets 2048
+{
+    //$Title Bullet Box
+	//$Sprite AMO1B0
+	//$Category Ammo
+    //$Colour 19
+    Inventory.Amount 50
+    Inventory.Pickupmessage "\ckAMMO AQUIRED: \cbBullet Box \c*(SLOT 2 & 4)"
+    Inventory.PickupSound "ammo/bullets/big/pickup"
+    Inventory.Icon "AMO1B0"
+    States
+    {
+        Spawn:
+            AMO1 B -1
+            Loop
+    }
+}

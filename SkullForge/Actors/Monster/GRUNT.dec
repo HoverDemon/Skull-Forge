@@ -17,8 +17,8 @@ ACTOR Grunt 3004
 	DeathSound "monsters/grunt/death"
 	ActiveSound "monsters/grunt/active"
 	Obituary "%o was shot by a Grunt"
-	DropItem "clip"
-	DropItem "clip"
+	DropItem "SF_Bullets"
+	DropItem "SF_Bullets"
 	States
 	{
 		Spawn:

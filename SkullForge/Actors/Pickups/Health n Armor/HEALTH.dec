@@ -1,0 +1,93 @@
+Actor SF_Stimpack : Health 2011
+{
+    //$Title Stimpack
+    //$Category Health and Armor
+    //$Colour 1
+    //$Sprite MEDKA0
+    //$NotAngled
+    Inventory.Amount 10
+    Inventory.PickupMessage "\cqHEALTH AQUIRED: \cbStimpack \c*(+10 HP)"
+    Health.LowMessage 25, "\cqHEALTH AQUIRED: \cbStimpack \c*(+10 HP) \cl[CRITICAL CONDITION]"
+    States
+    {
+        Spawn:
+            MEDK A -1
+            Loop
+    }
+}
+
+Actor SF_Medkit : Health 2012
+{
+    //$Title Medkit
+    //$Category Health and Armor
+    //$Colour 1
+    //$Sprite MEDKB0
+    //$NotAngled
+    Inventory.Amount 25
+    Inventory.PickupMessage "\cqHEALTH AQUIRED: \cbMedkit \c*(+25 HP)"
+    Health.LowMessage 25, "\cqHEALTH AQUIRED: \cbMedkit \c*(+25 HP) \cl[CRITICAL CONDITION]"
+    States
+    {
+        Spawn:
+            MEDK B -1
+            Loop
+    }
+}
+
+Actor SF_AdrenalinePack : CustomInventory 2023
+{
+    //$Title Adrenaline Pack
+    //$Category Health and Armor
+    //$Colour 1
+    //$Sprite MEDKC0
+    //$NotAngled
+    Inventory.PickupMessage "\cqHEALTH AQUIRED: \cbAdrenaline Pack \c*(FULL HEAL + SPEED BOOST)"
+    States
+    {
+        Spawn:
+            MEDK C -1
+            Loop
+        Pickup:
+            TNT1 A 0
+            {
+                A_GiveInventory("SF_AP_Health", 100);
+                A_GiveInventory("SF_AP_Speed", 1);
+                A_GiveInventory("SF_AP_Fire", 1);
+            }
+            Stop
+    }
+}
+
+Actor SF_AP_Health : Health
+{
+    Inventory.Amount 100
+    Inventory.MaxAmount 100
+    +INVENTORY.ALWAYSPICKUP
+}
+
+Actor SF_AP_Speed : PowerUpGiver
+{
+    PowerUp.Type "_AP_Speed"
+    PowerUp.Duration -20
+    Inventory.MaxAmount 0
+    Powerup.Colormap 0.078, 0.145, 0.200, 0.0, 0.561, 1.0
+    +INVENTORY.AUTOACTIVATE
+    +INVENTORY.ALWAYSPICKUP
+}
+
+Actor Power_AP_Speed : PowerSpeed
+{
+    Speed 1.575
+    +INVENTORY.NOTELEPORTFREEZE
+}
+
+Actor SF_AP_Fire : PowerUpGiver
+{
+    PowerUp.Type "_AP_Fire"
+    PowerUp.Duration -20
+    Inventory.MaxAmount 0
+    +INVENTORY.AUTOACTIVATE
+    +INVENTORY.ALWAYSPICKUP
+}
+
+Actor Power_AP_Fire : PowerDoubleFiringSpeed {}

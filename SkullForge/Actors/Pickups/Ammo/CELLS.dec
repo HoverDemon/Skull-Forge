@@ -1,0 +1,38 @@
+Actor SF_Cell : Ammo 2047
+{
+    //$Title Cell
+	//$Sprite AMO4A0
+	//$Category Ammo
+    //$Colour 19
+    Inventory.Amount 20
+    Inventory.MaxAmount 300
+    Ammo.BackpackAmount 10
+    Ammo.BackpackMaxAmount 600
+    Inventory.Pickupmessage "\ckAMMO AQUIRED: \cbCell \c*(SLOT 6 & 7`)"
+    Inventory.PickupSound "ammo/cell/small/pickup"
+    Inventory.Icon "AMO4A0"
+    States
+    {
+        Spawn:
+            AMO4 A -1
+            Loop
+    }
+}
+
+Actor SF_CellPack : SF_Cell 17
+{
+    //$Title Cell Pack
+	//$Sprite AMO4B0
+	//$Category Ammo
+    //$Colour 19
+    Inventory.Amount 40
+    Inventory.Pickupmessage "\ckAMMO AQUIRED: \cbCell Pack \c*(SLOT 6 & 7)"
+    Inventory.PickupSound "ammo/cell/big/pickup"
+    Inventory.Icon "AMO4B0"
+    States
+    {
+        Spawn:
+            AMO4 B -1
+            Loop
+    }
+}

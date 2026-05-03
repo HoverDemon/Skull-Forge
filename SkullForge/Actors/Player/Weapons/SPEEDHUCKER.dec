@@ -3,10 +3,11 @@ ACTOR SF_SpeedHucker : WF_WeaponBase 2003
 	//$Title Speed Hucker RPM-14
 	//$Sprite INHGA0
 	//$Category Weapons
+	//$Colour 14
 	Weapon.SelectionOrder 800
 	Weapon.AmmoUse 1
 	Weapon.AmmoGive 8
-	Weapon.AmmoType "RocketAmmo"
+	Weapon.AmmoType "SF_RocketAmmo"
 	Obituary "\cb%o \umhas been burned to death by \cr%k's \cmRPM-14."
 	Inventory.Pickupmessage "\cqWEAPON AQUIRED: \cbRPM-14 Speedhucker \c*(SLOT 5)"
 	Tag "RPM-14 Speedhucker"

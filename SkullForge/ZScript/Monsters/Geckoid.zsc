@@ -1,0 +1,162 @@
+class SF_Geckoid : Actor
+{
+    Default
+    {
+        //$Title "Geckoid"
+        //$Sprite "TROOG3"
+        //$Category "Monster/Geckoidal"
+        Health 40;
+        Radius 20;
+        Height 56;
+        Mass 100;
+        Speed 14;
+        PainChance 200;
+        Monster;
+        +FLOORCLIP
+        +NOINFIGHTING
+        BloodColor "Green";
+        SeeSound "monsters/geckoid/see";
+        PainSound "monsters/geckoid/pain";
+        DeathSound "monsters/geckoid/death";
+        ActiveSound "monsters/geckoid/active";
+        HitObituary "%o was Ganked by a Geckoid";
+        Obituary "%o was Grilled by a Geckoid";
+    }
+
+    // Custom function to detect height differences (Climbing/Vaulting)
+    void TryClimbWall()
+    {
+        FLineTraceData traceData;
+        // Trace forward to find a wall or ledge
+        bool hit = LineTrace(angle, radius + 24.0, 0, TRF_THRUACTORS, 8.0, 0, 0, traceData);
+
+        if (hit && traceData.HitType == TRACE_HitWall)
+        {
+            Line hitLine = traceData.HitLine;
+            if (hitLine && hitLine.backsector)
+            {
+                Sector otherSector = (hitLine.frontsector == traceData.HitSector) ? hitLine.backsector : hitLine.frontsector;
+
+                if (otherSector)
+                {
+                    double targetFloorZ = otherSector.floorplane.ZAtPoint(traceData.HitLocation.XY);
+                    double stepHeight = targetFloorZ - pos.z;
+
+                    // Condition: Ledge is up to 24 units above OR up to 196 units below
+                    if (stepHeight <= 24.0 && stepHeight >= -196.0)
+                    {
+                        // If it's a climbable height (positive), give a small jump boost
+                        if (stepHeight > 0)
+                        {
+                            vel.z = 12.0;
+                        }
+                        // Apply forward momentum to clear the gap/ledge
+                        vel.x += cos(angle) * 4.0;
+                        vel.y += sin(angle) * 4.0;
+                    }
+                }
+            }
+        }
+    }
+
+    States
+    {
+    Spawn:
+        TROO AB 10 A_Look();
+        Loop;
+    See:
+        TROO AABBCCDD 3 
+        {
+            A_Chase();
+            TryClimbWall();
+        }
+        Loop;
+    Missile:
+        TROO EF 6 A_FaceTarget();
+        TROO G 6 
+        {
+            A_SpawnProjectile("SF_GeckoidBall", 36, 18);
+            A_SpawnProjectile("SF_GeckoidBall", 36, -18);
+        }
+        Goto See;
+    Pain:
+        TROO H 2;
+        TROO H 2 A_Pain();
+        Goto See;
+    Death:
+        TROO I 8 A_SetTranslation("GeckoidGreen");
+        TROO J 8 A_Scream();
+        TROO K 6;
+        TROO L 6 A_NoBlocking();
+        TROO M -1;
+        Stop;
+    XDeath:
+        TROO N 5 A_SetTranslation("GeckoidGreen");
+        TROO O 5 A_XScream();
+        TROO P 5;
+        TROO Q 5 A_NoBlocking();
+        TROO RST 5;
+        TROO U -1;
+        Stop;
+    Raise:
+        TROO ML 8;
+        TROO KJI 6;
+        Goto See;
+    }
+}
+
+class SF_GeckoidBall : Actor
+{
+    Default
+    {
+        Projectile;
+        Radius 3;
+        Height 4;
+        Scale 0.5;
+        DamageFunction (10); // Damage (10) in Decorate is an expression, uses DamageFunction in ZScript
+        Speed 12;
+        FastSpeed 24;
+        +RANDOMIZE
+        RenderStyle "Add";
+        Alpha 0.75;
+        SeeSound "monsters/geckoid/missile/fire";
+        DeathSound "monsters/geckoid/missile/explode";
+    }
+
+    States
+    {
+    Spawn:
+        BAL1 AAAABBBB 1 Bright A_SpawnItemEx("SF_GeckoidTrail");
+        Loop;
+    Death:
+        TNT1 AAAA 0 A_SpawnItemEx("SF_GeckoidTrail", random(-2,2), random(-2,2), random(-2,2), frandom(-2.5,2.5), frandom(-2.5,2.5), frandom(-2.5,2.5));
+        BAL1 CDE 4 Bright;
+        Stop;
+    }
+}
+
+class SF_GeckoidTrail : Actor
+{
+    Default
+    {
+        +NOBLOCKMAP
+        +NOGRAVITY
+        RenderStyle "Add";
+        Alpha 0.25;
+        Scale 0.4;
+    }
+
+    States
+    {
+    Spawn:
+        BAL1 A 1 A_SetScale(0.4);
+        BAL1 A 1 A_SetScale(0.35);
+        BAL1 B 1 A_SetScale(0.3);
+        BAL1 B 1 A_SetScale(0.25);
+        BAL1 A 1 A_SetScale(0.2);
+        BAL1 A 1 A_SetScale(0.15);
+        BAL1 B 1 A_SetScale(0.1);
+        BAL1 B 1 A_SetScale(0.05);
+        Stop;
+    }
+}

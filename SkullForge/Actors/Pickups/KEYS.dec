@@ -1,0 +1,107 @@
+Actor SF_BlueEntryCard : Key 5
+{
+    //$Title Blue Entry Card
+    //$Category Keys
+    //$Colour 13
+    //$Sprite BPCRA0
+    //$NotAngled
+    +Bright
+    Inventory.PickupMessage "\ctKEY AQUIRED: \chBlue Entry Card"
+    States
+    {
+        Spawn:
+            BPCR AB 6
+            BPCR CDEF 4
+            BPCR HI 6
+            Loop
+    }
+}
+
+Actor SF_RedEntryCard : Key 13
+{
+    //$Title Red Entry Card
+    //$Category Keys
+    //$Colour 13
+    //$Sprite RPCRA0
+    //$NotAngled
+    +Bright
+    Inventory.PickupMessage "\ctKEY AQUIRED: \cgRed Entry Card"
+    States
+    {
+        Spawn:
+            RPCR AB 6
+            RPCR CDEF 4
+            RPCR HI 6
+            Loop
+    }
+}
+
+Actor SF_YellowEntryCard : Key 6
+{
+    //$Title Yellow Entry Card
+    //$Category Keys
+    //$Colour 13
+    //$Sprite YPCRA0
+    //$NotAngled
+    +Bright
+    Inventory.PickupMessage "\ctKEY AQUIRED: \cfYellow Entry Card"
+    States
+    {
+        Spawn:
+            YPCR AB 6
+            YPCR CDEF 4
+            YPCR HI 6
+            Loop
+    }
+}
+
+Actor SF_BlueRuneKey : Key 40
+{
+    //$Title Blue Rune Key
+    //$Category Keys
+    //$Colour 13
+    //$Sprite BDRNA0
+    //$NotAngled
+    +Bright
+    Inventory.PickupMessage "\ctKEY AQUIRED: \chBlue Rune Key"
+    States
+    {
+        Spawn:
+            BDRN ABCDEDCB 4
+            Loop
+    }
+}
+
+Actor SF_RedRuneKey : Key 38
+{
+    //$Title Red Rune Key
+    //$Category Keys
+    //$Colour 13
+    //$Sprite RDRNA0
+    //$NotAngled
+    +Bright
+    Inventory.PickupMessage "\ctKEY AQUIRED: \cgRed Rune Key"
+    States
+    {
+        Spawn:
+            RDRN ABCDEDCB 4
+            Loop
+    }
+}
+
+Actor SF_YellowRuneKey : Key 39
+{
+    //$Title Yellow Rune Key
+    //$Category Keys
+    //$Colour 13
+    //$Sprite YDRNA0
+    //$NotAngled
+    +Bright
+    Inventory.PickupMessage "\ctKEY AQUIRED: \cfYellow Rune Key"
+    States
+    {
+        Spawn:
+            YDRN ABCDEDCB 4
+            Loop
+    }
+}

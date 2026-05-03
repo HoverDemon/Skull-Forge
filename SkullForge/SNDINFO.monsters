@@ -195,6 +195,36 @@ monsters/geckoid/missile/explode MISLEXPL
 $pitchset monsters/geckoid/missile/explode 1.25
 $limit monsters/geckoid/missile/explode 8
 
+//### Sowserpent ###
+
+$Random monsters/sowserpent/see { sowserpent/see1 sowserpent/see2 sowserpent/see3 }
+
+sowserpent/see1 MSSSIT1
+sowserpent/see2 MSSSIT2
+sowserpent/see3 MSSSIT3
+
+$Random monsters/sowserpent/active { sowserpent/active1 sowserpent/active2 }
+
+sowserpent/active1 MSSACT1
+sowserpent/active2 MSSACT2
+
+$Random monsters/sowserpent/pain { sowserpent/pain1 sowserpent/pain2 sowserpent/pain3 }
+
+sowserpent/pain1 MSSPIN1
+sowserpent/pain2 MSSPIN2
+sowserpent/pain3 MSSPIN3
+
+$Random monsters/sowserpent/death { sowserpent/death1 sowserpent/death2 sowserpent/death3 }
+
+sowserpent/death1 MSSDTH1
+sowserpent/death2 MSSDTH2
+sowserpent/death3 MSSDTH3
+
+$Random monsters/sowserpent/attack { sowserpent/attack1 sowserpent/attack2 }
+
+sowserpent/attack1 MSSATK1
+sowserpent/attack2 MSSATK2
+
 //### Hoplite ###
 
 $Random monsters/hoplite/see { hoplite/see1 hoplite/see2 hoplite/see3 }

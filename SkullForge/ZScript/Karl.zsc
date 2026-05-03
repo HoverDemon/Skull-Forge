@@ -48,6 +48,7 @@ Class SF_Player : DoomPlayer
     double landOffset;   // landing “thud” offset
     double rollAngle;    // strafe tilt
     bool wasGrounded;
+    int jumpCooldown;   // cooldown (in tics) before next jump allowed
 
     // ----------------------------------------------------
     override void PostBeginPlay()
@@ -118,13 +119,14 @@ Class SF_Player : DoomPlayer
 					}
 				}
                 else
-				{
-					isWallAttached = false;
-					bNoGravity = false;          // <-- ADD THIS
-					Vector2 jumpDir2 = AngleToVector(angle);
-					double jumpStrength = 24.0;
-					vel = (jumpDir2.x * jumpStrength, jumpDir2.y * jumpStrength, JumpZ * 1.25);
-				}
+                {
+                    isWallAttached = false;
+                    bNoGravity = false;
+                    Vector2 jumpDir2 = AngleToVector(angle);
+                    double jumpStrength = 24.0;
+                    vel = (jumpDir2.x * jumpStrength, jumpDir2.y * jumpStrength, JumpZ * 1.25);
+                    jumpCooldown = 1;
+                }
             }
             isUsing = true;
         }
@@ -162,136 +164,120 @@ Class SF_Player : DoomPlayer
 
     // ---------- QUAKE MOVEMENT & BOBBING (fully integrated) ----------
     override void MovePlayer()
+{
+    let player = self.player;
+    if (!player) return;
+
+    if (isWallAttached)
     {
-        let player = self.player;
-        if (!player) return;
-
-        // If wall attached or sliding, let those systems fully control velocity
-        if (isWallAttached)
-		{
-			vel.x = 0;
-			vel.y = 0;
-			vel.z = 0;                  // <-- ensure no leftover fall
-			player.cmd.forwardmove = 0;
-			player.cmd.sidemove = 0;
-			Super.MovePlayer();
-			return;
-		}
-
-        if (isSliding)
-        {
-            // Preserve slide momentum, but ignore player input
-            player.cmd.forwardmove = 0;
-            player.cmd.sidemove = 0;
-            Super.MovePlayer();
-            return;
-        }
-
-        // --- NORMAL QUAKE MOVEMENT BELOW ---
-        double fm = player.cmd.forwardmove;
-        double sm = player.cmd.sidemove;
-        double maxSpeed = 12.0 * Speed;   // Speed = 1.05 → maxSpeed = 12.6
-
-        // Ground detection (engine’s own “onground” plus water)
-        bool isGrounded = (pos.z <= floorz || bOnMobj || waterlevel > 0);
-
-        // Landing detection – creates the “thud” dip
-        if (isGrounded && !wasGrounded && vel.z < -2.0)
-        {
-            landOffset = clamp(vel.z * 0.8, -12.0, 0);
-        }
-
-        // Allow engine jump (jumpTics = 0 + land pop)
-        if ((player.cmd.buttons & BT_JUMP) && isGrounded)
-        {
-            player.jumpTics = 0;
-            landOffset = 3.0;   // slight upward kick on jump
-        }
-
-        wasGrounded = isGrounded;
-
-        // Zero input so engine doesn’t interfere with our velocity
+        vel.x = 0;
+        vel.y = 0;
+        vel.z = 0;
         player.cmd.forwardmove = 0;
         player.cmd.sidemove = 0;
-
-        // Stop instantly on ground when no keys pressed
-        if (fm == 0 && sm == 0)
-        {
-            if (isGrounded)
-            {
-                vel.x = 0;
-                vel.y = 0;
-            }
-        }
-        else
-        {
-            // Calculate move angle (Quake’s 8‑way directional movement)
-            double moveAngle = angle;
-            if (fm > 0 && sm == 0) moveAngle = angle;
-            else if (fm < 0 && sm == 0) moveAngle = angle + 180;
-            else if (fm == 0 && sm > 0) moveAngle = angle - 90;
-            else if (fm == 0 && sm < 0) moveAngle = angle + 90;
-            else if (fm > 0 && sm > 0) moveAngle = angle - 45;
-            else if (fm > 0 && sm < 0) moveAngle = angle + 45;
-            else if (fm < 0 && sm > 0) moveAngle = angle - 135;
-            else if (fm < 0 && sm < 0) moveAngle = angle + 135;
-
-            // Apply velocity (cap to maxSpeed in air)
-            if (isGrounded || (vel.x*vel.x + vel.y*vel.y) <= (maxSpeed*maxSpeed))
-            {
-                vel.x = cos(moveAngle) * maxSpeed;
-                vel.y = sin(moveAngle) * maxSpeed;
-            }
-        }
-
-        // Run engine physics (collisions, jump, etc.)
         Super.MovePlayer();
-
-        // Restore player input for weapon display / other systems
-        player.cmd.forwardmove = fm;
-        player.cmd.sidemove = sm;
-
-        // --- CUSTOM BOBBING, LANDING, AND ROLL ---
-        double horizontalSpeed = vel.length();
-        double targetBob = 0;
-
-        if (isGrounded && horizontalSpeed > 0.1)
-        {
-            // Forward bobbing
-            bobCounter += horizontalSpeed * 1.4;
-            double bobIntensity = horizontalSpeed * 0.3;
-            targetBob = Sin(bobCounter) * bobIntensity;
-
-            // Weapon bobbing (subtle)
-            player.bob = bobIntensity * 1.2;
-
-            // Strafe roll tilt
-            double targetRoll = 0;
-            if (sm > 0) targetRoll = 1.2;
-            else if (sm < 0) targetRoll = -1.2;
-            rollAngle = (rollAngle * 0.9) + (targetRoll * 0.1);
-        }
-        else
-        {
-            // Smooth decay when idle/airborne
-            bobCounter = 0;
-            player.bob *= 0.8;
-            rollAngle *= 0.8;
-        }
-
-        // Landing offset slowly fades out
-        landOffset *= 0.85;
-
-        // Combine and smoothly interpolate the final camera offset
-        double combinedOffset = targetBob + landOffset;
-        viewChange = (viewChange * 0.7) + (combinedOffset * 0.3);
-
-        // Apply final eye height (base + dynamic bob/land)
-        player.viewheight = Default.ViewHeight + viewChange;
-
-        // Apply camera roll from strafing
-        A_SetRoll(rollAngle, SPF_INTERPOLATE);
+        return;
     }
+
+    if (isSliding)
+    {
+        player.cmd.forwardmove = 0;
+        player.cmd.sidemove = 0;
+        Super.MovePlayer();
+        return;
+    }
+
+    double fm = player.cmd.forwardmove;
+    double sm = player.cmd.sidemove;
+    double maxSpeed = 12.0 * Speed;
+
+    bool isGrounded = (pos.z <= floorz || bOnMobj || waterlevel > 0);
+
+    // Cooldown countdown
+    if (jumpCooldown > 0)
+        jumpCooldown--;
+
+    // Landing detection
+    if (isGrounded && !wasGrounded && vel.z < -2.0)
+    {
+        landOffset = clamp(vel.z * 0.8, -12.0, 0);
+    }
+
+    // Jump only if cooldown is finished
+    if (jumpCooldown <= 0 && (player.cmd.buttons & BT_JUMP) && isGrounded)
+    {
+        player.jumpTics = 0;
+        landOffset = 3.0;
+        jumpCooldown = 70;   // 0.2 seconds at 35 tics/s
+    }
+
+    wasGrounded = isGrounded;
+
+    // Zero input so engine doesn’t interfere
+    player.cmd.forwardmove = 0;
+    player.cmd.sidemove = 0;
+
+    // Stop instantly on ground when no keys pressed
+    if (fm == 0 && sm == 0)
+    {
+        if (isGrounded)
+        {
+            vel.x = 0;
+            vel.y = 0;
+        }
+    }
+    else
+    {
+        double moveAngle = angle;
+        if (fm > 0 && sm == 0) moveAngle = angle;
+        else if (fm < 0 && sm == 0) moveAngle = angle + 180;
+        else if (fm == 0 && sm > 0) moveAngle = angle - 90;
+        else if (fm == 0 && sm < 0) moveAngle = angle + 90;
+        else if (fm > 0 && sm > 0) moveAngle = angle - 45;
+        else if (fm > 0 && sm < 0) moveAngle = angle + 45;
+        else if (fm < 0 && sm > 0) moveAngle = angle - 135;
+        else if (fm < 0 && sm < 0) moveAngle = angle + 135;
+
+        if (isGrounded || (vel.x*vel.x + vel.y*vel.y) <= (maxSpeed*maxSpeed))
+        {
+            vel.x = cos(moveAngle) * maxSpeed;
+            vel.y = sin(moveAngle) * maxSpeed;
+        }
+    }
+
+    Super.MovePlayer();
+
+    player.cmd.forwardmove = fm;
+    player.cmd.sidemove = sm;
+
+    double horizontalSpeed = vel.length();
+    double targetBob = 0;
+
+    if (isGrounded && horizontalSpeed > 0.1)
+    {
+        bobCounter += horizontalSpeed * 1.4;
+        double bobIntensity = horizontalSpeed * 0.3;
+        targetBob = Sin(bobCounter) * bobIntensity;
+        player.bob = bobIntensity * 1.2;
+
+        double targetRoll = 0;
+        if (sm > 0) targetRoll = 1.2;
+        else if (sm < 0) targetRoll = -1.2;
+        rollAngle = (rollAngle * 0.9) + (targetRoll * 0.1);
+    }
+    else
+    {
+        bobCounter = 0;
+        player.bob *= 0.8;
+        rollAngle *= 0.8;
+    }
+
+    landOffset *= 0.85;
+    double combinedOffset = targetBob + landOffset;
+    viewChange = (viewChange * 0.7) + (combinedOffset * 0.3);
+    player.viewheight = Default.ViewHeight + viewChange;
+    A_SetRoll(rollAngle, SPF_INTERPOLATE);
+    }   
 }
 
 // ---------- CROUCH PROTECTION POWERUPS (unchanged) ----------

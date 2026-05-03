@@ -3,10 +3,11 @@ ACTOR SF_Slugger : WF_WeaponBase 2001
 	//$Title M-19 Slugger
 	//$Sprite SHOTA0
 	//$Category Weapons
+	//$Colour 14
 	Weapon.SelectionOrder 1300
 	Weapon.AmmoUse 1
 	Weapon.AmmoGive 8
-	Weapon.AmmoType "Shell"
+	Weapon.AmmoType "SF_Shells"
 	Obituary "\cb%o \umhas a bowling ball sized hole in his chest by \cr%k's \cmM-19."
 	Inventory.Pickupmessage "\cqWEAPON AQUIRED: \cbM-19 Slugger \c*(SLOT 3)"
 	Tag "M-19 Slugger"
