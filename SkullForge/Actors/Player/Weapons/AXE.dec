@@ -55,7 +55,7 @@ ACTOR SF_Axe : WF_WeaponBase
 			AXEG B 1 Offset(172,112)
 			AXEG B 1 Offset(148,96)
 			AXEG B 1 Offset(112,86)
-			AXEG B 1 Offset(86,72) A_Recoil(-4.0)
+			AXEG B 1 Offset(86,72) A_Recoil(-16.0)
 			AXEG C 1 Offset(72,64)
 			TNT1 A 0 A_JumpIfInventory("Power_SF_QuadDamage",0,"QUAD_Sound_Fire")
 			Goto QUAD_Nosound_Fire

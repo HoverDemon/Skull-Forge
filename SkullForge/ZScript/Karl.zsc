@@ -47,8 +47,10 @@ Class SF_Player : DoomPlayer
     double viewChange;   // smoothly interpolated final camera offset
     double landOffset;   // landing “thud” offset
     double rollAngle;    // strafe tilt
-    bool wasGrounded;
-    int jumpCooldown;   // cooldown (in tics) before next jump allowed
+    bool lastOnground;   // previous frame onground state (from engine)
+    bool lastJump;       // previous frame jump button state (for tap detection)
+    int coyoteTimer;     // ticks remaining for coyote jump
+    bool hasJumped;      // true if we already jumped this air trip
 
     // ----------------------------------------------------
     override void PostBeginPlay()
@@ -56,6 +58,15 @@ Class SF_Player : DoomPlayer
         Super.PostBeginPlay();
         normalHeight = Default.Height;
         normalViewHeight = Default.ViewHeight;
+        lastJump = false;
+        coyoteTimer = 0;
+        hasJumped = false;
+    }
+
+    // ---------- COMPLETELY DISABLE ENGINE JUMP ----------
+    override void CheckJump()
+    {
+        // intentionally empty – we handle jumping ourselves
     }
 
     // ---------- MAIN TICK (unchanged from original SF_Player) ----------
@@ -114,7 +125,7 @@ Class SF_Player : DoomPlayer
 							isWallAttached = true;
 							wallAttachPos = pos;
 							vel = (0, 0, 0);
-							bNoGravity = true;   // <-- ADD THIS
+							bNoGravity = true;
 						}
 					}
 				}
@@ -123,9 +134,8 @@ Class SF_Player : DoomPlayer
                     isWallAttached = false;
                     bNoGravity = false;
                     Vector2 jumpDir2 = AngleToVector(angle);
-                    double jumpStrength = 24.0;
-                    vel = (jumpDir2.x * jumpStrength, jumpDir2.y * jumpStrength, JumpZ * 1.25);
-                    jumpCooldown = 1;
+                    double jumpStrength = 36.0;
+                    vel = (jumpDir2.x * jumpStrength, jumpDir2.y * jumpStrength, JumpZ * 1.15);
                 }
             }
             isUsing = true;
@@ -162,122 +172,156 @@ Class SF_Player : DoomPlayer
         ViewHeight = normalViewHeight;
     }
 
-    // ---------- QUAKE MOVEMENT & BOBBING (fully integrated) ----------
+    // ---------- QUAKE MOVEMENT & BOBBING (fully integrated, with coyote time) ----------
     override void MovePlayer()
-{
-    let player = self.player;
-    if (!player) return;
-
-    if (isWallAttached)
     {
-        vel.x = 0;
-        vel.y = 0;
-        vel.z = 0;
+        let player = self.player;
+        if (!player) return;
+
+        // Wall / slide lockdowns – no manual movement
+        if (isWallAttached)
+        {
+            vel = (0,0,0);
+            player.cmd.forwardmove = 0;
+            player.cmd.sidemove = 0;
+            Super.MovePlayer();
+            lastJump = false;
+            return;
+        }
+
+        if (isSliding)
+        {
+            player.cmd.forwardmove = 0;
+            player.cmd.sidemove = 0;
+            Super.MovePlayer();
+            lastJump = false;
+            return;
+        }
+
+        double fm = player.cmd.forwardmove;
+        double sm = player.cmd.sidemove;
+        double maxSpeed = 12.0 * Speed;
+
+        bool grounded = player.onground;
+
+        // ---------- COYOTE TIME MANAGEMENT ----------
+        if (grounded)
+        {
+            // Reset all air‑trip flags when back on ground
+            hasJumped = false;
+            coyoteTimer = 0;
+        }
+        else
+        {
+            // Decrement coyote timer (never below 0)
+            if (coyoteTimer > 0)
+                coyoteTimer--;
+        }
+
+        // Landing thud
+        if (grounded && !lastOnground && vel.z < -2.0)
+        {
+            landOffset = clamp(vel.z * 0.8, -12.0, 0);
+        }
+
+        // ---------- TAP TO JUMP WITH COYOTE TIME ----------
+        bool jumpPressed = (player.cmd.buttons & BT_JUMP) != 0;
+        bool jumpEdge = jumpPressed && !lastJump;   // rising edge
+
+        // Jump conditions: rising edge AND (on ground OR within coyote time) AND haven’t jumped this air trip
+        if (jumpEdge && (grounded || coyoteTimer > 0) && !hasJumped)
+        {
+            vel.z = JumpZ;                 // direct vertical impulse
+            landOffset = 3.0;              // small view kick
+
+            // Remove the jump button this tick so nothing else sees it
+            player.cmd.buttons &= ~BT_JUMP;
+
+            // Mark that we’ve jumped – no more jumps until landing
+            hasJumped = true;
+            coyoteTimer = 0;               // cancel remaining coyote time
+        }
+
+        // If we’ve just left the ground (walking off a ledge)
+        // and we haven’t jumped yet, start the coyote grace period.
+        if (lastOnground && !grounded && !hasJumped)
+        {
+            coyoteTimer = 7; // about 0.1 seconds
+        }
+
+        // Store states for next tick
+        lastJump = jumpPressed;
+        lastOnground = grounded;
+
+        // Zero input so engine doesn’t interfere
         player.cmd.forwardmove = 0;
         player.cmd.sidemove = 0;
-        Super.MovePlayer();
-        return;
-    }
 
-    if (isSliding)
-    {
-        player.cmd.forwardmove = 0;
-        player.cmd.sidemove = 0;
-        Super.MovePlayer();
-        return;
-    }
-
-    double fm = player.cmd.forwardmove;
-    double sm = player.cmd.sidemove;
-    double maxSpeed = 12.0 * Speed;
-
-    bool isGrounded = (pos.z <= floorz || bOnMobj || waterlevel > 0);
-
-    // Cooldown countdown
-    if (jumpCooldown > 0)
-        jumpCooldown--;
-
-    // Landing detection
-    if (isGrounded && !wasGrounded && vel.z < -2.0)
-    {
-        landOffset = clamp(vel.z * 0.8, -12.0, 0);
-    }
-
-    // Jump only if cooldown is finished
-    if (jumpCooldown <= 0 && (player.cmd.buttons & BT_JUMP) && isGrounded)
-    {
-        player.jumpTics = 0;
-        landOffset = 3.0;
-        jumpCooldown = 70;   // 0.2 seconds at 35 tics/s
-    }
-
-    wasGrounded = isGrounded;
-
-    // Zero input so engine doesn’t interfere
-    player.cmd.forwardmove = 0;
-    player.cmd.sidemove = 0;
-
-    // Stop instantly on ground when no keys pressed
-    if (fm == 0 && sm == 0)
-    {
-        if (isGrounded)
+        // Stop instantly on ground when no keys pressed
+        if (fm == 0 && sm == 0)
         {
-            vel.x = 0;
-            vel.y = 0;
+            if (grounded)
+            {
+                vel.x = 0;
+                vel.y = 0;
+            }
         }
-    }
-    else
-    {
-        double moveAngle = angle;
-        if (fm > 0 && sm == 0) moveAngle = angle;
-        else if (fm < 0 && sm == 0) moveAngle = angle + 180;
-        else if (fm == 0 && sm > 0) moveAngle = angle - 90;
-        else if (fm == 0 && sm < 0) moveAngle = angle + 90;
-        else if (fm > 0 && sm > 0) moveAngle = angle - 45;
-        else if (fm > 0 && sm < 0) moveAngle = angle + 45;
-        else if (fm < 0 && sm > 0) moveAngle = angle - 135;
-        else if (fm < 0 && sm < 0) moveAngle = angle + 135;
-
-        if (isGrounded || (vel.x*vel.x + vel.y*vel.y) <= (maxSpeed*maxSpeed))
+        else
         {
-            vel.x = cos(moveAngle) * maxSpeed;
-            vel.y = sin(moveAngle) * maxSpeed;
+            // ---------- FIXED WISH DIRECTION (RIGHT = RIGHT, LEFT = LEFT) ----------
+            double wishX = cos(angle) * fm + sin(angle) * sm;
+            double wishY = sin(angle) * fm - cos(angle) * sm;
+
+            double wishLen = sqrt(wishX * wishX + wishY * wishY);
+            if (wishLen > 0)
+            {
+                wishX /= wishLen;
+                wishY /= wishLen;
+            }
+
+            // Apply speed instantly (replace with acceleration for Quake™ feel)
+            if (grounded || (vel.x*vel.x + vel.y*vel.y) <= (maxSpeed*maxSpeed))
+            {
+                vel.x = wishX * maxSpeed;
+                vel.y = wishY * maxSpeed;
+            }
         }
+
+        Super.MovePlayer();
+
+        // Restore input for bob/hud
+        player.cmd.forwardmove = fm;
+        player.cmd.sidemove = sm;
+
+        // ---------- VIEW BOBBING & ROLL ----------
+        double horizontalSpeed = vel.xy.length();
+        double targetBob = 0;
+
+        if (grounded && horizontalSpeed > 0.1)
+        {
+            bobCounter += horizontalSpeed * 1.4;
+            double bobIntensity = horizontalSpeed * 0.3;
+            targetBob = Sin(bobCounter) * bobIntensity;
+            player.bob = bobIntensity * 1.2;
+
+            double targetRoll = 0;
+            if (sm > 0) targetRoll = 1.2;
+            else if (sm < 0) targetRoll = -1.2;
+            rollAngle = (rollAngle * 0.9) + (targetRoll * 0.1);
+        }
+        else
+        {
+            bobCounter = 0;
+            player.bob *= 0.8;
+            rollAngle *= 0.8;
+        }
+
+        landOffset *= 0.85;
+        double combinedOffset = targetBob + landOffset;
+        viewChange = (viewChange * 0.7) + (combinedOffset * 0.3);
+        player.viewheight = Default.ViewHeight + viewChange;
+        A_SetRoll(rollAngle, SPF_INTERPOLATE);
     }
-
-    Super.MovePlayer();
-
-    player.cmd.forwardmove = fm;
-    player.cmd.sidemove = sm;
-
-    double horizontalSpeed = vel.length();
-    double targetBob = 0;
-
-    if (isGrounded && horizontalSpeed > 0.1)
-    {
-        bobCounter += horizontalSpeed * 1.4;
-        double bobIntensity = horizontalSpeed * 0.3;
-        targetBob = Sin(bobCounter) * bobIntensity;
-        player.bob = bobIntensity * 1.2;
-
-        double targetRoll = 0;
-        if (sm > 0) targetRoll = 1.2;
-        else if (sm < 0) targetRoll = -1.2;
-        rollAngle = (rollAngle * 0.9) + (targetRoll * 0.1);
-    }
-    else
-    {
-        bobCounter = 0;
-        player.bob *= 0.8;
-        rollAngle *= 0.8;
-    }
-
-    landOffset *= 0.85;
-    double combinedOffset = targetBob + landOffset;
-    viewChange = (viewChange * 0.7) + (combinedOffset * 0.3);
-    player.viewheight = Default.ViewHeight + viewChange;
-    A_SetRoll(rollAngle, SPF_INTERPOLATE);
-    }   
 }
 
 // ---------- CROUCH PROTECTION POWERUPS (unchanged) ----------

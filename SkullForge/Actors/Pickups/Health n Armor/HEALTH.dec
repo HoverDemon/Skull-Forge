@@ -77,7 +77,7 @@ Actor SF_AP_Speed : PowerUpGiver
 
 Actor Power_AP_Speed : PowerSpeed
 {
-    Speed 1.575
+    Speed 4.0
     +INVENTORY.NOTELEPORTFREEZE
 }
 

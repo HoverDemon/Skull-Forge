@@ -1,4 +1,4 @@
-ACTOR Grunt 3004
+Actor SF_Grunt 3004
 {
 	//$Title Grunt (Zombieman)
 	//$Sprite POSSE1

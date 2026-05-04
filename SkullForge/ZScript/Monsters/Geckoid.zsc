@@ -21,38 +21,42 @@ class SF_Geckoid : Actor
         ActiveSound "monsters/geckoid/active";
         HitObituary "%o was Ganked by a Geckoid";
         Obituary "%o was Grilled by a Geckoid";
+        MaxStepHeight 24; // Explicitly defining the standard limit
     }
 
-    // Custom function to detect height differences (Climbing/Vaulting)
-    void TryClimbWall()
+    // Custom function for the High Jump/Vaulting mechanic
+    void TryVaultWall()
     {
-        FLineTraceData traceData;
-        // Trace forward to find a wall or ledge
-        bool hit = LineTrace(angle, radius + 24.0, 0, TRF_THRUACTORS, 8.0, 0, 0, traceData);
-
-        if (hit && traceData.HitType == TRACE_HitWall)
+        // Only attempt to jump if currently on the ground
+        if (pos.z <= floorz)
         {
-            Line hitLine = traceData.HitLine;
-            if (hitLine && hitLine.backsector)
+            FLineTraceData traceData;
+            // Trace slightly further than the radius to detect the wall in front
+            bool hit = LineTrace(angle, radius + 12.0, 0, TRF_THRUACTORS, 16.0, 0, 0, traceData);
+
+            if (hit && traceData.HitType == TRACE_HitWall)
             {
-                Sector otherSector = (hitLine.frontsector == traceData.HitSector) ? hitLine.backsector : hitLine.frontsector;
-
-                if (otherSector)
+                Line hitLine = traceData.HitLine;
+                if (hitLine && hitLine.backsector)
                 {
-                    double targetFloorZ = otherSector.floorplane.ZAtPoint(traceData.HitLocation.XY);
-                    double stepHeight = targetFloorZ - pos.z;
+                    Sector otherSector = (hitLine.frontsector == traceData.HitSector) ? hitLine.backsector : hitLine.frontsector;
 
-                    // Condition: Ledge is up to 24 units above OR up to 196 units below
-                    if (stepHeight <= 24.0 && stepHeight >= -196.0)
+                    if (otherSector)
                     {
-                        // If it's a climbable height (positive), give a small jump boost
-                        if (stepHeight > 0)
+                        double targetFloorZ = otherSector.floorplane.ZAtPoint(traceData.HitLocation.XY);
+                        double stepHeight = targetFloorZ - pos.z;
+
+                        // Logic: If the wall is higher than the auto-step (24) 
+                        // but lower than the jump max (144)
+                        if (stepHeight > 24.0 && stepHeight < 144.0)
                         {
-                            vel.z = 12.0;
+                            vel.z = 9.5 + (stepHeight * 0.1); 
+                            
+                            // Give a boost forward to ensure we land on the ledge
+                            A_FaceTarget(); // Re-align to target before jumping forward
+                            vel.x += cos(angle) * 4.0;
+                            vel.y += sin(angle) * 4.0;
                         }
-                        // Apply forward momentum to clear the gap/ledge
-                        vel.x += cos(angle) * 4.0;
-                        vel.y += sin(angle) * 4.0;
                     }
                 }
             }
@@ -68,7 +72,7 @@ class SF_Geckoid : Actor
         TROO AABBCCDD 3 
         {
             A_Chase();
-            TryClimbWall();
+            TryVaultWall(); // Check for jumpable walls every few tics
         }
         Loop;
     Missile:
@@ -113,7 +117,7 @@ class SF_GeckoidBall : Actor
         Radius 3;
         Height 4;
         Scale 0.5;
-        DamageFunction (10); // Damage (10) in Decorate is an expression, uses DamageFunction in ZScript
+        DamageFunction (10);
         Speed 12;
         FastSpeed 24;
         +RANDOMIZE
