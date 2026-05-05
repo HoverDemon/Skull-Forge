@@ -2,7 +2,7 @@ Class SF_Player : DoomPlayer
 {
     Default
     {
-        Speed 1.05;
+        Speed 1.25;
         Radius 16;
         Height 56;
         Player.JumpZ 9.0;
@@ -18,12 +18,10 @@ Class SF_Player : DoomPlayer
         Player.WeaponSlot 5, "SF_SpeedHucker";
 
         DamageFactor "NODAMAGEPLAYER", 0;
-
-        // Disable engine’s own bobbing – we do custom view bob
-        Player.ViewBob 0;
+        Player.ViewBob 0; // We handle our own bob
     }
 
-    // ---------- ORIGINAL SF_PLAYER VARIABLES ----------
+    // ---------- ORIGINAL VARIABLES ----------
     bool isUsing;
     bool isWallAttached;
     Vector3 wallAttachPos;
@@ -42,17 +40,20 @@ Class SF_Player : DoomPlayer
     double normalHeight;
     double normalViewHeight;
 
-    // ---------- QUAKE MOVEMENT / BOBBING VARIABLES ----------
+    // ---------- MOVEMENT / BOBBING ----------
     double bobCounter;
-    double viewChange;   // smoothly interpolated final camera offset
-    double landOffset;   // landing “thud” offset
-    double rollAngle;    // strafe tilt
-    bool lastOnground;   // previous frame onground state (from engine)
-    bool lastJump;       // previous frame jump button state (for tap detection)
-    int coyoteTimer;     // ticks remaining for coyote jump
-    bool hasJumped;      // true if we already jumped this air trip
+    double bobValue;     // Current heavy step bob offset
+    double landOffset;   // Landing thud
+    double jumpBob;      // Jump upward kick
+    double rollAngle;    // Strafe tilt
+    bool lastOnground;   // Previous tick onground
+    bool lastJump;       // Previous tick jump button
+    int coyoteTimer;     // Ticks of grace after leaving ground
+    bool hasJumped;      // True if a jump was made this air trip
+    
+    int jumpBoostTimer;      // Tracks the 1-tick delay for the forward boost
+    double currentBaseView;  // Smoothly tracks intended view height 
 
-    // ----------------------------------------------------
     override void PostBeginPlay()
     {
         Super.PostBeginPlay();
@@ -61,107 +62,77 @@ Class SF_Player : DoomPlayer
         lastJump = false;
         coyoteTimer = 0;
         hasJumped = false;
+        
+        currentBaseView = Default.ViewHeight;
     }
 
-    // ---------- COMPLETELY DISABLE ENGINE JUMP ----------
-    override void CheckJump()
-    {
-        // intentionally empty – we handle jumping ourselves
-    }
+    // Disable the engine’s own jump logic
+    override void CheckJump() {}
 
-    // ---------- MAIN TICK (unchanged from original SF_Player) ----------
     override void Tick()
     {
         Super.Tick();
 
-        // Cooldown timer
-        if (slideCooldown > 0)
-            slideCooldown--;
+        if (slideCooldown > 0) slideCooldown--;
 
-        // Detect crouch slide
         bool crouching = (GetCrouchFactor() < 1.0);
-        double speed2D = sqrt(vel.x * vel.x + vel.y * vel.y);
+        double speed2D = vel.xy.length();
 
         if (!isSliding && slideCooldown <= 0 && crouching && speed2D > 12)
-        {
             StartSlide();
-        }
 
-        // Sliding behaviour
         if (isSliding)
         {
             slideTics--;
-
-            // Slight momentum preservation
             vel.x *= 0.98;
             vel.y *= 0.98;
-
-            if (slideTics <= 0)
-            {
-                EndSlide();
-            }
+            if (slideTics <= 0) EndSlide();
         }
 
-        // Wall logic (unchanged)
         if (GetCrouchFactor() == 0.5)
-        {
             GiveInventory("CrochProt_Giver", 1);
-        }
 
         if (player.cmd.buttons & BT_USE)
         {
             if (!isUsing)
             {
                 if (!isWallAttached)
-				{
-					FLineTraceData LedgeTrace;
-					double TraceDistance = sqrt(2) * Radius + 1;
-					LineTrace(angle, TraceDistance, 0, TRF_BLOCKSELF|TRF_THRUACTORS, Height * 1.2, data: LedgeTrace);
-
-					if (LedgeTrace.HitType == TRACE_HitWall)
-					{
-						if (LedgeTrace.HitTexture == TexMan.CheckForTexture("WALLJUMP", TexMan.Type_Wall))
-						{
-							isWallAttached = true;
-							wallAttachPos = pos;
-							vel = (0, 0, 0);
-							bNoGravity = true;
-						}
-					}
-				}
+                {
+                    FLineTraceData LedgeTrace;
+                    double TraceDistance = sqrt(2) * Radius + 1;
+                    LineTrace(angle, TraceDistance, 0, TRF_BLOCKSELF|TRF_THRUACTORS, Height * 1.2, data: LedgeTrace);
+                    if (LedgeTrace.HitType == TRACE_HitWall &&
+                        LedgeTrace.HitTexture == TexMan.CheckForTexture("WALLJUMP", TexMan.Type_Wall))
+                    {
+                        isWallAttached = true;
+                        wallAttachPos = pos;
+                        vel = (0,0,0);
+                        bNoGravity = true;
+                    }
+                }
                 else
                 {
                     isWallAttached = false;
                     bNoGravity = false;
-                    Vector2 jumpDir2 = AngleToVector(angle);
-                    double jumpStrength = 36.0;
-                    vel = (jumpDir2.x * jumpStrength, jumpDir2.y * jumpStrength, JumpZ * 1.15);
+                    Vector2 dir = AngleToVector(angle);
+                    vel = (dir.x * 32.0, dir.y * 32.0, JumpZ * 1.25);
+                    hasJumped = true;   
                 }
             }
             isUsing = true;
         }
-        else
-        {
-            isUsing = false;
-        }
+        else isUsing = false;
     }
 
-    // ---------- SLIDE FUNCTIONS (unchanged) ----------
     void StartSlide()
     {
         isSliding = true;
         slideTics = 20;
         slideCooldown = 105;
-
         Vector2 dir = AngleToVector(angle);
-        double boost = 400.0;
-
-        vel.x += dir.x * boost;
-        vel.y += dir.y * boost;
-
+        vel.x += dir.x * 400.0;
+        vel.y += dir.y * 400.0;
         height = normalHeight * 0.25;
-        ViewHeight = normalViewHeight * 0.25;
-
         A_StartSound("player/slide", CHAN_BODY);
     }
 
@@ -169,162 +140,154 @@ Class SF_Player : DoomPlayer
     {
         isSliding = false;
         height = normalHeight;
-        ViewHeight = normalViewHeight;
     }
 
-    // ---------- QUAKE MOVEMENT & BOBBING (fully integrated, with coyote time) ----------
+    // ---------- CORE MOVEMENT ----------
     override void MovePlayer()
     {
         let player = self.player;
         if (!player) return;
 
-        // Wall / slide lockdowns – no manual movement
-        if (isWallAttached)
+        // --- LOCKDOWNS ---
+        if (isWallAttached || isSliding)
         {
-            vel = (0,0,0);
-            player.cmd.forwardmove = 0;
-            player.cmd.sidemove = 0;
+            if (isWallAttached) vel = (0,0,0);
+            double oldFM = player.cmd.forwardmove;
+            double oldSM = player.cmd.sidemove;
+            player.cmd.forwardmove = 0; player.cmd.sidemove = 0;
             Super.MovePlayer();
-            lastJump = false;
-            return;
-        }
-
-        if (isSliding)
-        {
-            player.cmd.forwardmove = 0;
-            player.cmd.sidemove = 0;
-            Super.MovePlayer();
+            player.cmd.forwardmove = oldFM; player.cmd.sidemove = oldSM;
             lastJump = false;
             return;
         }
 
         double fm = player.cmd.forwardmove;
         double sm = player.cmd.sidemove;
-        double maxSpeed = 12.0 * Speed;
-
-        bool grounded = player.onground;
-
-        // ---------- COYOTE TIME MANAGEMENT ----------
-        if (grounded)
+        double crouchFactor = GetCrouchFactor();
+        double maxSpeed = 13.0 * Speed * crouchFactor;
+        
+        bool wasOnGround = player.onground;
+        
+        // --- COYOTE TIME ---
+        if (wasOnGround)
         {
-            // Reset all air‑trip flags when back on ground
             hasJumped = false;
-            coyoteTimer = 0;
+            coyoteTimer = 6;
         }
         else
         {
-            // Decrement coyote timer (never below 0)
-            if (coyoteTimer > 0)
-                coyoteTimer--;
+            if (coyoteTimer > 0) coyoteTimer--;
         }
 
-        // Landing thud
-        if (grounded && !lastOnground && vel.z < -2.0)
-        {
-            landOffset = clamp(vel.z * 0.8, -12.0, 0);
-        }
-
-        // ---------- TAP TO JUMP WITH COYOTE TIME ----------
+        // --- JUMPING ---
         bool jumpPressed = (player.cmd.buttons & BT_JUMP) != 0;
-        bool jumpEdge = jumpPressed && !lastJump;   // rising edge
+        bool jumpEdge = jumpPressed && !lastJump;
 
-        // Jump conditions: rising edge AND (on ground OR within coyote time) AND haven’t jumped this air trip
-        if (jumpEdge && (grounded || coyoteTimer > 0) && !hasJumped)
+        if (jumpEdge && (wasOnGround || coyoteTimer > 0) && !hasJumped)
         {
-            vel.z = JumpZ;                 // direct vertical impulse
-            landOffset = 3.0;              // small view kick
+            vel.z = JumpZ;
+            jumpBoostTimer = 2;  
+            
+            // Set the raw impulse for the kick
+            jumpBob = 20.0;              
+            A_StartSound("player/jump", CHAN_AUTO, volume: 0.7);
 
-            // Remove the jump button this tick so nothing else sees it
-            player.cmd.buttons &= ~BT_JUMP;
-
-            // Mark that we’ve jumped – no more jumps until landing
             hasJumped = true;
-            coyoteTimer = 0;               // cancel remaining coyote time
+            coyoteTimer = 0;
         }
 
-        // If we’ve just left the ground (walking off a ledge)
-        // and we haven’t jumped yet, start the coyote grace period.
-        if (lastOnground && !grounded && !hasJumped)
-        {
-            coyoteTimer = 7; // about 0.1 seconds
-        }
-
-        // Store states for next tick
         lastJump = jumpPressed;
-        lastOnground = grounded;
 
-        // Zero input so engine doesn’t interfere
+        // --- ENGINE INPUT BYPASS ---
         player.cmd.forwardmove = 0;
         player.cmd.sidemove = 0;
 
-        // Stop instantly on ground when no keys pressed
-        if (fm == 0 && sm == 0)
-        {
-            if (grounded)
-            {
-                vel.x = 0;
-                vel.y = 0;
-            }
-        }
-        else
-        {
-            // ---------- FIXED WISH DIRECTION (RIGHT = RIGHT, LEFT = LEFT) ----------
-            double wishX = cos(angle) * fm + sin(angle) * sm;
-            double wishY = sin(angle) * fm - cos(angle) * sm;
+        double wishX = cos(angle) * fm + sin(angle) * sm;
+        double wishY = sin(angle) * fm - cos(angle) * sm;
+        double wishLen = sqrt(wishX*wishX + wishY*wishY);
+        if (wishLen > 0) { wishX /= wishLen; wishY /= wishLen; }
 
-            double wishLen = sqrt(wishX * wishX + wishY * wishY);
-            if (wishLen > 0)
+        if (wasOnGround)
+        {
+            if (fm == 0 && sm == 0)
             {
-                wishX /= wishLen;
-                wishY /= wishLen;
+                vel.xy = (0,0);         
             }
-
-            // Apply speed instantly (replace with acceleration for Quake™ feel)
-            if (grounded || (vel.x*vel.x + vel.y*vel.y) <= (maxSpeed*maxSpeed))
+            else
             {
                 vel.x = wishX * maxSpeed;
                 vel.y = wishY * maxSpeed;
             }
         }
+        else
+        {
+            if (fm != 0 || sm != 0)
+            {
+                double airAccel = 0.06;
+                vel.x += (wishX * maxSpeed - vel.x) * airAccel;
+                vel.y += (wishY * maxSpeed - vel.y) * airAccel;
+            }
+        }
 
+        if (jumpBoostTimer > 0)
+        {
+            jumpBoostTimer--;
+            if (jumpBoostTimer == 0)
+            {
+                vel.x += cos(angle) * 3.0;
+                vel.y += sin(angle) * 3.0;
+            }
+        }
+
+        double preMoveVelZ = vel.z;
+
+        // Engine resolves collisions and onground status here
         Super.MovePlayer();
 
-        // Restore input for bob/hud
+        // --- LANDING KICK ---
+        if (player.onground && !wasOnGround && preMoveVelZ < -5.0)
+        {
+            landOffset = clamp(preMoveVelZ * 1.5, -35.0, 0);
+            A_StartSound("player/land", CHAN_AUTO, volume: 0.8);
+        }
+
+        lastOnground = player.onground;
         player.cmd.forwardmove = fm;
         player.cmd.sidemove = sm;
 
-        // ---------- VIEW BOBBING & ROLL ----------
-        double horizontalSpeed = vel.xy.length();
-        double targetBob = 0;
-
-        if (grounded && horizontalSpeed > 0.1)
+        // --- BOB / ROLL / DECAY CALCULATIONS ---
+        double hSpeed = vel.xy.length();
+        if (hSpeed > 0.1 && player.onground)
         {
-            bobCounter += horizontalSpeed * 1.4;
-            double bobIntensity = horizontalSpeed * 0.3;
-            targetBob = Sin(bobCounter) * bobIntensity;
-            player.bob = bobIntensity * 1.2;
-
-            double targetRoll = 0;
-            if (sm > 0) targetRoll = 1.2;
-            else if (sm < 0) targetRoll = -1.2;
-            rollAngle = (rollAngle * 0.9) + (targetRoll * 0.1);
+            bobCounter += hSpeed * 1.1;
         }
-        else
-        {
-            bobCounter = 0;
-            player.bob *= 0.8;
-            rollAngle *= 0.8;
-        }
+        
+        bobValue = sin(bobCounter) * (hSpeed * 0.15);
+        
+        double tRoll = (sm > 0) ? 1.5 : (sm < 0) ? -1.5 : 0;
+        rollAngle = (rollAngle * 0.9) + (tRoll * 0.1);
 
-        landOffset *= 0.85;
-        double combinedOffset = targetBob + landOffset;
-        viewChange = (viewChange * 0.7) + (combinedOffset * 0.3);
-        player.viewheight = Default.ViewHeight + viewChange;
+        // Decay the kicks every tick so they return to normal
+        jumpBob *= 0.6;
+        landOffset *= 1.3;
+
         A_SetRoll(rollAngle, SPF_INTERPOLATE);
+    }
+
+    // ---------- VIEW KICK AND BOB OVERRIDE ----------
+    override void CalcHeight()
+    {
+        Super.CalcHeight(); 
+
+        double targetBaseView = isSliding ? (normalViewHeight * 0.25) : player.viewheight;
+        currentBaseView = (currentBaseView * 0.6) + (targetBaseView * 0.4);
+
+        player.viewheight = currentBaseView + bobValue + jumpBob + landOffset;
+        player.viewz = pos.z + player.viewheight;
     }
 }
 
-// ---------- CROUCH PROTECTION POWERUPS (unchanged) ----------
+// ---------- CROUCH PROTECTION ----------
 Class CrochProt_Giver : PowerupGiver
 {
     Default

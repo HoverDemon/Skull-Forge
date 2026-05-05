@@ -42,3 +42,5 @@ world/rollinggate/end ROLLEND
 
 world/megadoor/start MDORSTRT
 world/megadoor/end MDOREND
+
+world/testmap/teleport TESTTELP

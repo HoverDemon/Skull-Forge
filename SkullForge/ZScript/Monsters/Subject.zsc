@@ -88,7 +88,7 @@ class SF_Subject : Actor
         {
             A_Chase();
             TryClimbWall(); 
-            A_SetTics(random(1, 7));
+            A_SetTics(random(1, 5));
         }
         SUBJ BBBB 2 Fast A_Chase();
         SUBJ CCCC 2 Fast A_Chase();
@@ -101,18 +101,18 @@ class SF_Subject : Actor
         Loop;
     Melee:
         TNT1 A 0 A_StartSound("monsters/subject/attack", CHAN_VOICE);
-        SUBJ EEEEEE 3 Fast 
+        SUBJ EE 3 Fast 
         {
             A_FaceTarget();
-            A_SetTics(random(1, 5));
+            A_SetTics(random(1, 6));
         }
         TNT1 A 0 
         {
             A_Recoil(-5);
             ThrustThingZ(0, 24, 0, 0);
         }
-        SUBJ F 2 Fast A_CustomMeleeAttack(13, "monsters/subject/hit", "", 'Melee', true);
-        SUBJ FFF 2 Fast A_FaceTarget();
+        SUBJ E 2 Fast;
+        SUBJ FFFF 2 Fast A_CustomMeleeAttack(3, "monsters/subject/hit", "", 'Melee', true);
         SUBJ GGGG 3 Fast A_FaceTarget();
         Goto See;
     Pain:

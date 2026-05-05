@@ -100,10 +100,9 @@ DefaultMap
 	Sky1 = "SF_SKY1"
 	Sky2 = "OSKY04"
 	DefaultEnvironment = "Spacestation Medium Room"
-	AirControl = 0.25
 	exitpic = "INTERPIC"
 	enterpic = "INTERPIC"
-	AirControl = 1.0
+	AirControl = 0.5
 }
 
 Map TITLEMAP "The Titlemap"
@@ -205,7 +204,8 @@ Map E1M9 "MAP09 NAME"
 
 Map E2M1 "Testing Grounds"
 {
-	Music = "D_E2M2"
-	Next = "E2M2"
+	Music = "SF_TEST"
+	Next = "E1M0"
 	Sky1 = "SF_SKY2"
+	Sky2 = "OWARPB01"
 }
