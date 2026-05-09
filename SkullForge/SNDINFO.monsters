@@ -168,11 +168,10 @@ geckoid/see1 GECKSIT1
 geckoid/see2 GECKSIT2
 geckoid/see3 GECKSIT3
 
-$Random monsters/geckoid/active { geckoid/active1 geckoid/active2 geckoid/active3 }
+$Random monsters/geckoid/active { geckoid/active1 geckoid/active2 }
 
 geckoid/active1 GECKACT1
 geckoid/active2 GECKACT2
-geckoid/active3 GECKACT3
 
 $Random monsters/geckoid/pain { geckoid/pain1 geckoid/pain2 geckoid/pain3 }
 
@@ -185,6 +184,12 @@ $Random monsters/geckoid/death { geckoid/death1 geckoid/death2 geckoid/death3 }
 geckoid/death1 GECKDTH1
 geckoid/death2 GECKDTH2
 geckoid/death3 GECKDTH3
+
+$Random monsters/geckoid/jump { geckoid/jump1 geckoid/jump2 geckoid/jump3 }
+
+geckoid/jump1 GECKJMP1
+geckoid/jump2 GECKJMP2
+geckoid/jump3 GECKJMP3
 
 monsters/geckoid/missile/fire MISLSUMN
 

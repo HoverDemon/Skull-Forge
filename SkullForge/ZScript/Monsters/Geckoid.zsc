@@ -54,6 +54,7 @@ class SF_Geckoid : Actor
                             
                             // Give a boost forward to ensure we land on the ledge
                             A_FaceTarget(); // Re-align to target before jumping forward
+                            A_StartSound("monsters/geckoid/jump",CHAN_VOICE);
                             vel.x += cos(angle) * 4.0;
                             vel.y += sin(angle) * 4.0;
                         }
