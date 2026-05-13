@@ -1,0 +1,250 @@
+Class SF_SpeedHucker : Weapon
+{
+	//$Title Speed Hucker RPM-14
+	//$Sprite INHGA0
+	//$Category Weapons
+	//$Colour 14
+	Default
+	{
+		Weapon.SelectionOrder 800;
+		Weapon.AmmoUse 1;
+		Weapon.AmmoGive 8;
+		Weapon.AmmoType "SF_RocketAmmo";
+		Obituary "\cb%o \umhas been burned to death by \cr%k's \cmRPM-14.";
+		Inventory.Pickupmessage "\cqWEAPON AQUIRED: \cbRPM-14 Speedhucker \c*(SLOT 5)";
+		Tag "RPM-14 Speedhucker";
+		Inventory.PickupSound "weapons/speedhucker/up";
+		Weapon.KickBack 275;
+		+WEAPON.NOAUTOAIM;
+		Weapon.KickBack 30;
+		Weapon.BobStyle "InverseSmooth";
+		Weapon.BobRangeX 0.75;
+		Weapon.BobRangeY 0.75;
+		Weapon.BobSpeed 0.5;
+		//+WEAPON.NOAUTOFIRE;
+	}
+
+	States
+	{
+		Deselect:
+			TNT1 A 0 A_PlaySound("weapons/speedhucker/down",CHAN_5,0.6);
+			SPHC A 1 Offset(0,32);
+			SPHC A 1 Offset(-8,48);
+			SPHC A 1 Offset(-16,64);
+			SPHC A 1 Offset(-24,72);
+			SPHC A 1 Offset(-32,86);
+			SPHC A 1 Offset(-48,96);
+			SPHC A 1 Offset(-52,112);
+			SPHC A 1 Offset(-64,128);
+		ReadlDeselect:
+			TNT1 A 0 A_Lower();
+			Loop;
+		Select:
+			TNT1 A 0 A_Raise();
+			Loop;
+			
+		Ready:
+			TNT1 A 0 A_PlaySound("weapons/speedhucker/up",CHAN_5,0.45);
+			SPHC A 1 Offset(-128,256);
+			SPHC A 1 Offset(-112,232);
+			SPHC A 1 Offset(-96,212);
+			SPHC A 1 Offset(-84,196);
+			SPHC A 1 Offset(-72,184);
+			SPHC A 1 Offset(-64,172);
+			SPHC A 1 Offset(-52,132);
+			SPHC A 1 Offset(-48,112);
+			SPHC A 1 Offset(-32,96);
+			SPHC A 1 Offset(-16,86);
+			SPHC A 1 Offset(-8,64);
+			SPHC A 1 Offset(-4,46);
+			SPHC A 1 Offset(-2,36);
+			SPHC A 1 Offset(-1,33);
+			SPHC A 1 Offset(0,32);
+		RealReady:
+			SPHC A 1 A_WeaponReady;
+			Loop;
+			
+		Fire:
+			SPHC B 2 Offset(0,36) {
+				A_FireCustomMissile("SF_Rocket");
+				A_SetPitch(pitch + 2.0);
+				A_ZoomFactor(0.98);
+				A_Quake(1.0,8,0,1);
+				A_Recoil(3.0);
+				A_PlaySound("weapons/speedhucker/fire",CHAN_WEAPON,1.0);
+			}
+			SPHC BB 1 Offset(0,48) A_SetPitch(pitch -0.25);
+			SPHC B 1 Offset(0,56) {
+				A_SetPitch(pitch -0.25);
+				A_ZoomFactor(1.0);
+			}
+			SPHC B 1 Offset(0,60) A_SetPitch(pitch -0.25);
+			SPHC B 1 Offset(0,62) A_SetPitch(pitch -0.25);
+			SPHC A 1 Offset(0,60) A_SetPitch(pitch -0.25);
+			SPHC A 1 Offset(0,56) A_SetPitch(pitch -0.25);
+			SPHC AA 1 Offset(0,48) A_SetPitch(pitch -0.125);
+			SPHC AAA 1 Offset(0,38);
+			SPHC AAAA 1 Offset(0,36);
+			SPHC A 0 Offset(0,32) A_Refire();
+			Goto RealReady;
+
+		Flash:
+			TNT1 A 3 Bright A_Light1();
+			TNT1 A 4 Bright A_Light2();
+			Goto LightDone;
+		
+		Spawn:
+			SPED A -1;
+			Stop;
+	}
+}
+
+Class SF_Rocket : Actor
+{
+	Default
+	{
+		PROJECTILE;
+		Speed 40;
+		Damage (10);
+		Scale 0.5;
+		+RANDOMIZE;
+		Radius 5;
+		Height 4;
+	}
+
+	States
+	{
+		Spawn:
+			MISL A 1 Bright A_SpawnItem("SF_RocketSmoke");
+			Loop;
+		Death:
+			TNT1 A 0 A_Explode(128,128, XF_HURTSOURCE | XF_THRUSTZ);
+			TNT1 A 0 A_Explode(128,256, !XF_HURTSOURCE | XF_THRUSTZ);
+			TNT1 A 0 A_PlaySound("generic/explosion",CHAN_BODY,1.0);
+			TNT1 A 0 A_SpawnItem("SF_ExplosionEffect");
+			Stop;
+	}
+}
+
+Class SF_RocketSmoke : Actor
+{
+	default
+	{
+		+NOBLOCKMAP;
+		+NOGRAVITY;
+		+CLIENTSIDEONLY;
+		RenderStyle "Translucent";
+		Alpha 0.25;
+		+NOINTERACTION;
+	}
+	States
+	{
+		Spawn:
+			MISL B 5;
+			MISL B 1 A_SetScale(0.9,0.9);
+			MISL B 1 A_SetScale(0.8,0.8);
+			MISL B 1 A_SetScale(0.7,0.7);
+			MISL B 1 A_SetScale(0.6,0.6);
+			MISL B 1 A_SetScale(0.5,0.5);
+			MISL B 1 A_SetScale(0.4,0.4);
+			MISL B 1 A_SetScale(0.3,0.3);
+			MISL B 1 A_SetScale(0.2,0.2);
+			MISL B 1 A_SetScale(0.1,0.1);
+			Stop;
+	}
+}
+
+Class SF_ExplosionEffect : Actor
+{
+	Default
+	{
+		RenderStyle "Add";
+		Alpha 0.75;
+		+NOBLOCKMAP;
+		+NOGRAVITY;
+		+NOINTERACTION;
+		+CLIENTSIDEONLY;
+	}
+
+	States
+	{
+		Spawn:
+			TNT1 A 0;
+			NULL A 0 A_Quake(3.0,22,0,128 * 6);
+			BOOM AB 1 Bright;
+			BOOM CDEFGHIJK 1 Bright A_SpawnItemEx("SF_ExplosionMark",Random(-32,32),Random(-32,32),Random(-32,32));
+			BOOM LMNOPQRSTUV 1 Bright;
+			Stop;
+	}
+}
+
+Class SF_ExplosionEffectExplosive : SF_ExplosionEffect
+{
+	States
+	{
+		Spawn:
+			TNT1 A 0;
+			TNT1 A 0 A_Explode(64,128);
+			NULL A 0 A_Quake(3.0,22,0,128 * 6);
+			BOOM AB 1 Bright;
+			BOOM CDEFGHIJK 1 Bright A_SpawnItemEx("SF_ExplosionMark",Random(-32,32),Random(-32,32),Random(-32,32));
+			BOOM LMNOPQRSTUV 1 Bright;
+			Stop;
+	}
+}
+
+Class SF_ExplosionMark : Actor
+{
+	Default
+	{
+		RenderStyle "Add";
+		Alpha 0.5;
+		Scale 0.25;
+		+NOBLOCKMAP;
+		+NOGRAVITY;
+	}
+
+	States
+	{
+		Spawn:
+			BOOM ABCDEFG 2 Bright;
+			BOOM HIJKLMNOPQRSTUV 1 Bright A_FadeOut(0.03);
+			Stop;
+	}	
+}
+
+Class SF_ExplosionMark_Gravity : Actor
+{
+	Default
+	{
+		RenderStyle "Add";
+		Alpha 0.5;
+		Scale 0.25;
+		+NOBLOCKMAP;
+		-NOGRAVITY;
+		+NOCLIP;
+		Gravity 0.4;
+	}
+	States
+	{
+		Spawn:
+			TNT1 AAAAAAAAA 1 A_SpawnItem("SF_ExplosionMark");
+			TNT1 AAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItem("SF_ExplosionMark_Small");
+			Stop;
+	}	
+}
+
+Class SF_ExplosionMark_Small : SF_ExplosionMark
+{
+	Default
+	{
+		Scale 0.15;
+	}
+	States
+	{
+		Spawn:
+			BOOM ACEG 1 Bright;
+			BOOM IKMOQSU 1 Bright A_FadeOut(0.0714285714285714);
+			Stop;
+	}	
+}
