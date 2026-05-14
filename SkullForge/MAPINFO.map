@@ -19,6 +19,7 @@ DoomEdNums
 	3001 = SF_Geckoid
 	3300 = SF_Subject
 	3301 = SF_Subject_Wander
+	2003 = SF_SpeedHucker
 }
 
 ClearSkills

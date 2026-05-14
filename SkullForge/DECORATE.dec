@@ -14,7 +14,7 @@
 #include "Actors/Player/Weapons/SLUGGER.dec"
 #include "Actors/Player/Weapons/DOMINATUS.dec"
 #include "Actors/Player/Weapons/VIPER.dec"
-#include "Actors/Player/Weapons/SPEEDHUCKER.dec"
+//#include "Actors/Player/Weapons/SPEEDHUCKER.dec"
 
 //##PICKUPS##
 
