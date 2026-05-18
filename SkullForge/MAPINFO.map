@@ -123,7 +123,7 @@ Map TESTMAP "Outer Base" //Aint really a test map
 
 Map E1M0 "Whereabouts Unknown"
 {
-	Music = "SF_Forbid"
+	Music = "SF_E1M0"
 	Next = "E1M1"
 	Sky1 = "SF_SKY1"
 
@@ -132,7 +132,7 @@ Map E1M0 "Whereabouts Unknown"
 
 Map E1M1 "Prison Labs"
 {
-	Music = "SF_SAW"
+	Music = "SF_E1M1"
 	Sky1 = "SF_SKY1"
 	
 	Next = "E1M2"
@@ -140,7 +140,7 @@ Map E1M1 "Prison Labs"
 
 Map E1M2 "Vendeta"
 {
-	Music = "SF_Cherish"
+	Music = "SF_E1M2"
 	Sky1 = "SF_SKY1"
 	
 	Next = "E1M3"
@@ -148,7 +148,7 @@ Map E1M2 "Vendeta"
 
 Map E1M3 "MAP03 NAME"
 {
-	Music = "SF_Telegram"
+	Music = "SF_E1M3"
 	Sky1 = "SF_SKY1"
 	
 	Next = "E1M4"
@@ -157,7 +157,7 @@ Map E1M3 "MAP03 NAME"
 
 Map E1M4 "MAP04 NAME"
 {
-	Music = "SF_Lost"
+	Music = "SF_E1M4"
 	Sky1 = "SF_SKY1"
 	
 	Next = "E1M5"
@@ -165,7 +165,7 @@ Map E1M4 "MAP04 NAME"
 
 Map E1M5 "MAP05 NAME"
 {
-	Music = "SF_Shadow"
+	Music = "SF_E1M5"
 	Sky1 = "SF_SKY1"
 	
 	Next = "E1M6"
@@ -173,7 +173,7 @@ Map E1M5 "MAP05 NAME"
 
 Map E1M6 "MAP06 NAME"
 {
-	Music = "SF_Bitter"
+	Music = "SF_E1M6"
 	Sky1 = "SF_SKY1"
 	
 	Next = "E1M7"
@@ -181,7 +181,7 @@ Map E1M6 "MAP06 NAME"
 
 Map E1M7 "MAP07 NAME"
 {
-	Music = "SF_Surnd"
+	Music = "SF_E1M7"
 	Sky1 = "SF_SKY1"
 	
 	Next = "E1M8"
@@ -189,7 +189,7 @@ Map E1M7 "MAP07 NAME"
 
 Map E1M8 "MAP08 NAME"
 {
-	Music = "SF_Weight"
+	Music = "SF_E1M8"
 	Sky1 = "SF_SKY1"
 	DefaultEnvironment = "Mountains"
 	
@@ -198,7 +198,7 @@ Map E1M8 "MAP08 NAME"
 
 Map E1M9 "MAP09 NAME"
 {
-	Music = "SF_Locked"
+	Music = "SF_E1M9"
 	Next = "E1M4"
 	Sky1 = "SF_SKY1"
 }

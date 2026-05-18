@@ -21,6 +21,8 @@ Class SF_SpeedHucker : Weapon
         Weapon.BobSpeed 0.5;
     }
 
+    int soundDelay;
+
     // This runs every single frame the weapon exists
     override void Tick()
     {
@@ -40,13 +42,19 @@ Class SF_SpeedHucker : Weapon
 
             altWasPressed = altDown;
         }
+
+        if(soundDelay > 0) soundDelay--;
     }
 
     // The core detonation logic moved to a standard function
     void DetonateAllRockets()
     {
         // Play a small click sound for the player
-        Owner.A_StartSound("weapons/speedhucker/tick", CHAN_5, 0.5, fRandom(0.8, 1.2));
+        if(soundDelay == 0)
+        {
+            Owner.A_StartSound("weapons/speedhucker/beep", CHAN_5, 0.5, fRandom(0.8, 1.2));
+            soundDelay = 7;
+        }
 
         ThinkerIterator it = ThinkerIterator.Create("SF_Rocket");
         Actor mo;

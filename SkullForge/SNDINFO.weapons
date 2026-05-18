@@ -160,6 +160,8 @@ speedhucker/down1 SPHCDOW1
 speedhucker/down2 SPHCDOW2
 speedhucker/down3 SPHCDOW3
 
+weapons/speedhucker/beep SPHCRMT1
+
 //AMMO PICKUP SOUNDS
 
 ammo/bullets/small/pickup BUL1PCK
