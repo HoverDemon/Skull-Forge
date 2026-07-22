@@ -30,6 +30,17 @@ $Limit generic/explosion 8
 
 effect/steam STEMLOOP
 
+effect/windtunnel WDTNENTR
+effect/windtunnel/end WDTNEXIT
+effect/windtunnel/enter WDTNSCK1
+$Random effect/windtunnel/bang { tunnelbang1 tunnelbang2 tunnelbang3 }
+
+tunnelbang1 WDTNBNG1
+tunnelbang2 WDTNBNG2
+tunnelbang3 WDTNBNG3
+
+effect/windtunnel/specialbang SDTNSBNG
+
 world/metalbarsbreak E1M0SND1
 
 world/drip gloop
@@ -44,3 +55,26 @@ world/megadoor/start MDORSTRT
 world/megadoor/end MDOREND
 
 world/testmap/teleport TESTTELP
+
+world/remotedoorlock/on RDLON
+world/remotedoorlock/off RDLOFF
+world/remotedoorlock/error RDLERROR
+world/remotedoorlock/switchflip RDLSFLIP
+
+$random world/slidedoor/open { world/slidedoor/o1 world/slidedoor/o2 }
+
+world/slidedoor/o1 SSDSTRT1
+world/slidedoor/o2 SSDSTRT2
+
+$random world/slidedoor/end { world/slidedoor/e1 world/slidedoor/e2 }
+
+world/slidedoor/e1 SSDEND1
+world/slidedoor/e2 SSDEND2
+
+world/slidedoor/startclosing SSDCLS1
+world/slidedoor/endclosing SSDCLS2
+
+world/watermachine/start WMST
+world/watermachine/loop WMLP
+world/watermachine/stop WMSP
+world/watermachine/flow WMFL

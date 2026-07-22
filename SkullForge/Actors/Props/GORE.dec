@@ -15,3 +15,43 @@ Actor SF_PoolOfBlood 24
             Stop
     }
 }
+
+Actor SF_SubjectTurn 32007
+{
+	//$Title Human Tunrs into Subject
+	//$Category Props/Gore
+	//$Color 12
+	Monster
+	Health 900
+	Radius 16
+	Height 56
+	Speed 0
+	SeeSound "monsters/turning/scream"
+	DropItem "SF_Subject"
+	+LOOKALLAROUND
+	States
+	{
+		Spawn:
+			PLAY A 1 A_Look
+			loop
+		See:
+			PLAY G 35
+			PLAY H 3 Offset(8,32) A_Scream
+			PLAY H 3 Offset(-8,32)
+			PLAY H 3 Offset(8,32)
+			PLAY H 3 Offset(-8,32)
+			PLAY H 3 Offset(8,32)
+			PLAY I 3 Offset(-8,32)
+			PLAY I 3 Offset(8,32)
+			PLAY I 3 Offset(-8,32)
+			PLAY I 3 Offset(8,32)
+			PLAY I 3 Offset(-8,32)
+			TNT1 A 0 A_PlaySound("misc/gibbed",CHAN_BODY,1.0)
+			TNT1 AAAAAA 0 A_SpawnItemEx("SF_SmallBlood",Random(-8,8),Random(-8,8),Random(24,56),fRandom(-4,4),fRandom(-4,4),fRandom(4,12))
+
+			TNT1 A 0 A_NoBlocking
+			TNT1 A 1
+			TNT1 A 1 A_AlertMonsters
+			Stop
+	}
+}
