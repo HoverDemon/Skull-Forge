@@ -3,6 +3,10 @@ Actor SF_Breacher 9
 	//$Title Breacher (Shotgunner)
 	//$Sprite SPOSE1
 	//$Category Monster/Post-Human
+	//$Arg0 WaitingCrouch
+    //$Arg0Tooltip If set to 1 the Breacher will spawn crouched
+	//$Arg1 Initial Shoulder Bash Time
+    //$Arg1Tooltip If you want less time increase the value max 16
 	Health 40
 	Radius 20
 	Height 56
@@ -10,6 +14,7 @@ Actor SF_Breacher 9
 	Speed 10
 	PainChance 170
 	Monster
+	Damage (12)
 	+NOINFIGHTING
 	+FLOORCLIP
 	SeeSound "monsters/breacher/see"
@@ -21,11 +26,17 @@ Actor SF_Breacher 9
 	States
 	{
 		Spawn:
+			TNT1 A 0 A_JumpIf(Args[0] == 1, "Spawn_Lay")
 			SPOS AB 10 A_Look
 			Loop
 		See:
 			SPOS AABBCCDD 3 A_Chase
 			Loop
+
+		Spawn_Lay:
+			SPOS M 1 A_LookEx(LOF_NOSOUNDCHECK,0,1052,0,360,"BetterAccuracy_Missile")
+			Loop
+
 		Missile:
 			TNT1 A 0 A_Jump(64,"BetterAccuracy_Missile")
 			TNT1 A 0 A_PlaySound ("weapons/slugger/down",CHAN_BODY)
@@ -48,6 +59,31 @@ Actor SF_Breacher 9
 			TNT1 A 0 A_PlaySound ("weapons/slugger/fire",CHAN_BODY)
 			SPOS N 4 Bright
 			SPOS M 6
+			TNT1 A 0 A_Jump(96,"AfterCrouch_SetUp")
+			TNT1 A 0 A_SetSize(20,56)
+			TNT1 A 0 A_PlaySound ("weapons/slugger/pump",CHAN_BODY)
+			SPOS ABA 7
+			Goto See
+		AfterCrouch_SetUp:
+			TNT1 A 0 A_SkullAttack(14)
+			TNT1 A 0 A_SetArg(1,Random(0,8))
+			TNT1 A 0 A_SetSize(20,56)
+		AfterCrouch_Charge:
+			TNT1 A 0 A_Jump(Args[1] >= 16, "AfterCrouch_Missile")
+			SPOS ABCD 3
+			TNT1 A 0 A_SetArg(1,Args[1] + 1)
+			Loop
+		AfterCrouch_Missile:
+			TNT1 A 0 A_PlaySound ("weapons/slugger/pump",CHAN_BODY)
+			SPOS ABA 7
+			TNT1 A 0 A_SetSize(20,32)
+			SPOS MM 2 A_FaceTarget
+			TNT1 AA 0 A_CustomMissile("SF_EnemyPellet", 22, 7, frandom(-1, 1),CMF_OFFSETPITCH, frandom(-1, 1))
+			TNT1 AAAA 0 A_CustomMissile("SF_EnemyPellet_Silenced", 22, 7, frandom(-1, 1),CMF_OFFSETPITCH, frandom(-1, 1))
+			TNT1 A 0 A_PlaySound ("weapons/slugger/fire",CHAN_BODY)
+			SPOS N 4 Bright
+			SPOS M 6
+			TNT1 A 0 A_Jump(96,"AfterCrouch_SetUp")
 			TNT1 A 0 A_SetSize(20,56)
 			TNT1 A 0 A_PlaySound ("weapons/slugger/pump",CHAN_BODY)
 			SPOS ABA 7

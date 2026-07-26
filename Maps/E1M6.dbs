@@ -17,8 +17,8 @@ maps
 		resources
 		{
 		}
-		viewpositiony = 2214.19f;
-		viewpositionx = 753.1292f;
+		viewpositiony = 518.3079f;
+		viewpositionx = 217.242f;
 		
 		testprecommand
 		{
@@ -38,11 +38,11 @@ maps
 			gridrotate = 0;
 			backscalex = 100;
 			gridoriginx = 0;
-			gridsize = 8;
+			gridsize = 32;
 			background = "";
 			backoffsety = 0;
 		}
-		viewscale = 0.1454897f;
+		viewscale = 0.4853051f;
 		
 		reloadresourceprecommand
 		{
@@ -52,6 +52,15 @@ maps
 		}
 		defaulttoptexture = "OBNKRL39";
 		overridebottomtexture = false;
+		
+		fieldtypes
+		{
+			
+			thing
+			{
+				flags = 0;
+			}
+		}
 		defaultbottomtexture = "OBNKRL39";
 		defaultfloortexture = "08DMDA06";
 		overrideceilheight = false;
@@ -73,15 +82,6 @@ maps
 			autocloseonsuccess = true;
 			exitcodeiserror = true;
 			stderriserror = true;
-		}
-		
-		fieldtypes
-		{
-			
-			thing
-			{
-				flags = 0;
-			}
 		}
 	}
 }

@@ -50,6 +50,7 @@
 #include "Actors/Props/Generic/BARREL.dec"
 #include "Actors/props/TERRAIN.dec"
 #include "Actors/props/GORE.dec"
+#include "Actors/props/WORLD.dec"
 
 //##MISC##
 

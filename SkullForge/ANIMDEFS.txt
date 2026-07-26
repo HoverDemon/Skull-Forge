@@ -1,1 +1,12 @@
 cameratexture E1M2CAM 512 512 fit 64 64
+
+cameratexture E1M6CAM 512 512 fit 53 37
+
+Warp Flat OWATER01 1.0 
+Warp Flat OWATER02 1.0 
+Warp Flat OWATER03 1.0 
+Warp Flat OWATER04 1.0 
+Warp Flat OWATER05 1.0 
+Warp Flat OWATER06 1.0 
+Warp Flat OWATER07 1.0
+Warp Flat OWATER08 1.0  

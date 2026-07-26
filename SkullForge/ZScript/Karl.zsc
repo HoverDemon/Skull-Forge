@@ -37,17 +37,41 @@ class SF_Player : DoomPlayer
     double slideDirY;
 
     // ---------- VIEW ----------
+    double savedViewHeight; // The exact view height saved at spawn
     double currentBaseView;
     double bobCounter;
     double bobValue;
+    double bobAmplitude; 
     double jumpBob;
     double landOffset;
     double rollAngle;
+
+    // ---------- DEATH CAMERA ----------
+    Actor myKiller;
+    double deathCamZ;
+    double deathCamVel;
+    bool deathBounced;
+    int deathTimer;
 
     // ---------- JUMP ----------
     bool lastJump;
     bool hasJumped;
     bool lastOnground;
+
+    // ---------- BUBBLES ----------
+    int lastWaterLevel;
+    int freshWaterTimer;
+    int regularBubbleTimer;
+
+    // Helper function to test headroom clearance for target crouch scales
+    bool CanFitHeight(double testHeight)
+    {
+        double oldHeight = height;
+        height = testHeight;
+        bool fits = TestMobjLocation();
+        height = oldHeight;
+        return fits;
+    }
 
     override void PostBeginPlay()
     {
@@ -57,7 +81,10 @@ class SF_Player : DoomPlayer
         hasJumped = false;
         lastOnground = true;
 
-        currentBaseView = Default.ViewHeight;
+        // Save the baseline view height immediately on start
+        savedViewHeight = Default.ViewHeight;
+        currentBaseView = savedViewHeight;
+        bobAmplitude = 0;
 
         isSliding = false;
         lastCrouch = false;
@@ -67,6 +94,27 @@ class SF_Player : DoomPlayer
 
         slideDirX = 0;
         slideDirY = 0;
+
+        lastWaterLevel = 0;
+        freshWaterTimer = 0;
+        regularBubbleTimer = 0;
+
+        myKiller = null;
+        deathCamZ = 0;
+        deathCamVel = 0;
+        deathBounced = false;
+        deathTimer = 0;
+    }
+
+    override void Die(Actor source, Actor inflictor, int dmgflags, Name MeansOfDeath)
+    {
+        Super.Die(source, inflictor, dmgflags, MeansOfDeath);
+        
+        myKiller = source ? source : inflictor;
+        deathCamZ = player.viewheight; 
+        deathCamVel = 0;
+        deathBounced = false;
+        deathTimer = 0;
     }
 
     override void CheckJump() {}
@@ -74,9 +122,51 @@ class SF_Player : DoomPlayer
     override void Tick()
     {
         Super.Tick();
+        
+        if (!player) return;
 
-        // Crouch protection
-        if (GetCrouchFactor() == 0.5)
+        // ---------- DEATH SEQUENCE ----------
+        if (health <= 0)
+        {
+            if (myKiller)
+            {
+                double targetAngle = AngleTo(myKiller);
+                double diff = deltaangle(angle, targetAngle);
+                A_SetAngle(angle + diff * 0.08, SPF_INTERPOLATE);
+            }
+
+            deathCamVel -= 1.5; 
+            deathCamZ += deathCamVel;
+            
+            double floorView = 8.0; 
+            if (deathCamZ <= floorView)
+            {
+                deathCamZ = floorView;
+                if (!deathBounced)
+                {
+                    deathCamVel = abs(deathCamVel) * 0.35; 
+                    deathBounced = true;
+                }
+                else
+                {
+                    deathCamVel = 0; 
+                    deathTimer++;
+                }
+            }
+            
+            if (deathTimer > 0)
+            {
+                double targetPitch = -15.0; 
+                double pDiff = targetPitch - pitch;
+                A_SetPitch(pitch + pDiff * 0.05, SPF_INTERPOLATE);
+            }
+
+            rollAngle *= 0.9;
+            A_SetRoll(rollAngle, SPF_INTERPOLATE);
+            return; 
+        }
+
+        if (GetCrouchFactor() <= 0.5)
             GiveInventory("CrochProt_Giver", 1);
 
         // ---------- WALL JUMP ----------
@@ -87,31 +177,21 @@ class SF_Player : DoomPlayer
                 if (!isWallAttached)
                 {
                     FLineTraceData LedgeTrace;
-
-                    double TraceDistance =
-                        sqrt(2) * Radius + 1;
+                    double TraceDistance = sqrt(2) * Radius + 1;
 
                     LineTrace(
-                        angle,
-                        TraceDistance,
-                        0,
-                        TRF_BLOCKSELF | TRF_THRUACTORS,
-                        Height * 1.2,
+                        angle, TraceDistance, 0,
+                        TRF_BLOCKSELF | TRF_THRUACTORS, Height * 1.2,
                         data: LedgeTrace
                     );
 
                     if (
                         LedgeTrace.HitType == TRACE_HitWall &&
-                        LedgeTrace.HitTexture ==
-                        TexMan.CheckForTexture(
-                            "WALLJUMP",
-                            TexMan.Type_Wall
-                        )
+                        LedgeTrace.HitTexture == TexMan.CheckForTexture("WALLJUMP", TexMan.Type_Wall)
                     )
                     {
                         isWallAttached = true;
                         wallAttachPos = pos;
-
                         vel = (0,0,0);
                         bNoGravity = true;
                     }
@@ -122,49 +202,96 @@ class SF_Player : DoomPlayer
                     bNoGravity = false;
 
                     Vector2 dir = AngleToVector(angle);
-
-                    vel =
-                    (
-                        dir.x * 32.0,
-                        dir.y * 32.0,
-                        JumpZ * 1.25
-                    );
-
+                    vel = (dir.x * 32.0, dir.y * 32.0, JumpZ * 1.25);
                     hasJumped = true;
                 }
             }
-
             isUsing = true;
         }
         else
         {
             isUsing = false;
         }
+
+        // ---------- BUBBLES UNDERWATER ----------
+        if (waterlevel >= 3 && lastWaterLevel < 3)
+        {
+            freshWaterTimer = 35;
+            regularBubbleTimer = 10;
+        }
+
+        if (waterlevel >= 3)
+        {
+            if (freshWaterTimer > 0)
+            {
+                int spawnChance = (freshWaterTimer * 100) / 35; 
+                if (Random(1, 100) <= spawnChance)
+                {
+                    int burstCount = Random(1, 1 + freshWaterTimer / 10);
+                    for (int i = 0; i < burstCount; i++)
+                    {
+                        SpawnBubble();
+                    }
+                }
+                freshWaterTimer--;
+            }
+
+            if (regularBubbleTimer <= 0)
+            {
+                SpawnBubble();
+                if (player && player.air_finished > level.time)
+                {
+                    double airRatio = 1.0;
+                    if (level.airsupply > 0)
+                        airRatio = double(player.air_finished - level.time) / level.airsupply;
+                    
+                    airRatio = clamp(airRatio, 0.0, 1.0);
+                    regularBubbleTimer = int(5 + 30 * airRatio);
+                }
+                else
+                {
+                    regularBubbleTimer = 5; 
+                }
+            }
+            else
+            {
+                regularBubbleTimer--;
+            }
+        }
+        else
+        {
+            freshWaterTimer = 0;
+            regularBubbleTimer = 0;
+        }
+
+        lastWaterLevel = waterlevel;
     }
 
     override void MovePlayer()
     {
         let player = self.player;
 
-        if (!player)
+        if (!player) return;
+
+        if (health <= 0)
+        {
+            Super.MovePlayer();
             return;
+        }
+
+        bool is3DMoving = (waterlevel >= 2) || bFly || (player.cheats & CF_FLY);
 
         // ---------- WALL ATTACH ----------
         if (isWallAttached)
         {
             vel = (0,0,0);
-
             double oldFM = player.cmd.forwardmove;
             double oldSM = player.cmd.sidemove;
-
             player.cmd.forwardmove = 0;
             player.cmd.sidemove = 0;
-
             Super.MovePlayer();
-
             player.cmd.forwardmove = oldFM;
             player.cmd.sidemove = oldSM;
-
             lastJump = false;
             return;
         }
@@ -172,106 +299,131 @@ class SF_Player : DoomPlayer
         double fm = player.cmd.forwardmove;
         double sm = player.cmd.sidemove;
 
-        // ---------- CROUCH ----------
-        double crouchFactor =
-            isSliding ? 0.5 : GetCrouchFactor();
+        // ---------- CROUCH & HEIGHT CHECK ----------
+        bool crouchInput = (player.cmd.buttons & BT_CROUCH) != 0;
+        double desiredFactor = 1.0;
+        
+        if (isSliding) desiredFactor = 0.25;
+        else if (crouchInput) desiredFactor = 0.5;
 
-        bool crouching =
-            (player.cmd.buttons & BT_CROUCH) != 0
-            || isSliding;
+        double allowedFactor = desiredFactor;
+        if (desiredFactor > player.crouchfactor)
+        {
+            if (desiredFactor == 1.0)
+            {
+                if (CanFitHeight(Default.Height * 1.0)) allowedFactor = 1.0;
+                else if (CanFitHeight(Default.Height * 0.5)) allowedFactor = 0.5;
+                else allowedFactor = 0.25;
+            }
+            else if (desiredFactor == 0.5)
+            {
+                if (CanFitHeight(Default.Height * 0.5)) allowedFactor = 0.5;
+                else allowedFactor = 0.25;
+            }
+        }
 
-        bool crouchPressed = crouching;
+        if (player.crouchfactor < allowedFactor)
+            player.crouchfactor = min(allowedFactor, player.crouchfactor + 0.15);
+        else if (player.crouchfactor > allowedFactor)
+            player.crouchfactor = max(allowedFactor, player.crouchfactor - 0.15);
 
-        bool crouchEdge =
-            crouchPressed && !lastCrouch;
+        height = Default.Height * player.crouchfactor;
 
-        double speedMult =
-            crouching ? 0.25 : 1.0;
+        if (player.crouchfactor < 1.0)
+            player.cmd.buttons |= BT_CROUCH;
 
-        double maxSpeed =
-            13.0 * Speed * speedMult;
+        bool crouching = (player.crouchfactor < 1.0);
+        bool crouchPressed = crouchInput || isSliding;
+        bool crouchEdge = crouchPressed && !lastCrouch;
 
+        double speedMult = crouching ? (isSliding ? 0.15 : 0.25) : 1.0;
+        double maxSpeed = 13.0 * Speed * speedMult;
         bool wasOnGround = player.onground;
 
         // ---------- RESET JUMP ----------
-        if (wasOnGround)
-            hasJumped = false;
+        if (wasOnGround) hasJumped = false;
 
-        // ---------- JUMP ----------
-        bool jumpPressed =
-            (player.cmd.buttons & BT_JUMP) != 0;
+        // ---------- JUMP & WATER FLOAT ----------
+        bool jumpPressed = (player.cmd.buttons & BT_JUMP) != 0;
+        bool jumpEdge = jumpPressed && !lastJump;
 
-        bool jumpEdge =
-            jumpPressed && !lastJump;
+        if (waterlevel > 0)
+        {
+            if (jumpPressed)
+            {
+                bool leaped = false;
+                if (waterlevel < 3)
+                {
+                    FLineTraceData WaterLedgeTrace;
+                    LineTrace(
+                        angle, Radius + 32, 0, 
+                        TRF_THRUACTORS | TRF_BLOCKSELF, Height, 
+                        data: WaterLedgeTrace
+                    );
 
-        if (
-            jumpEdge &&
-            wasOnGround &&
-            !hasJumped
-        )
+                    if (WaterLedgeTrace.HitType == TRACE_HitWall && 
+                        WaterLedgeTrace.HitLine && 
+                        WaterLedgeTrace.HitLine.backsector)
+                    {
+                        double ledgeFloorZ = WaterLedgeTrace.HitLine.backsector.floorplane.ZatPoint(WaterLedgeTrace.HitLocation.xy);
+                        
+                        if (ledgeFloorZ <= pos.z + 64.0 && ledgeFloorZ > pos.z)
+                        {
+                            vel.z = JumpZ;
+                            vel.xy += AngleToVector(angle, 5.0);
+                            hasJumped = true;
+                            leaped = true;
+                            A_StartSound("player/jump", CHAN_AUTO, volume: 0.7);
+                        }
+                    }
+                }
+
+                if (!leaped && vel.z < 4.0) vel.z += 1.0;
+            }
+        }
+        else if (jumpEdge && wasOnGround && !hasJumped)
         {
             vel.z = JumpZ;
-
-            // Bunnyhop boost
-            vel.xy *= 1.35;
-
+            vel.xy *= 1.35; // Bunnyhop boost
             jumpBob = 20.0;
-
             hasJumped = true;
-
-            A_StartSound(
-                "player/jump",
-                CHAN_AUTO,
-                volume: 0.7
-            );
+            A_StartSound("player/jump", CHAN_AUTO, volume: 0.7);
         }
 
         lastJump = jumpPressed;
-
         double preMoveVelZ = vel.z;
 
         player.cmd.forwardmove = 0;
         player.cmd.sidemove = 0;
 
         // ---------- WISHDIR ----------
-        double wishX =
-            cos(angle) * fm +
-            sin(angle) * sm;
+        double pitchFactor = is3DMoving ? cos(pitch) : 1.0;
+        double pitchZ      = is3DMoving ? -sin(pitch) : 0.0;
 
-        double wishY =
-            sin(angle) * fm -
-            cos(angle) * sm;
+        double wishX = cos(angle) * (fm * pitchFactor) + sin(angle) * sm;
+        double wishY = sin(angle) * (fm * pitchFactor) - cos(angle) * sm;
+        double wishZ = fm * pitchZ;
 
-        double wishLen =
-            sqrt(
-                wishX * wishX +
-                wishY * wishY
-            );
-
+        double wishLen = sqrt(wishX * wishX + wishY * wishY + (is3DMoving ? wishZ * wishZ : 0));
         if (wishLen > 0)
         {
             wishX /= wishLen;
             wishY /= wishLen;
+            if (is3DMoving) wishZ /= wishLen;
         }
 
         double curSpeed = vel.xy.length();
 
         // ---------- TOP SPEED TIMER ----------
-        if (curSpeed >= 12.0)
-            topSpeedTimer += 1.0 / 35.0;
-        else
-            topSpeedTimer = 0;
+        if (curSpeed >= 8.0) topSpeedTimer += 1.0 / 35.0;
+        else topSpeedTimer = 0;
 
         // ---------- START SLIDE ----------
-        if (
-            !isSliding &&
-            crouchEdge &&
-            topSpeedTimer >= 0.5
-        )
+        if (!isSliding && crouchEdge && topSpeedTimer >= 0.5 && !is3DMoving)
         {
             isSliding = true;
-
             slideTimer = 1.0;
+            player.crouchfactor = 0.25; 
 
             if (curSpeed > 0.01)
             {
@@ -279,17 +431,11 @@ class SF_Player : DoomPlayer
                 slideDirY = vel.y / curSpeed;
             }
 
-            // +150% speed boost
             vel.x += slideDirX * (curSpeed * 1.5);
             vel.y += slideDirY * (curSpeed * 1.5);
 
             player.cmd.buttons |= BT_CROUCH;
-
-            A_StartSound(
-                "player/slide",
-                CHAN_AUTO,
-                volume: 0.9
-            );
+            A_StartSound("player/slide", CHAN_AUTO, volume: 0.9);
         }
 
         lastCrouch = crouchPressed;
@@ -298,36 +444,47 @@ class SF_Player : DoomPlayer
         if (isSliding)
         {
             slideTimer -= 1.0 / 35.0;
-
-            // HARD FORCE CROUCH
             player.cmd.buttons |= BT_CROUCH;
-            player.crouchfactor = 0.5;
+            player.crouchfactor = 0.25;
 
-            // Momentum preservation
             vel.x += slideDirX * 0.55;
             vel.y += slideDirY * 0.55;
 
-            // Friction
-            double slideFriction =
-                player.onground ? 0.994 : 0.999;
-
+            double slideFriction = player.onground ? 0.994 : 0.999;
             vel.x *= slideFriction;
             vel.y *= slideFriction;
 
-            // Steering
             if (wishLen > 0)
             {
                 vel.x += wishX * 0.14;
                 vel.y += wishY * 0.14;
             }
 
-            // End conditions
-            if (
-                slideTimer <= 0 ||
-                vel.xy.length() < 8.0
-            )
-            {
+            if (slideTimer <= 0 || vel.xy.length() < 8.0)
                 isSliding = false;
+        }
+
+        // ---------- SWIMMING & FLYING ----------
+        else if (is3DMoving)
+        {
+            if (fm == 0 && sm == 0 && !jumpPressed)
+            {
+                vel.x *= 0.85;
+                vel.y *= 0.85;
+                vel.z *= 0.85;
+            }
+            else
+            {
+                double swimAccel = 3.0 * speedMult;
+                vel.x += wishX * swimAccel;
+                vel.y += wishY * swimAccel;
+                vel.z += wishZ * swimAccel;
+
+                double maxSwimSpeed = 16.0;
+                double currentSwimSpeed = vel.length();
+
+                if (currentSwimSpeed > maxSwimSpeed)
+                    vel = (vel / currentSwimSpeed) * maxSwimSpeed;
             }
         }
 
@@ -338,40 +495,23 @@ class SF_Player : DoomPlayer
             {
                 vel.x *= 0.81;
                 vel.y *= 0.81;
-
-                if (abs(vel.x) < 0.1)
-                    vel.x = 0;
-
-                if (abs(vel.y) < 0.1)
-                    vel.y = 0;
+                if (abs(vel.x) < 0.1) vel.x = 0;
+                if (abs(vel.y) < 0.1) vel.y = 0;
             }
             else
             {
-                double curSpeedInWish =
-                    vel.x * wishX +
-                    vel.y * wishY;
-
+                double curSpeedInWish = vel.x * wishX + vel.y * wishY;
                 if (curSpeedInWish < maxSpeed)
                 {
-                    double accel =
-                        6.0 * speedMult;
-
+                    double accel = 6.0 * speedMult;
                     vel.x += wishX * accel;
                     vel.y += wishY * accel;
                 }
 
                 double maxHardSpeed = 50.0;
-
-                double totalSpeed =
-                    vel.xy.length();
-
+                double totalSpeed = vel.xy.length();
                 if (totalSpeed > maxHardSpeed)
-                {
-                    vel.xy =
-                        vel.xy /
-                        totalSpeed *
-                        maxHardSpeed;
-                }
+                    vel.xy = vel.xy / totalSpeed * maxHardSpeed;
             }
         }
 
@@ -380,22 +520,10 @@ class SF_Player : DoomPlayer
         {
             if (fm != 0 || sm != 0)
             {
-                // Side movement weaker
                 double sideScale = 0.65;
-
-                double airWishX =
-                    cos(angle) * fm +
-                    sin(angle) * (sm * sideScale);
-
-                double airWishY =
-                    sin(angle) * fm -
-                    cos(angle) * (sm * sideScale);
-
-                double airWishLen =
-                    sqrt(
-                        airWishX * airWishX +
-                        airWishY * airWishY
-                    );
+                double airWishX = cos(angle) * fm + sin(angle) * (sm * sideScale);
+                double airWishY = sin(angle) * fm - cos(angle) * (sm * sideScale);
+                double airWishLen = sqrt(airWishX * airWishX + airWishY * airWishY);
 
                 if (airWishLen > 0)
                 {
@@ -403,117 +531,67 @@ class SF_Player : DoomPlayer
                     airWishY /= airWishLen;
                 }
 
-                // Air cap
                 double airMaxSpeed = 16.0;
-
-                // Current speed in direction
-                double currentSpeed =
-                    vel.x * airWishX +
-                    vel.y * airWishY;
-
-                double addSpeed =
-                    airMaxSpeed -
-                    currentSpeed;
+                double currentSpeed = vel.x * airWishX + vel.y * airWishY;
+                double addSpeed = airMaxSpeed - currentSpeed;
 
                 if (addSpeed > 0)
                 {
                     double airAccel = 0.85;
-
-                    if (airAccel > addSpeed)
-                        airAccel = addSpeed;
-
+                    if (airAccel > addSpeed) airAccel = addSpeed;
                     vel.x += airWishX * airAccel;
                     vel.y += airWishY * airAccel;
                 }
 
-                // Hard cap
                 double hardCap = 50.0;
-
-                double totalSpeed =
-                    vel.xy.length();
-
+                double totalSpeed = vel.xy.length();
                 if (totalSpeed > hardCap)
-                {
-                    vel.xy =
-                        vel.xy /
-                        totalSpeed *
-                        hardCap;
-                }
+                    vel.xy = vel.xy / totalSpeed * hardCap;
             }
         }
 
-        // ---------- ENGINE MOVE ----------
         Super.MovePlayer();
 
         // ---------- LAND ----------
-        if (
-            player.onground &&
-            !wasOnGround &&
-            preMoveVelZ < -5.0
-        )
+        if (player.onground && !wasOnGround && preMoveVelZ < -5.0)
         {
-            landOffset =
-                clamp(
-                    preMoveVelZ * 1.5,
-                    -35.0,
-                    0
-                );
-
-            A_StartSound(
-                "player/land",
-                CHAN_AUTO,
-                volume: 0.8
-            );
+            landOffset = clamp(preMoveVelZ * 1.5, -35.0, 0);
+            if (waterlevel == 0) 
+                A_StartSound("player/land", CHAN_AUTO, volume: 0.8);
         }
 
         lastOnground = player.onground;
-
-        // Restore inputs
         player.cmd.forwardmove = fm;
         player.cmd.sidemove = sm;
 
-        // ---------- VIEW BOB ----------
-        double hSpeed =
-            vel.xy.length();
+        // ---------- VIEW BOB & RETURN TO SAVED VIEW ----------
+        double hSpeed = vel.xy.length();
+        bool isMovingOnGround = (hSpeed > 0.1 && player.onground && !is3DMoving);
 
-        if (
-            hSpeed > 0.1 &&
-            player.onground
-        )
+        if (isMovingOnGround)
         {
+            // Moving normally
             bobCounter += hSpeed * 1.1;
-        }
-
-        bobValue =
-            sin(bobCounter) *
-            (hSpeed * 0.15);
-
-        // ---------- ROLL ----------
-        double tRoll;
-
-        if (isSliding)
-        {
-            tRoll = 4.0;
+            bobAmplitude = (bobAmplitude * 0.8) + (hSpeed * 0.15 * 0.2); 
+            bobValue = sin(bobCounter) * bobAmplitude;
         }
         else
         {
-            tRoll =
-                (sm > 0) ? 1.5 :
-                (sm < 0) ? -1.5 :
-                0;
+            // Not moving, mid-air, or swimming. 
+            // Smoothly decay ALL bobbing straight to zero to return to saved view height.
+            bobAmplitude *= 0.85; 
+            bobValue *= 0.85; 
         }
 
-        rollAngle =
-            rollAngle * 0.9 +
-            tRoll * 0.1;
+        // ---------- ROLL ----------
+        double tRoll = isSliding ? 4.0 : ((sm > 0) ? 1.5 : (sm < 0) ? -1.5 : 0);
+        rollAngle = rollAngle * 0.9 + tRoll * 0.1;
 
+        // Decay the jump/land offsets smoothly to 0
         jumpBob *= 0.6;
-        landOffset *= 1.3;
+        landOffset *= 0.8; // Changed from 1.3 so it decays smoothly to 0!
 
-        A_SetRoll(
-            rollAngle,
-            SPF_INTERPOLATE
-        );
+        A_SetRoll(rollAngle, SPF_INTERPOLATE);
     }
 
     // ---------- CAMERA ----------
@@ -521,8 +599,15 @@ class SF_Player : DoomPlayer
     {
         Super.CalcHeight();
 
-        double targetBaseView =
-            player.viewheight;
+        if (health <= 0)
+        {
+            player.viewheight = deathCamZ;
+            player.viewz = pos.z + player.viewheight;
+            return;
+        }
+
+        // The target resting base view strictly uses the savedViewHeight (scaled if they crouch)
+        double targetBaseView = savedViewHeight * player.crouchfactor;
 
         currentBaseView =
             (currentBaseView * 0.6) +
@@ -537,6 +622,37 @@ class SF_Player : DoomPlayer
         player.viewz =
             pos.z +
             player.viewheight;
+    }
+
+    // ---------- DAMAGE CAPTURE FOR BUBBLES ----------
+    override int DamageMobj(Actor inflictor, Actor source, int damage, Name mod, int flags, double angle)
+    {
+        int actualDamage = Super.DamageMobj(inflictor, source, damage, mod, flags, angle);
+        
+        if (actualDamage > 0 && waterlevel >= 3)
+        {
+            int bubbleCount = clamp(actualDamage / 2, 5, 20);
+            for (int i = 0; i < bubbleCount; i++)
+                SpawnBubble();
+        }
+        
+        return actualDamage;
+    }
+
+    void SpawnBubble()
+    {
+        double px = FRandom(-10, 10);
+        double py = FRandom(-10, 10);
+        double pz = player ? player.viewheight - FRandom(2, 8) : Height * 0.8;
+        
+        Vector3 spawnPos = Pos + (px, py, pz);
+        Actor bub = Spawn("SF_WeavingBubble", spawnPos);
+        
+        if (bub)
+        {
+            bub.Vel.X += px * 0.05;
+            bub.Vel.Y += py * 0.05;
+        }
     }
 }
 
@@ -556,5 +672,107 @@ Class PowerCrochProt : PowerProtection
     {
         Powerup.Duration 1;
         DamageFactor "Normal", 0.5;
+    }
+}
+
+// ---------- UNDERWATER EFFECT ----------
+
+class SF_WeavingBubble : Actor
+{
+    Default
+    {
+        Radius 2;
+        Height 2;
+        RenderStyle "Add";
+        Alpha 0.75;
+        Scale 0.15;
+        
+        +NOBLOCKMAP
+        +NOGRAVITY
+        +DONTSPLASH
+        +FORCEXYBILLBOARD
+        +NOTELEPORT
+    }
+
+    // Internal physics & timing variables
+    double waveTimer;
+    double waveSpeed;
+    double waveAmp;
+    double baseRiseSpeed;
+
+    // Lifespan & popping variables
+    int currentTicks;
+    int maxTicks;
+    bool isPopping; // Prevents Tick from restarting Death state endlessly
+
+    override void PostBeginPlay()
+    {
+        Super.PostBeginPlay();
+
+        waveTimer = FRandom(0, 360);
+        waveSpeed = FRandom(4.0, 8.0);
+        waveAmp = FRandom(0.4, 0.9);
+        baseRiseSpeed = FRandom(1.2, 2.2);
+
+        maxTicks = Random(35, 175);
+    }
+
+    override void Tick()
+    {
+        Super.Tick();
+
+        // 1. IF FROZEN OR ALREADY POPPING, DO NOTHING
+        if (IsFrozen() || isPopping) return;
+
+        // 2. POP IF ABOVE WATER
+        if (waterlevel == 0)
+        {
+            Pop();
+            return;
+        }
+
+        // 3. RANDOM POP CHECK UNDERWATER
+        currentTicks++;
+        if (currentTicks >= maxTicks || FRandom(0.0, 100.0) < 0.5)
+        {
+            Pop();
+            return;
+        }
+
+        waveTimer += waveSpeed;
+
+        // 4. MOVEMENT LOGIC BASED ON WATER DEPTH
+        if (waterlevel > 0 && waterlevel < 3)
+        {
+            // --- SURFACE BOBBING ---
+            Vel.X = Sin(waveTimer) * (waveAmp * 0.3);
+            Vel.Y = Cos(waveTimer) * (waveAmp * 0.3);
+            Vel.Z = Sin(waveTimer * 1.5) * 0.25;
+        }
+        else
+        {
+            // --- SUBMERGED RISING ---
+            Vel.X = Sin(waveTimer) * waveAmp;
+            Vel.Y = Cos(waveTimer * 0.5) * (waveAmp * 0.5);
+            Vel.Z = baseRiseSpeed + (Sin(waveTimer * 2.0) * 0.15);
+        }
+    }
+
+    // Clean pop sequence trigger
+    void Pop()
+    {
+        isPopping = true;
+        Vel = (0, 0, 0); // Stop movement immediately so pop sprite stays in place
+        SetStateLabel("Death");
+    }
+
+    States
+    {
+    Spawn:
+        BUBL A 1;
+        Loop;
+    Death:
+        BUBL B 2; // Plays pop sprite frame for 2 tics
+        Stop;     // Destroys the actor instance completely
     }
 }
