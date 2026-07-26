@@ -24,7 +24,7 @@ maps
 				option1 = 0;
 				option2 = 0;
 				notfortesting = 1;
-				requiredarchives = "";
+				requiredarchives = "gzdoom";
 			}
 			
 			resource1
@@ -37,8 +37,8 @@ maps
 				requiredarchives = "";
 			}
 		}
-		viewpositiony = 1487.525f;
-		viewpositionx = -2148.015f;
+		viewpositiony = 1539.985f;
+		viewpositionx = -2719.049f;
 		
 		testprecommand
 		{
@@ -62,7 +62,7 @@ maps
 			background = "";
 			backoffsety = 0;
 		}
-		viewscale = 0.7354076f;
+		viewscale = 0.5656981f;
 		
 		reloadresourceprecommand
 		{
